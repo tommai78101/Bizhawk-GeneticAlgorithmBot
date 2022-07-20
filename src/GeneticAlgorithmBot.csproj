@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<LangVersion>9.0</LangVersion>
+		<Nullable>enable</Nullable>
+		<TargetFramework>net48</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="all" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<Reference Include="System.Windows.Forms" />
+		<Reference Include="BizHawk.BizInvoke" HintPath="$(ProjectDir)../BizHawk/dll/BizHawk.BizInvoke.dll" />
+		<Reference Include="BizHawk.Bizware.BizwareGL" HintPath="$(ProjectDir)../BizHawk/dll/BizHawk.Bizware.BizwareGL.dll" />
+		<Reference Include="BizHawk.Bizware.DirectX" HintPath="$(ProjectDir)../BizHawk/dll/BizHawk.Bizware.DirectX.dll" />
+		<Reference Include="BizHawk.Bizware.OpenTK3" HintPath="$(ProjectDir)../BizHawk/dll/BizHawk.Bizware.OpenTK3.dll" />
+		<Reference Include="BizHawk.Client.Common" HintPath="$(ProjectDir)../BizHawk/dll/BizHawk.Client.Common.dll" />
+		<Reference Include="BizHawk.Common" HintPath="$(ProjectDir)../BizHawk/dll/BizHawk.Common.dll" />
+		<Reference Include="BizHawk.Emulation.Common" HintPath="$(ProjectDir)../BizHawk/dll/BizHawk.Emulation.Common.dll" />
+		<Reference Include="BizHawk.Emulation.Cores" HintPath="$(ProjectDir)../BizHawk/dll/BizHawk.Emulation.Cores.dll" />
+		<Reference Include="BizHawk.Emulation.DiscSystem" HintPath="$(ProjectDir)../BizHawk/dll/BizHawk.Emulation.DiscSystem.dll" />
+		<Reference Include="BizHawk.WinForms.Controls" HintPath="$(ProjectDir)../BizHawk/dll/BizHawk.WinForms.Controls.dll" />
+		<Reference Include="BizHawk.Client.EmuHawk" HintPath="$(ProjectDir)../BizHawk/EmuHawk.exe" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="GeneticAlgorithmBot.cs" SubType="Form" />
+		<Compile Update="GeneticAlgorithmBot.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>GeneticAlgorithmBot.resx</DependentUpon>
+		</Compile>
+		<EmbeddedResource Update="GeneticAlgorithmBot.resx" DependentUpon="GeneticAlgorithmBot.cs">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>GeneticAlgorithmBot.Designer.cs</LastGenOutput>
+			<DependentUpon>GeneticAlgorithmBot.Designer.cs</DependentUpon>
+		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Resources\" />
+	</ItemGroup>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Copy SourceFiles="$(OutputPath)$(MSBuildProjectName).dll" DestinationFolder="$(ProjectDir)../BizHawk/ExternalTools" />
+	</Target>
+</Project>
