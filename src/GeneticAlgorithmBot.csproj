@@ -23,16 +23,33 @@
 		<Reference Include="BizHawk.Client.EmuHawk" HintPath="$(ProjectDir)../BizHawk/EmuHawk.exe" />
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Update="GeneticAlgorithmBot.cs" SubType="Form" />
+		<Compile Update="GeneticAlgorithmBot.cs">
+			<SubType>Form</SubType>
+		</Compile>
 		<Compile Update="GeneticAlgorithmBot.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
-			<DependentUpon>GeneticAlgorithmBot.resx</DependentUpon>
+			<DependentUpon>GeneticAlgorithmBot.cs</DependentUpon>
 		</Compile>
-		<EmbeddedResource Update="GeneticAlgorithmBot.resx" DependentUpon="GeneticAlgorithmBot.cs">
+		<EmbeddedResource Update="GeneticAlgorithmBot.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>GeneticAlgorithmBot.Designer.cs</LastGenOutput>
 			<DependentUpon>GeneticAlgorithmBot.Designer.cs</DependentUpon>
+		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="BotControlsRow.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="BotControlsRow.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>BotControlsRow.cs</DependentUpon>
+		</Compile>
+		<EmbeddedResource Update="BotControlsRow.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>BotControlsRow.Designer.cs</LastGenOutput>
+			<DependentUpon>BotControlsRow.Designer.cs</DependentUpon>
 		</EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>

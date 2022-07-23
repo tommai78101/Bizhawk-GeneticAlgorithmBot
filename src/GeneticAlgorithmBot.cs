@@ -99,12 +99,6 @@ namespace GeneticAlgorithmBot {
 			set => FrameLengthNumeric.Value = value;
 		}
 
-		public bool IsActive => throw new NotImplementedException();
-
-		public bool IsLoaded => throw new NotImplementedException();
-
-		public bool ContainsFocus => throw new NotImplementedException();
-
 		public ClickyVirtualPadController Controller => InputManager.ClickyVirtualPadController;
 
 		public IList<string> ControllerButtons => Emulator.ControllerDefinition.BoolButtons;
@@ -219,6 +213,7 @@ namespace GeneticAlgorithmBot {
 
 		#region Class Methods
 		public GeneticAlgorithmBot() {
+			InitializeComponent();
 			if (OSTailoredCode.IsUnixHost) {
 				this.AutoSize = false;
 				this.Margin = new(0, 0, 0, 8);
@@ -266,9 +261,8 @@ namespace GeneticAlgorithmBot {
 			MessageLabel.Text = "Replay stopped";
 		}
 
-		public void Restart() {
-			if (_currentDomain == null
-				|| MemoryDomains.Contains(_currentDomain)) {
+		public override void Restart() {
+			if (_currentDomain == null || MemoryDomains.Contains(_currentDomain)) {
 				_currentDomain = MemoryDomains.MainMemory;
 				_bigEndian = _currentDomain.EndianType == MemoryDomain.Endian.Big;
 				_dataSize = 1;
@@ -357,7 +351,7 @@ namespace GeneticAlgorithmBot {
 			MessageLabel.Text = "Bot stopped";
 		}
 
-		public string CanStart() {
+		public string? CanStart() {
 			if (!ControlProbabilities.Any(cp => cp.Value > 0)) {
 				return "At least one control must have a probability greater than 0.";
 			}
@@ -369,10 +363,10 @@ namespace GeneticAlgorithmBot {
 			if (FrameLengthNumeric.Value == 0) {
 				return "A frame count greater than 0 is required";
 			}
-
 			return null;
 		}
 
+		/*
 		public bool AskSaveChanges() {
 			throw new NotImplementedException();
 		}
@@ -388,6 +382,7 @@ namespace GeneticAlgorithmBot {
 		public void Close() {
 			throw new NotImplementedException();
 		}
+		*/
 
 		public void PressButtons(bool clear_log) {
 			if (this.populationManager.GetBest() != null) {
