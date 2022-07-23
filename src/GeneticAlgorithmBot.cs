@@ -88,10 +88,6 @@ namespace GeneticAlgorithmBot {
 		[RequiredService]
 		public IEmulator Emulator { get; set; }
 
-		// Unused, due to the use of MainForm to loadstate, but this needs to be kept here in order to establish an IStatable dependency
-		[RequiredService]
-		protected IStatable StatableCore { get; set; }
-
 		[RequiredService]
 		public IMemoryDomains MemoryDomains { get; set; }
 
