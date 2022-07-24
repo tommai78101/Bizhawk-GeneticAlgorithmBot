@@ -217,48 +217,29 @@ namespace GeneticAlgorithmBot {
 		#region Class Methods
 		public GeneticAlgorithmBot() {
 			InitializeComponent();
+			NewMenuItem.Image = GetResourceIcons<Image>("NewFile");
+			OpenMenuItem.Image = GetResourceIcons<Image>("OpenFile");
+			SaveMenuItem.Image = GetResourceIcons<Image>("SaveAs");
+			RecentSubMenu.Image = GetResourceIcons<Image>("Recent");
+			RunBtn.Image = GetResourceIcons<Image>("Play");
+			BotStatusButton.Image = GetResourceIcons<Image>("Placeholder");
+			btnCopyBestInput.Image = GetResourceIcons<Image>("Duplicate");
+			PlayBestButton.Image = GetResourceIcons<Image>("Play");
+			ClearBestButton.Image = GetResourceIcons<Image>("Close");
+			StopBtn.Image = GetResourceIcons<Image>("Stop");
+
 			if (OSTailoredCode.IsUnixHost) {
 				this.AutoSize = false;
 				this.Margin = new(0, 0, 0, 8);
 			}
 			this.Settings = new GeneticAlgorithmBotSettings();
 			this.populationManager = new GeneticAlgorithm(this, POPULATION_SIZE);
+			this.MainOperator.SelectedItem = ">=";
 		}
+
 		public static T GetResourceIcons<T>(string iconName) {
 			FieldInfo fi = Resources.GetField(iconName, BindingFlags.NonPublic | BindingFlags.Static);
 			return (T) fi.GetValue(Resources);
-		}
-
-		public void OnBotLoad(object sender, EventArgs eventArgs) {
-			if (!CurrentMovie.IsActive() && !Tools.IsLoaded<TAStudio>()) {
-				DialogController.ShowMessageBox("In order to proceed to use this tool, TAStudio is required to be opened.");
-				this.Close();
-				DialogResult = DialogResult.Cancel;
-				return;
-			}
-
-			if (Config!.OpposingDirPolicy is not OpposingDirPolicy.Allow) {
-				DialogController.ShowMessageBox("In order to proceed to use this tool, please check if the U+D/L+R controller binds policy is set to 'Allow'.");
-				this.Close();
-				DialogResult = DialogResult.Cancel;
-				return;
-			}
-
-			if (OSTailoredCode.IsUnixHost) {
-				ClientSize = new(707, 587);
-			}
-
-			_previousInvisibleEmulation = InvisibleEmulationCheckBox.Checked = Settings.InvisibleEmulation;
-			_previousDisplayMessage = Config.DisplayMessages;
-		}
-
-		public void FrameLengthNumeric_ValueChanged(object sender, EventArgs e) {
-			AssessRunButtonStatus();
-		}
-
-		public void ClearStatsContextMenuItem_Click(object sender, EventArgs e) {
-			Runs = 0;
-			Frames = 0;
 		}
 
 		public void FinishReplay() {
@@ -730,6 +711,200 @@ namespace GeneticAlgorithmBot {
 			TieBreaker3Box.SetHexProperties(_currentDomain.Size);
 		}
 		#endregion
+
+		#region UI Event Handlers
+		public void OnBotLoad(object sender, EventArgs eventArgs) {
+			if (!CurrentMovie.IsActive() && !Tools.IsLoaded<TAStudio>()) {
+				DialogController.ShowMessageBox("In order to proceed to use this tool, TAStudio is required to be opened.");
+				this.Close();
+				DialogResult = DialogResult.Cancel;
+				return;
+			}
+
+			if (Config!.OpposingDirPolicy is not OpposingDirPolicy.Allow) {
+				DialogController.ShowMessageBox("In order to proceed to use this tool, please check if the U+D/L+R controller binds policy is set to 'Allow'.");
+				this.Close();
+				DialogResult = DialogResult.Cancel;
+				return;
+			}
+
+			if (OSTailoredCode.IsUnixHost) {
+				ClientSize = new(707, 587);
+			}
+
+			_previousInvisibleEmulation = InvisibleEmulationCheckBox.Checked = Settings.InvisibleEmulation;
+			_previousDisplayMessage = Config.DisplayMessages;
+		}
+
+		public void FrameLengthNumeric_ValueChanged(object sender, EventArgs e) {
+			AssessRunButtonStatus();
+		}
+
+		public void ClearStatsContextMenuItem_Click(object sender, EventArgs e) {
+			Runs = 0;
+			Frames = 0;
+		}
+
+		public void FileSubMenu_DropDownOpened(object sender, EventArgs e) {
+			SaveMenuItem.Enabled = !string.IsNullOrWhiteSpace(CurrentFilename);
+		}
+
+		public void NewMenuItem_Click(object sender, EventArgs e) {
+			CurrentFilename = "";
+			this.populationManager.Initialize();
+
+			foreach (var cp in ControlProbabilityPanel.Controls.OfType<BotControlsRow>()) {
+				cp.Probability = 0;
+			}
+
+			FrameLength = 0;
+			MaximizeAddress = 0;
+			TieBreaker1Address = 0;
+			TieBreaker2Address = 0;
+			TieBreaker3Address = 0;
+			StartFromSlotBox.SelectedIndex = 0;
+			MainOperator.SelectedIndex = 0;
+			Tiebreak1Operator.SelectedIndex = 0;
+			Tiebreak2Operator.SelectedIndex = 0;
+			Tiebreak3Operator.SelectedIndex = 0;
+			MainValueNumeric.Value = 0;
+			TieBreak1Numeric.Value = 0;
+			TieBreak2Numeric.Value = 0;
+			TieBreak3Numeric.Value = 0;
+			MainBestRadio.Checked = true;
+			TieBreak1BestRadio.Checked = true;
+			TieBreak2BestRadio.Checked = true;
+			TieBreak3BestRadio.Checked = true;
+
+			UpdateBestAttempt();
+		}
+
+		public void OpenMenuItem_Click(object sender, EventArgs e) {
+			var file = OpenFileDialog(
+					CurrentFilename,
+					Config!.PathEntries.ToolsAbsolutePath(),
+					"Bot files",
+					"bot");
+
+			if (file != null) {
+				LoadBotFile(file.FullName);
+			}
+		}
+
+		public void SaveMenuItem_Click(object sender, EventArgs e) {
+			if (!string.IsNullOrWhiteSpace(CurrentFilename)) {
+				SaveBotFile(CurrentFilename);
+			}
+		}
+
+		public void SaveAsMenuItem_Click(object sender, EventArgs e) {
+			var fileName = CurrentFilename;
+			if (string.IsNullOrWhiteSpace(fileName)) {
+				fileName = Game.FilesystemSafeName();
+			}
+
+			var file = SaveFileDialog(
+				fileName,
+				Config!.PathEntries.ToolsAbsolutePath(),
+				"Bot files",
+				"bot",
+				this);
+
+			if (file != null) {
+				SaveBotFile(file.FullName);
+				_currentFilename = file.FullName;
+			}
+		}
+
+		public void RecentSubMenu_DropDownOpened(object sender, EventArgs e) {
+			RecentSubMenu.DropDownItems.Clear();
+			RecentSubMenu.DropDownItems.AddRange(Settings.RecentBotFiles.RecentMenu(MainForm, LoadFileFromRecent, "Bot Parameters"));
+		}
+
+		public void OptionsSubMenu_DropDownOpened(object sender, EventArgs e) {
+			TurboWhileBottingMenuItem.Checked = Settings.TurboWhenBotting;
+			BigEndianMenuItem.Checked = _bigEndian;
+		}
+
+		public void MemoryDomainsMenuItem_DropDownOpened(object sender, EventArgs e) {
+			MemoryDomainsMenuItem.DropDownItems.Clear();
+			MemoryDomainsMenuItem.DropDownItems.AddRange(MemoryDomains.MenuItems(SetMemoryDomain, _currentDomain.Name).ToArray());
+		}
+
+		public void DataSizeMenuItem_DropDownOpened(object sender, EventArgs e) {
+			_1ByteMenuItem.Checked = _dataSize == 1;
+			_2ByteMenuItem.Checked = _dataSize == 2;
+			_4ByteMenuItem.Checked = _dataSize == 4;
+		}
+
+		public void OneByteMenuItem_Click(object sender, EventArgs e) {
+			_dataSize = 1;
+		}
+
+		public void TwoByteMenuItem_Click(object sender, EventArgs e) {
+			_dataSize = 2;
+		}
+
+		public void FourByteMenuItem_Click(object sender, EventArgs e) {
+			_dataSize = 4;
+		}
+
+		public void BigEndianMenuItem_Click(object sender, EventArgs e) {
+			_bigEndian ^= true;
+		}
+
+		public void TurboWhileBottingMenuItem_Click(object sender, EventArgs e) {
+			Settings.TurboWhenBotting ^= true;
+		}
+
+		public void RunBtn_Click(object sender, EventArgs e) {
+			StartBot();
+		}
+
+		public void StopBtn_Click(object sender, EventArgs e) {
+			StopBot();
+		}
+
+		public void BtnCopyBestInput_Click(object sender, EventArgs e) {
+			Clipboard.SetText(BestAttemptLogLabel.Text);
+		}
+
+		public void PlayBestButton_Click(object sender, EventArgs e) {
+			StopBot();
+			_replayMode = true;
+			_doNotUpdateValues = true;
+
+			// here we need to apply the initial frame's input from the best attempt
+			BotAttempt bestAttempt = this.populationManager.GetBest().GetAttempt();
+			var logEntry = bestAttempt.Log[0];
+			var controller = MovieSession.GenerateMovieController();
+			controller.SetFromMnemonic(logEntry);
+			foreach (var button in controller.Definition.BoolButtons) {
+				// TODO: make an input adapter specifically for the bot?
+				InputManager.ButtonOverrideAdapter.SetButton(button, controller.IsPressed(button));
+			}
+
+			InputManager.SyncControls(Emulator, MovieSession, Config);
+
+			MainForm.LoadQuickSave(SelectedSlot, true); // Triggers an UpdateValues call
+			_lastFrameAdvanced = Emulator.Frame;
+			_doNotUpdateValues = false;
+			_startFrame = Emulator.Frame;
+			SetNormalSpeed();
+			UpdateBotStatusIcon();
+			MessageLabel.Text = "Replaying";
+			MainForm.UnpauseEmulator();
+		}
+
+		public void ClearBestButton_Click(object sender, EventArgs e) {
+			BotAttempt best = this.populationManager.GetBest().GetAttempt();
+			best.isReset = true;
+			Runs = 0;
+			Frames = 0;
+			Generations = 0;
+			UpdateBestAttempt();
+		}
+		#endregion
 	}
 
 	public static class Utils {
@@ -864,6 +1039,7 @@ namespace GeneticAlgorithmBot {
 		 */
 
 		public void Initialize() {
+			this._bestRecording.Reset(0);
 			this.currentIndex = 0;
 			for (int i = 0; i < this.population.Length; i++) {
 				InputRecording rec = this.population[i];
