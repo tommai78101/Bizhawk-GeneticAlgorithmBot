@@ -456,6 +456,7 @@ namespace GeneticAlgorithmBot {
 
 					if (this.populationManager.NextRecording()) {
 						this.populationManager.Reproduce();
+						Generations = this.populationManager.NextGeneration();
 					}
 					_doNotUpdateValues = true;
 					PressButtons(true);
@@ -995,6 +996,10 @@ namespace GeneticAlgorithmBot {
 		public bool NextRecording() {
 			this.currentIndex = ++this.currentIndex % this.population.Length;
 			return this.currentIndex == 0;
+		}
+
+		public long NextGeneration() {
+			return ++this.Generation;
 		}
 
 		public bool IsCurrentAttemptBetter() {
