@@ -131,6 +131,7 @@ namespace GeneticAlgorithmBot {
 
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GeneticAlgorithmBot));
 			this.FrameLengthNumeric = new System.Windows.Forms.NumericUpDown();
 			this.TieBreak1BestRadio = new System.Windows.Forms.RadioButton();
 			this.label5 = new BizHawk.WinForms.Controls.LocLabelEx();
@@ -162,25 +163,45 @@ namespace GeneticAlgorithmBot {
 			this.panel4 = new System.Windows.Forms.Panel();
 			this.BotToolTip = new System.Windows.Forms.ToolTip(this.components);
 			this.btnCopyBestInput = new System.Windows.Forms.Button();
-			this.StatsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.ClearStatsContextMenuItem = new BizHawk.WinForms.Controls.ToolStripMenuItemEx();
+			this.ControlGroupBox = new System.Windows.Forms.GroupBox();
 			this.InvisibleEmulationCheckBox = new System.Windows.Forms.CheckBox();
 			this.panel2 = new System.Windows.Forms.Panel();
+			this.StatsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.ClearStatsContextMenuItem = new BizHawk.WinForms.Controls.ToolStripMenuItemEx();
+			this.locLabelEx1 = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.locLabelEx2 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.FramesLabel = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.AttemptsLabel = new BizHawk.WinForms.Controls.LocLabelEx();
-			this.ControlGroupBox = new System.Windows.Forms.GroupBox();
 			this.StopBtn = new System.Windows.Forms.Button();
 			this.RunBtn = new System.Windows.Forms.Button();
 			this.StartFromSlotBox = new System.Windows.Forms.ComboBox();
 			this.label8 = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.BestGroupBox = new System.Windows.Forms.GroupBox();
+			this.PlayBestButton = new System.Windows.Forms.Button();
+			this.ClearBestButton = new System.Windows.Forms.Button();
+			this.BestAttemptNumberLabel = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.label17 = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.panel1 = new System.Windows.Forms.Panel();
+			this.BestAttemptLogLabel = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.BestTieBreak3Box = new System.Windows.Forms.TextBox();
+			this.BestTieBreak2Box = new System.Windows.Forms.TextBox();
+			this.BestTieBreak1Box = new System.Windows.Forms.TextBox();
+			this.BestMaximizeBox = new System.Windows.Forms.TextBox();
+			this.label16 = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.label15 = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.label14 = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.label13 = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.GoalGroupBox = new System.Windows.Forms.GroupBox();
+			this.panel6 = new System.Windows.Forms.Panel();
 			this.label12 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.label7 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.TieBreaker3Box = new BizHawk.Client.EmuHawk.HexTextBox();
 			this.TieBreak3Numeric = new System.Windows.Forms.NumericUpDown();
 			this.TieBreak3ValueRadio = new System.Windows.Forms.RadioButton();
 			this.TieBreak3BestRadio = new System.Windows.Forms.RadioButton();
-			this.panel6 = new System.Windows.Forms.Panel();
 			this.Tiebreak3Operator = new System.Windows.Forms.ComboBox();
+			this.ControlsBox = new System.Windows.Forms.GroupBox();
+			this.ControlProbabilityPanel = new System.Windows.Forms.Panel();
 			this.BotStatusStrip = new System.Windows.Forms.StatusStrip();
 			this.BotStatusButton = new System.Windows.Forms.ToolStripStatusLabel();
 			this.MessageLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -204,62 +225,42 @@ namespace GeneticAlgorithmBot {
 			this.NewMenuItem = new BizHawk.WinForms.Controls.ToolStripMenuItemEx();
 			this.FileSubMenu = new BizHawk.WinForms.Controls.ToolStripMenuItemEx();
 			this.BotMenu = new BizHawk.WinForms.Controls.MenuStripEx();
-			this.BestTieBreak3Box = new System.Windows.Forms.TextBox();
-			this.BestTieBreak2Box = new System.Windows.Forms.TextBox();
-			this.BestTieBreak1Box = new System.Windows.Forms.TextBox();
-			this.BestMaximizeBox = new System.Windows.Forms.TextBox();
-			this.label16 = new BizHawk.WinForms.Controls.LocLabelEx();
-			this.label15 = new BizHawk.WinForms.Controls.LocLabelEx();
-			this.label14 = new BizHawk.WinForms.Controls.LocLabelEx();
-			this.label13 = new BizHawk.WinForms.Controls.LocLabelEx();
-			this.BestAttemptLogLabel = new BizHawk.WinForms.Controls.LocLabelEx();
-			this.PlayBestButton = new System.Windows.Forms.Button();
-			this.ClearBestButton = new System.Windows.Forms.Button();
-			this.BestAttemptNumberLabel = new BizHawk.WinForms.Controls.LocLabelEx();
-			this.label17 = new BizHawk.WinForms.Controls.LocLabelEx();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.BestGroupBox = new System.Windows.Forms.GroupBox();
-			this.ControlProbabilityPanel = new System.Windows.Forms.Panel();
-			this.GoalGroupBox = new System.Windows.Forms.GroupBox();
-			this.ControlsBox = new System.Windows.Forms.GroupBox();
-			this.locLabelEx1 = new BizHawk.WinForms.Controls.LocLabelEx();
-			this.locLabelEx2 = new BizHawk.WinForms.Controls.LocLabelEx();
-			((System.ComponentModel.ISupportInitialize) (this.FrameLengthNumeric)).BeginInit();
-			((System.ComponentModel.ISupportInitialize) (this.MainValueNumeric)).BeginInit();
-			((System.ComponentModel.ISupportInitialize) (this.TieBreak1Numeric)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.FrameLengthNumeric)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.MainValueNumeric)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.TieBreak1Numeric)).BeginInit();
 			this.panel3.SuspendLayout();
 			this.panel5.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize) (this.TieBreak2Numeric)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.TieBreak2Numeric)).BeginInit();
 			this.panel4.SuspendLayout();
-			this.StatsContextMenu.SuspendLayout();
-			this.panel2.SuspendLayout();
 			this.ControlGroupBox.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize) (this.TieBreak3Numeric)).BeginInit();
+			this.panel2.SuspendLayout();
+			this.StatsContextMenu.SuspendLayout();
+			this.BestGroupBox.SuspendLayout();
+			this.panel1.SuspendLayout();
+			this.GoalGroupBox.SuspendLayout();
 			this.panel6.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.TieBreak3Numeric)).BeginInit();
+			this.ControlsBox.SuspendLayout();
 			this.BotStatusStrip.SuspendLayout();
 			this.BotMenu.SuspendLayout();
-			this.panel1.SuspendLayout();
-			this.BestGroupBox.SuspendLayout();
-			this.GoalGroupBox.SuspendLayout();
-			this.ControlsBox.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// FrameLengthNumeric
 			// 
 			this.FrameLengthNumeric.Location = new System.Drawing.Point(60, 25);
 			this.FrameLengthNumeric.Maximum = new decimal(new int[] {
-			9999,
-			0,
-			0,
-			0});
+            9999,
+            0,
+            0,
+            0});
 			this.FrameLengthNumeric.Name = "FrameLengthNumeric";
 			this.FrameLengthNumeric.Size = new System.Drawing.Size(46, 20);
 			this.FrameLengthNumeric.TabIndex = 1000;
 			this.FrameLengthNumeric.Value = new decimal(new int[] {
-			100,
-			0,
-			0,
-			0});
+            100,
+            0,
+            0,
+            0});
 			this.FrameLengthNumeric.ValueChanged += new System.EventHandler(this.FrameLengthNumeric_ValueChanged);
 			// 
 			// TieBreak1BestRadio
@@ -282,8 +283,8 @@ namespace GeneticAlgorithmBot {
 			// 
 			// TieBreaker1Box
 			// 
-			this.TieBreaker1Box.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
+			this.TieBreaker1Box.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.TieBreaker1Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
 			this.TieBreaker1Box.Location = new System.Drawing.Point(133, 4);
 			this.TieBreaker1Box.Name = "TieBreaker1Box";
@@ -302,15 +303,15 @@ namespace GeneticAlgorithmBot {
 			this.MainValueNumeric.Enabled = false;
 			this.MainValueNumeric.Location = new System.Drawing.Point(357, 4);
 			this.MainValueNumeric.Maximum = new decimal(new int[] {
-			100000,
-			0,
-			0,
-			0});
+            100000,
+            0,
+            0,
+            0});
 			this.MainValueNumeric.Minimum = new decimal(new int[] {
-			100000,
-			0,
-			0,
-			-2147483648});
+            100000,
+            0,
+            0,
+            -2147483648});
 			this.MainValueNumeric.Name = "MainValueNumeric";
 			this.MainValueNumeric.Size = new System.Drawing.Size(61, 20);
 			this.MainValueNumeric.TabIndex = 1013;
@@ -342,12 +343,12 @@ namespace GeneticAlgorithmBot {
 			this.MainOperator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.MainOperator.FormattingEnabled = true;
 			this.MainOperator.Items.AddRange(new object[] {
-			">",
-			">=",
-			"=",
-			"<=",
-			"<",
-			"!="});
+            ">",
+            ">=",
+            "=",
+            "<=",
+            "<",
+            "!="});
 			this.MainOperator.Location = new System.Drawing.Point(208, 3);
 			this.MainOperator.Name = "MainOperator";
 			this.MainOperator.Size = new System.Drawing.Size(40, 21);
@@ -364,15 +365,15 @@ namespace GeneticAlgorithmBot {
 			this.TieBreak1Numeric.Enabled = false;
 			this.TieBreak1Numeric.Location = new System.Drawing.Point(357, 4);
 			this.TieBreak1Numeric.Maximum = new decimal(new int[] {
-			100000,
-			0,
-			0,
-			0});
+            100000,
+            0,
+            0,
+            0});
 			this.TieBreak1Numeric.Minimum = new decimal(new int[] {
-			100000,
-			0,
-			0,
-			-2147483648});
+            100000,
+            0,
+            0,
+            -2147483648});
 			this.TieBreak1Numeric.Name = "TieBreak1Numeric";
 			this.TieBreak1Numeric.Size = new System.Drawing.Size(61, 20);
 			this.TieBreak1Numeric.TabIndex = 1013;
@@ -392,12 +393,12 @@ namespace GeneticAlgorithmBot {
 			this.Tiebreak1Operator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Tiebreak1Operator.FormattingEnabled = true;
 			this.Tiebreak1Operator.Items.AddRange(new object[] {
-			">",
-			">=",
-			"=",
-			"<=",
-			"<",
-			"!="});
+            ">",
+            ">=",
+            "=",
+            "<=",
+            "<",
+            "!="});
 			this.Tiebreak1Operator.Location = new System.Drawing.Point(208, 3);
 			this.Tiebreak1Operator.Name = "Tiebreak1Operator";
 			this.Tiebreak1Operator.Size = new System.Drawing.Size(40, 21);
@@ -405,8 +406,8 @@ namespace GeneticAlgorithmBot {
 			// 
 			// MaximizeAddressBox
 			// 
-			this.MaximizeAddressBox.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
+			this.MaximizeAddressBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.MaximizeAddressBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
 			this.MaximizeAddressBox.Location = new System.Drawing.Point(133, 4);
 			this.MaximizeAddressBox.Name = "MaximizeAddressBox";
@@ -459,15 +460,15 @@ namespace GeneticAlgorithmBot {
 			this.TieBreak2Numeric.Enabled = false;
 			this.TieBreak2Numeric.Location = new System.Drawing.Point(357, 4);
 			this.TieBreak2Numeric.Maximum = new decimal(new int[] {
-			100000,
-			0,
-			0,
-			0});
+            100000,
+            0,
+            0,
+            0});
 			this.TieBreak2Numeric.Minimum = new decimal(new int[] {
-			100000,
-			0,
-			0,
-			-2147483648});
+            100000,
+            0,
+            0,
+            -2147483648});
 			this.TieBreak2Numeric.Name = "TieBreak2Numeric";
 			this.TieBreak2Numeric.Size = new System.Drawing.Size(61, 20);
 			this.TieBreak2Numeric.TabIndex = 1013;
@@ -477,12 +478,12 @@ namespace GeneticAlgorithmBot {
 			this.Tiebreak2Operator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Tiebreak2Operator.FormattingEnabled = true;
 			this.Tiebreak2Operator.Items.AddRange(new object[] {
-			">",
-			">=",
-			"=",
-			"<=",
-			"<",
-			"!="});
+            ">",
+            ">=",
+            "=",
+            "<=",
+            "<",
+            "!="});
 			this.Tiebreak2Operator.Location = new System.Drawing.Point(208, 3);
 			this.Tiebreak2Operator.Name = "Tiebreak2Operator";
 			this.Tiebreak2Operator.Size = new System.Drawing.Size(40, 21);
@@ -524,8 +525,8 @@ namespace GeneticAlgorithmBot {
 			// 
 			// TieBreaker2Box
 			// 
-			this.TieBreaker2Box.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
+			this.TieBreaker2Box.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.TieBreaker2Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
 			this.TieBreaker2Box.Location = new System.Drawing.Point(133, 4);
 			this.TieBreaker2Box.Name = "TieBreaker2Box";
@@ -574,20 +575,27 @@ namespace GeneticAlgorithmBot {
 			this.btnCopyBestInput.TabIndex = 2005;
 			this.btnCopyBestInput.Text = "&Copy";
 			this.BotToolTip.SetToolTip(this.btnCopyBestInput, "\"Copy to Clipboard.  Then possible to paste to text file or directly into TasStud" +
-		"io.");
+        "io.");
 			this.btnCopyBestInput.UseVisualStyleBackColor = true;
 			// 
-			// StatsContextMenu
+			// ControlGroupBox
 			// 
-			this.StatsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.ClearStatsContextMenuItem});
-			this.StatsContextMenu.Name = "StatsContextMenu";
-			this.StatsContextMenu.Size = new System.Drawing.Size(102, 26);
-			// 
-			// ClearStatsContextMenuItem
-			// 
-			this.ClearStatsContextMenuItem.Text = "&Clear";
-			this.ClearStatsContextMenuItem.Click += new System.EventHandler(this.ClearStatsContextMenuItem_Click);
+			this.ControlGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.ControlGroupBox.Controls.Add(this.InvisibleEmulationCheckBox);
+			this.ControlGroupBox.Controls.Add(this.panel2);
+			this.ControlGroupBox.Controls.Add(this.StopBtn);
+			this.ControlGroupBox.Controls.Add(this.RunBtn);
+			this.ControlGroupBox.Controls.Add(this.StartFromSlotBox);
+			this.ControlGroupBox.Controls.Add(this.label8);
+			this.ControlGroupBox.Location = new System.Drawing.Point(460, 27);
+			this.ControlGroupBox.Name = "ControlGroupBox";
+			this.ControlGroupBox.Size = new System.Drawing.Size(235, 150);
+			this.ControlGroupBox.TabIndex = 2010;
+			this.ControlGroupBox.TabStop = false;
+			this.ControlGroupBox.Text = "TAStudio Controls [?]";
+			this.BotToolTip.SetToolTip(this.ControlGroupBox, "This panel indicates which save state in the TAStudio to choose from, so the bot " +
+        "can repeatedly load that save state for training.");
 			// 
 			// InvisibleEmulationCheckBox
 			// 
@@ -613,6 +621,30 @@ namespace GeneticAlgorithmBot {
 			this.panel2.Size = new System.Drawing.Size(140, 55);
 			this.panel2.TabIndex = 2003;
 			// 
+			// StatsContextMenu
+			// 
+			this.StatsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ClearStatsContextMenuItem});
+			this.StatsContextMenu.Name = "StatsContextMenu";
+			this.StatsContextMenu.Size = new System.Drawing.Size(102, 26);
+			// 
+			// ClearStatsContextMenuItem
+			// 
+			this.ClearStatsContextMenuItem.Text = "&Clear";
+			this.ClearStatsContextMenuItem.Click += new System.EventHandler(this.ClearStatsContextMenuItem_Click);
+			// 
+			// locLabelEx1
+			// 
+			this.locLabelEx1.Location = new System.Drawing.Point(10, 34);
+			this.locLabelEx1.Name = "locLabelEx1";
+			this.locLabelEx1.Text = "Generations:";
+			// 
+			// locLabelEx2
+			// 
+			this.locLabelEx2.Location = new System.Drawing.Point(101, 34);
+			this.locLabelEx2.Name = "locLabelEx2";
+			this.locLabelEx2.Text = "0";
+			// 
 			// FramesLabel
 			// 
 			this.FramesLabel.Location = new System.Drawing.Point(101, 19);
@@ -624,25 +656,6 @@ namespace GeneticAlgorithmBot {
 			this.AttemptsLabel.Location = new System.Drawing.Point(101, 4);
 			this.AttemptsLabel.Name = "AttemptsLabel";
 			this.AttemptsLabel.Text = "0";
-			// 
-			// ControlGroupBox
-			// 
-			this.ControlGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
-			this.ControlGroupBox.Controls.Add(this.InvisibleEmulationCheckBox);
-			this.ControlGroupBox.Controls.Add(this.panel2);
-			this.ControlGroupBox.Controls.Add(this.StopBtn);
-			this.ControlGroupBox.Controls.Add(this.RunBtn);
-			this.ControlGroupBox.Controls.Add(this.StartFromSlotBox);
-			this.ControlGroupBox.Controls.Add(this.label8);
-			this.ControlGroupBox.Location = new System.Drawing.Point(460, 27);
-			this.ControlGroupBox.Name = "ControlGroupBox";
-			this.ControlGroupBox.Size = new System.Drawing.Size(235, 150);
-			this.ControlGroupBox.TabIndex = 2010;
-			this.ControlGroupBox.TabStop = false;
-			this.ControlGroupBox.Text = "TAStudio Controls [?]";
-			this.BotToolTip.SetToolTip(this.ControlGroupBox, "This panel indicates which save state in the TAStudio to choose from, so the bot " +
-		"can repeatedly load that save state for training.");
 			// 
 			// StopBtn
 			// 
@@ -670,16 +683,16 @@ namespace GeneticAlgorithmBot {
 			this.StartFromSlotBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.StartFromSlotBox.FormattingEnabled = true;
 			this.StartFromSlotBox.Items.AddRange(new object[] {
-			"Slot 1",
-			"Slot 2",
-			"Slot 3",
-			"Slot 4",
-			"Slot 5",
-			"Slot 6",
-			"Slot 7",
-			"Slot 8",
-			"Slot 9",
-			"Slot 0"});
+            "Slot 1",
+            "Slot 2",
+            "Slot 3",
+            "Slot 4",
+            "Slot 5",
+            "Slot 6",
+            "Slot 7",
+            "Slot 8",
+            "Slot 9",
+            "Slot 0"});
 			this.StartFromSlotBox.Location = new System.Drawing.Point(71, 25);
 			this.StartFromSlotBox.Name = "StartFromSlotBox";
 			this.StartFromSlotBox.Size = new System.Drawing.Size(75, 21);
@@ -691,297 +704,34 @@ namespace GeneticAlgorithmBot {
 			this.label8.Name = "label8";
 			this.label8.Text = "Start From:";
 			// 
-			// label12
-			// 
-			this.label12.Location = new System.Drawing.Point(67, 7);
-			this.label12.Name = "label12";
-			this.label12.Text = "Address 0x";
-			// 
-			// label7
-			// 
-			this.label7.Location = new System.Drawing.Point(1, 7);
-			this.label7.Name = "label7";
-			this.label7.Text = "Tiebreak 3:";
-			// 
-			// TieBreaker3Box
-			// 
-			this.TieBreaker3Box.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
-			this.TieBreaker3Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.TieBreaker3Box.Location = new System.Drawing.Point(133, 4);
-			this.TieBreaker3Box.Name = "TieBreaker3Box";
-			this.TieBreaker3Box.Nullable = true;
-			this.TieBreaker3Box.Size = new System.Drawing.Size(67, 20);
-			this.TieBreaker3Box.TabIndex = 1016;
-			// 
-			// TieBreak3Numeric
-			// 
-			this.TieBreak3Numeric.Enabled = false;
-			this.TieBreak3Numeric.Location = new System.Drawing.Point(357, 4);
-			this.TieBreak3Numeric.Maximum = new decimal(new int[] {
-			100000,
-			0,
-			0,
-			0});
-			this.TieBreak3Numeric.Minimum = new decimal(new int[] {
-			100000,
-			0,
-			0,
-			-2147483648});
-			this.TieBreak3Numeric.Name = "TieBreak3Numeric";
-			this.TieBreak3Numeric.Size = new System.Drawing.Size(61, 20);
-			this.TieBreak3Numeric.TabIndex = 1013;
-			// 
-			// TieBreak3ValueRadio
-			// 
-			this.TieBreak3ValueRadio.AutoSize = true;
-			this.TieBreak3ValueRadio.Location = new System.Drawing.Point(302, 6);
-			this.TieBreak3ValueRadio.Name = "TieBreak3ValueRadio";
-			this.TieBreak3ValueRadio.Size = new System.Drawing.Size(52, 17);
-			this.TieBreak3ValueRadio.TabIndex = 1012;
-			this.TieBreak3ValueRadio.Text = "Value";
-			this.TieBreak3ValueRadio.UseVisualStyleBackColor = true;
-			// 
-			// TieBreak3BestRadio
-			// 
-			this.TieBreak3BestRadio.AutoSize = true;
-			this.TieBreak3BestRadio.Checked = true;
-			this.TieBreak3BestRadio.Location = new System.Drawing.Point(256, 6);
-			this.TieBreak3BestRadio.Name = "TieBreak3BestRadio";
-			this.TieBreak3BestRadio.Size = new System.Drawing.Size(46, 17);
-			this.TieBreak3BestRadio.TabIndex = 1011;
-			this.TieBreak3BestRadio.TabStop = true;
-			this.TieBreak3BestRadio.Text = "Best";
-			this.TieBreak3BestRadio.UseVisualStyleBackColor = true;
-			// 
-			// panel6
-			// 
-			this.panel6.Controls.Add(this.label12);
-			this.panel6.Controls.Add(this.label7);
-			this.panel6.Controls.Add(this.TieBreaker3Box);
-			this.panel6.Controls.Add(this.TieBreak3Numeric);
-			this.panel6.Controls.Add(this.TieBreak3ValueRadio);
-			this.panel6.Controls.Add(this.TieBreak3BestRadio);
-			this.panel6.Controls.Add(this.Tiebreak3Operator);
-			this.panel6.Location = new System.Drawing.Point(9, 120);
-			this.panel6.Name = "panel6";
-			this.panel6.Size = new System.Drawing.Size(427, 26);
-			this.panel6.TabIndex = 3;
-			// 
-			// Tiebreak3Operator
-			// 
-			this.Tiebreak3Operator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.Tiebreak3Operator.FormattingEnabled = true;
-			this.Tiebreak3Operator.Items.AddRange(new object[] {
-			">",
-			">=",
-			"=",
-			"<=",
-			"<",
-			"!="});
-			this.Tiebreak3Operator.Location = new System.Drawing.Point(208, 3);
-			this.Tiebreak3Operator.Name = "Tiebreak3Operator";
-			this.Tiebreak3Operator.Size = new System.Drawing.Size(40, 21);
-			this.Tiebreak3Operator.TabIndex = 1017;
-			// 
-			// BotStatusStrip
-			// 
-			this.BotStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.BotStatusButton,
-			this.MessageLabel});
-			this.BotStatusStrip.Location = new System.Drawing.Point(0, 565);
-			this.BotStatusStrip.Name = "BotStatusStrip";
-			this.BotStatusStrip.Size = new System.Drawing.Size(707, 22);
-			this.BotStatusStrip.TabIndex = 2006;
-			this.BotStatusStrip.Text = "statusStrip1";
-			// 
-			// BotStatusButton
-			// 
-			this.BotStatusButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.BotStatusButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.BotStatusButton.Name = "BotStatusButton";
-			this.BotStatusButton.RightToLeftAutoMirrorImage = true;
-			this.BotStatusButton.Size = new System.Drawing.Size(0, 17);
-			this.BotStatusButton.Text = " ";
-			this.BotStatusButton.ToolTipText = " ";
-			// 
-			// MessageLabel
-			// 
-			this.MessageLabel.Name = "MessageLabel";
-			this.MessageLabel.Size = new System.Drawing.Size(37, 17);
-			this.MessageLabel.Text = "          ";
-			// 
-			// settingsToolStripMenuItem
-			// 
-			this.SettingsSubMenu.Text = "Settings";
-			// 
-			// helpToolStripMenuItem
-			// 
-			this.HelpSubMenu.Text = "Help";
-			// 
-			// TurboWhileBottingMenuItem
-			// 
-			this.TurboWhileBottingMenuItem.Text = "Turbo While Botting";
-			// 
-			// BigEndianMenuItem
-			// 
-			this.BigEndianMenuItem.Text = "Big Endian";
-			// 
-			// _4ByteMenuItem
-			// 
-			this._4ByteMenuItem.Text = "4 Bytes";
-			// 
-			// _2ByteMenuItem
-			// 
-			this._2ByteMenuItem.Text = "2 Bytes";
-			// 
-			// _1ByteMenuItem
-			// 
-			this._1ByteMenuItem.Text = "1 Byte";
-			// 
-			// DataSizeMenuItem
-			// 
-			this.DataSizeMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this._1ByteMenuItem,
-			this._2ByteMenuItem,
-			this._4ByteMenuItem});
-			this.DataSizeMenuItem.Text = "Data Size";
-			// 
-			// OptionsSubMenu
-			// 
-			this.OptionsSubMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.MemoryDomainsMenuItem,
-			this.DataSizeMenuItem,
-			this.BigEndianMenuItem,
-			this.toolStripSeparator4,
-			this.TurboWhileBottingMenuItem});
-			this.OptionsSubMenu.Text = "&Options";
-			// 
-			// MemoryDomainsMenuItem
-			// 
-			this.MemoryDomainsMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.toolStripSeparator3});
-			this.MemoryDomainsMenuItem.Text = "Memory Domains";
-			// 
-			// RecentSubMenu
-			// 
-			this.RecentSubMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.toolStripSeparator2});
-			this.RecentSubMenu.Text = "Recent";
-			// 
-			// SaveAsMenuItem
-			// 
-			this.SaveAsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys) (((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-			| System.Windows.Forms.Keys.S)));
-			this.SaveAsMenuItem.Text = "Save &As...";
-			// 
-			// SaveMenuItem
-			// 
-			this.SaveMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-			this.SaveMenuItem.Text = "&Save";
-			// 
-			// OpenMenuItem
-			// 
-			this.OpenMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-			this.OpenMenuItem.Text = "&Open...";
-			// 
-			// NewMenuItem
-			// 
-			this.NewMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-			this.NewMenuItem.Text = "&New";
-			// 
-			// FileSubMenu
-			// 
-			this.FileSubMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.NewMenuItem,
-			this.OpenMenuItem,
-			this.SaveMenuItem,
-			this.SaveAsMenuItem,
-			this.RecentSubMenu});
-			this.FileSubMenu.Text = "&File";
-			// 
-			// BotMenu
-			// 
-			this.BotMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.FileSubMenu,
-			this.OptionsSubMenu,
-			this.SettingsSubMenu,
-			this.HelpSubMenu});
-			this.BotMenu.TabIndex = 2005;
-			// 
-			// BestTieBreak3Box
-			// 
-			this.BestTieBreak3Box.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.BestTieBreak3Box.Location = new System.Drawing.Point(168, 77);
-			this.BestTieBreak3Box.Name = "BestTieBreak3Box";
-			this.BestTieBreak3Box.ReadOnly = true;
-			this.BestTieBreak3Box.Size = new System.Drawing.Size(58, 20);
-			this.BestTieBreak3Box.TabIndex = 20;
-			this.BestTieBreak3Box.TabStop = false;
-			// 
-			// BestTieBreak2Box
-			// 
-			this.BestTieBreak2Box.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.BestTieBreak2Box.Location = new System.Drawing.Point(168, 57);
-			this.BestTieBreak2Box.Name = "BestTieBreak2Box";
-			this.BestTieBreak2Box.ReadOnly = true;
-			this.BestTieBreak2Box.Size = new System.Drawing.Size(58, 20);
-			this.BestTieBreak2Box.TabIndex = 19;
-			this.BestTieBreak2Box.TabStop = false;
-			// 
-			// BestTieBreak1Box
-			// 
-			this.BestTieBreak1Box.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.BestTieBreak1Box.Location = new System.Drawing.Point(168, 37);
-			this.BestTieBreak1Box.Name = "BestTieBreak1Box";
-			this.BestTieBreak1Box.ReadOnly = true;
-			this.BestTieBreak1Box.Size = new System.Drawing.Size(58, 20);
-			this.BestTieBreak1Box.TabIndex = 18;
-			this.BestTieBreak1Box.TabStop = false;
-			// 
-			// BestMaximizeBox
-			// 
-			this.BestMaximizeBox.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.BestMaximizeBox.Location = new System.Drawing.Point(168, 17);
-			this.BestMaximizeBox.Name = "BestMaximizeBox";
-			this.BestMaximizeBox.ReadOnly = true;
-			this.BestMaximizeBox.Size = new System.Drawing.Size(58, 20);
-			this.BestMaximizeBox.TabIndex = 17;
-			this.BestMaximizeBox.TabStop = false;
-			// 
-			// label16
-			// 
-			this.label16.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label16.Location = new System.Drawing.Point(101, 80);
-			this.label16.Name = "label16";
-			this.label16.Text = "Tiebreak 3:";
-			// 
-			// label15
-			// 
-			this.label15.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label15.Location = new System.Drawing.Point(101, 60);
-			this.label15.Name = "label15";
-			this.label15.Text = "Tiebreak 2:";
-			// 
-			// label14
-			// 
-			this.label14.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label14.Location = new System.Drawing.Point(101, 40);
-			this.label14.Name = "label14";
-			this.label14.Text = "Tiebreak 1:";
-			// 
-			// label13
-			// 
-			this.label13.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label13.Location = new System.Drawing.Point(101, 20);
-			this.label13.Name = "label13";
-			this.label13.Text = "Main Value:";
-			// 
-			// BestAttemptLogLabel
-			// 
-			this.BestAttemptLogLabel.Location = new System.Drawing.Point(8, 8);
-			this.BestAttemptLogLabel.Name = "BestAttemptLogLabel";
-			this.BestAttemptLogLabel.Text = "     ";
+			// BestGroupBox
+			// 
+			this.BestGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.BestGroupBox.Controls.Add(this.btnCopyBestInput);
+			this.BestGroupBox.Controls.Add(this.PlayBestButton);
+			this.BestGroupBox.Controls.Add(this.ClearBestButton);
+			this.BestGroupBox.Controls.Add(this.BestAttemptNumberLabel);
+			this.BestGroupBox.Controls.Add(this.label17);
+			this.BestGroupBox.Controls.Add(this.panel1);
+			this.BestGroupBox.Controls.Add(this.BestTieBreak3Box);
+			this.BestGroupBox.Controls.Add(this.BestTieBreak2Box);
+			this.BestGroupBox.Controls.Add(this.BestTieBreak1Box);
+			this.BestGroupBox.Controls.Add(this.BestMaximizeBox);
+			this.BestGroupBox.Controls.Add(this.label16);
+			this.BestGroupBox.Controls.Add(this.label15);
+			this.BestGroupBox.Controls.Add(this.label14);
+			this.BestGroupBox.Controls.Add(this.label13);
+			this.BestGroupBox.Location = new System.Drawing.Point(461, 183);
+			this.BestGroupBox.Name = "BestGroupBox";
+			this.BestGroupBox.Size = new System.Drawing.Size(235, 369);
+			this.BestGroupBox.TabIndex = 2008;
+			this.BestGroupBox.TabStop = false;
+			this.BestGroupBox.Text = "Best Fitness Information [?]";
+			this.BotToolTip.SetToolTip(this.BestGroupBox, "This panel records the best fitness the bot has achieved during its training mode" +
+        "l. It will persist the input controls to achieve the best fitness, until a bette" +
+        "r attempt is given.");
 			// 
 			// PlayBestButton
 			// 
@@ -1019,62 +769,96 @@ namespace GeneticAlgorithmBot {
 			// 
 			// panel1
 			// 
-			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-			| System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
+			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.panel1.AutoScroll = true;
 			this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.panel1.Controls.Add(this.BestAttemptLogLabel);
-			this.panel1.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (0)));
+			this.panel1.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.panel1.Location = new System.Drawing.Point(12, 125);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(217, 238);
 			this.panel1.TabIndex = 21;
 			// 
-			// BestGroupBox
+			// BestAttemptLogLabel
 			// 
-			this.BestGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-			| System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
-			this.BestGroupBox.Controls.Add(this.btnCopyBestInput);
-			this.BestGroupBox.Controls.Add(this.PlayBestButton);
-			this.BestGroupBox.Controls.Add(this.ClearBestButton);
-			this.BestGroupBox.Controls.Add(this.BestAttemptNumberLabel);
-			this.BestGroupBox.Controls.Add(this.label17);
-			this.BestGroupBox.Controls.Add(this.panel1);
-			this.BestGroupBox.Controls.Add(this.BestTieBreak3Box);
-			this.BestGroupBox.Controls.Add(this.BestTieBreak2Box);
-			this.BestGroupBox.Controls.Add(this.BestTieBreak1Box);
-			this.BestGroupBox.Controls.Add(this.BestMaximizeBox);
-			this.BestGroupBox.Controls.Add(this.label16);
-			this.BestGroupBox.Controls.Add(this.label15);
-			this.BestGroupBox.Controls.Add(this.label14);
-			this.BestGroupBox.Controls.Add(this.label13);
-			this.BestGroupBox.Location = new System.Drawing.Point(461, 183);
-			this.BestGroupBox.Name = "BestGroupBox";
-			this.BestGroupBox.Size = new System.Drawing.Size(235, 369);
-			this.BestGroupBox.TabIndex = 2008;
-			this.BestGroupBox.TabStop = false;
-			this.BestGroupBox.Text = "Best Fitness Information [?]";
-			this.BotToolTip.SetToolTip(this.BestGroupBox, "This panel records the best fitness the bot has achieved during its training mode" +
-		"l. It will persist the input controls to achieve the best fitness, until a bette" +
-		"r attempt is given.");
+			this.BestAttemptLogLabel.Location = new System.Drawing.Point(8, 8);
+			this.BestAttemptLogLabel.Name = "BestAttemptLogLabel";
+			this.BestAttemptLogLabel.Text = "     ";
 			// 
-			// ControlProbabilityPanel
+			// BestTieBreak3Box
 			// 
-			this.ControlProbabilityPanel.Anchor = ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-			| System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
-			this.ControlProbabilityPanel.AutoScroll = true;
-			this.ControlProbabilityPanel.Location = new System.Drawing.Point(6, 19);
-			this.ControlProbabilityPanel.Name = "ControlProbabilityPanel";
-			this.ControlProbabilityPanel.Size = new System.Drawing.Size(430, 344);
-			this.ControlProbabilityPanel.TabIndex = 0;
+			this.BestTieBreak3Box.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.BestTieBreak3Box.Location = new System.Drawing.Point(168, 77);
+			this.BestTieBreak3Box.Name = "BestTieBreak3Box";
+			this.BestTieBreak3Box.ReadOnly = true;
+			this.BestTieBreak3Box.Size = new System.Drawing.Size(58, 20);
+			this.BestTieBreak3Box.TabIndex = 20;
+			this.BestTieBreak3Box.TabStop = false;
+			// 
+			// BestTieBreak2Box
+			// 
+			this.BestTieBreak2Box.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.BestTieBreak2Box.Location = new System.Drawing.Point(168, 57);
+			this.BestTieBreak2Box.Name = "BestTieBreak2Box";
+			this.BestTieBreak2Box.ReadOnly = true;
+			this.BestTieBreak2Box.Size = new System.Drawing.Size(58, 20);
+			this.BestTieBreak2Box.TabIndex = 19;
+			this.BestTieBreak2Box.TabStop = false;
+			// 
+			// BestTieBreak1Box
+			// 
+			this.BestTieBreak1Box.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.BestTieBreak1Box.Location = new System.Drawing.Point(168, 37);
+			this.BestTieBreak1Box.Name = "BestTieBreak1Box";
+			this.BestTieBreak1Box.ReadOnly = true;
+			this.BestTieBreak1Box.Size = new System.Drawing.Size(58, 20);
+			this.BestTieBreak1Box.TabIndex = 18;
+			this.BestTieBreak1Box.TabStop = false;
+			// 
+			// BestMaximizeBox
+			// 
+			this.BestMaximizeBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.BestMaximizeBox.Location = new System.Drawing.Point(168, 17);
+			this.BestMaximizeBox.Name = "BestMaximizeBox";
+			this.BestMaximizeBox.ReadOnly = true;
+			this.BestMaximizeBox.Size = new System.Drawing.Size(58, 20);
+			this.BestMaximizeBox.TabIndex = 17;
+			this.BestMaximizeBox.TabStop = false;
+			// 
+			// label16
+			// 
+			this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.label16.Location = new System.Drawing.Point(101, 80);
+			this.label16.Name = "label16";
+			this.label16.Text = "Tiebreak 3:";
+			// 
+			// label15
+			// 
+			this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.label15.Location = new System.Drawing.Point(101, 60);
+			this.label15.Name = "label15";
+			this.label15.Text = "Tiebreak 2:";
+			// 
+			// label14
+			// 
+			this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.label14.Location = new System.Drawing.Point(101, 40);
+			this.label14.Name = "label14";
+			this.label14.Text = "Tiebreak 1:";
+			// 
+			// label13
+			// 
+			this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.label13.Location = new System.Drawing.Point(101, 20);
+			this.label13.Name = "label13";
+			this.label13.Text = "Main Value:";
 			// 
 			// GoalGroupBox
 			// 
-			this.GoalGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
+			this.GoalGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.GoalGroupBox.Controls.Add(this.label4);
 			this.GoalGroupBox.Controls.Add(this.FrameLengthNumeric);
 			this.GoalGroupBox.Controls.Add(this.label3);
@@ -1089,13 +873,106 @@ namespace GeneticAlgorithmBot {
 			this.GoalGroupBox.TabStop = false;
 			this.GoalGroupBox.Text = "Memory Value Information [?]";
 			this.BotToolTip.SetToolTip(this.GoalGroupBox, "This panel indicates what RAM values in the memory you want to use for the bot to" +
-		" determine its fitness level as it undergoes training.");
+        " determine its fitness level as it undergoes training.");
+			// 
+			// panel6
+			// 
+			this.panel6.Controls.Add(this.label12);
+			this.panel6.Controls.Add(this.label7);
+			this.panel6.Controls.Add(this.TieBreaker3Box);
+			this.panel6.Controls.Add(this.TieBreak3Numeric);
+			this.panel6.Controls.Add(this.TieBreak3ValueRadio);
+			this.panel6.Controls.Add(this.TieBreak3BestRadio);
+			this.panel6.Controls.Add(this.Tiebreak3Operator);
+			this.panel6.Location = new System.Drawing.Point(9, 120);
+			this.panel6.Name = "panel6";
+			this.panel6.Size = new System.Drawing.Size(427, 26);
+			this.panel6.TabIndex = 3;
+			// 
+			// label12
+			// 
+			this.label12.Location = new System.Drawing.Point(67, 7);
+			this.label12.Name = "label12";
+			this.label12.Text = "Address 0x";
+			// 
+			// label7
+			// 
+			this.label7.Location = new System.Drawing.Point(1, 7);
+			this.label7.Name = "label7";
+			this.label7.Text = "Tiebreak 3:";
+			// 
+			// TieBreaker3Box
+			// 
+			this.TieBreaker3Box.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.TieBreaker3Box.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.TieBreaker3Box.Location = new System.Drawing.Point(133, 4);
+			this.TieBreaker3Box.Name = "TieBreaker3Box";
+			this.TieBreaker3Box.Nullable = true;
+			this.TieBreaker3Box.Size = new System.Drawing.Size(67, 20);
+			this.TieBreaker3Box.TabIndex = 1016;
+			// 
+			// TieBreak3Numeric
+			// 
+			this.TieBreak3Numeric.Enabled = false;
+			this.TieBreak3Numeric.Location = new System.Drawing.Point(357, 4);
+			this.TieBreak3Numeric.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+			this.TieBreak3Numeric.Minimum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            -2147483648});
+			this.TieBreak3Numeric.Name = "TieBreak3Numeric";
+			this.TieBreak3Numeric.Size = new System.Drawing.Size(61, 20);
+			this.TieBreak3Numeric.TabIndex = 1013;
+			// 
+			// TieBreak3ValueRadio
+			// 
+			this.TieBreak3ValueRadio.AutoSize = true;
+			this.TieBreak3ValueRadio.Location = new System.Drawing.Point(302, 6);
+			this.TieBreak3ValueRadio.Name = "TieBreak3ValueRadio";
+			this.TieBreak3ValueRadio.Size = new System.Drawing.Size(52, 17);
+			this.TieBreak3ValueRadio.TabIndex = 1012;
+			this.TieBreak3ValueRadio.Text = "Value";
+			this.TieBreak3ValueRadio.UseVisualStyleBackColor = true;
+			// 
+			// TieBreak3BestRadio
+			// 
+			this.TieBreak3BestRadio.AutoSize = true;
+			this.TieBreak3BestRadio.Checked = true;
+			this.TieBreak3BestRadio.Location = new System.Drawing.Point(256, 6);
+			this.TieBreak3BestRadio.Name = "TieBreak3BestRadio";
+			this.TieBreak3BestRadio.Size = new System.Drawing.Size(46, 17);
+			this.TieBreak3BestRadio.TabIndex = 1011;
+			this.TieBreak3BestRadio.TabStop = true;
+			this.TieBreak3BestRadio.Text = "Best";
+			this.TieBreak3BestRadio.UseVisualStyleBackColor = true;
+			// 
+			// Tiebreak3Operator
+			// 
+			this.Tiebreak3Operator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.Tiebreak3Operator.FormattingEnabled = true;
+			this.Tiebreak3Operator.Items.AddRange(new object[] {
+            ">",
+            ">=",
+            "=",
+            "<=",
+            "<",
+            "!="});
+			this.Tiebreak3Operator.Location = new System.Drawing.Point(208, 3);
+			this.Tiebreak3Operator.Name = "Tiebreak3Operator";
+			this.Tiebreak3Operator.Size = new System.Drawing.Size(40, 21);
+			this.Tiebreak3Operator.TabIndex = 1017;
 			// 
 			// ControlsBox
 			// 
-			this.ControlsBox.Anchor = ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-			| System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
+			this.ControlsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.ControlsBox.Controls.Add(this.ControlProbabilityPanel);
 			this.ControlsBox.Location = new System.Drawing.Point(12, 183);
 			this.ControlsBox.Name = "ControlsBox";
@@ -1104,19 +981,143 @@ namespace GeneticAlgorithmBot {
 			this.ControlsBox.TabStop = false;
 			this.ControlsBox.Text = "Input Probability Controls [?]";
 			this.BotToolTip.SetToolTip(this.ControlsBox, "This panel here indicates the likelihood the specified controls are chosen when t" +
-		"he bot mutates its training model.");
+        "he bot mutates its training model.");
 			// 
-			// locLabelEx1
+			// ControlProbabilityPanel
 			// 
-			this.locLabelEx1.Location = new System.Drawing.Point(10, 34);
-			this.locLabelEx1.Name = "locLabelEx1";
-			this.locLabelEx1.Text = "Generations:";
+			this.ControlProbabilityPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.ControlProbabilityPanel.AutoScroll = true;
+			this.ControlProbabilityPanel.Location = new System.Drawing.Point(6, 19);
+			this.ControlProbabilityPanel.Name = "ControlProbabilityPanel";
+			this.ControlProbabilityPanel.Size = new System.Drawing.Size(430, 344);
+			this.ControlProbabilityPanel.TabIndex = 0;
 			// 
-			// locLabelEx2
+			// BotStatusStrip
 			// 
-			this.locLabelEx2.Location = new System.Drawing.Point(101, 34);
-			this.locLabelEx2.Name = "locLabelEx2";
-			this.locLabelEx2.Text = "0";
+			this.BotStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.BotStatusButton,
+            this.MessageLabel});
+			this.BotStatusStrip.Location = new System.Drawing.Point(0, 565);
+			this.BotStatusStrip.Name = "BotStatusStrip";
+			this.BotStatusStrip.Size = new System.Drawing.Size(707, 22);
+			this.BotStatusStrip.TabIndex = 2006;
+			this.BotStatusStrip.Text = "statusStrip1";
+			// 
+			// BotStatusButton
+			// 
+			this.BotStatusButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.BotStatusButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.BotStatusButton.Name = "BotStatusButton";
+			this.BotStatusButton.RightToLeftAutoMirrorImage = true;
+			this.BotStatusButton.Size = new System.Drawing.Size(0, 17);
+			this.BotStatusButton.Text = " ";
+			this.BotStatusButton.ToolTipText = " ";
+			// 
+			// MessageLabel
+			// 
+			this.MessageLabel.Name = "MessageLabel";
+			this.MessageLabel.Size = new System.Drawing.Size(37, 17);
+			this.MessageLabel.Text = "          ";
+			// 
+			// SettingsSubMenu
+			// 
+			this.SettingsSubMenu.Text = "Settings";
+			// 
+			// HelpSubMenu
+			// 
+			this.HelpSubMenu.Text = "Help";
+			// 
+			// TurboWhileBottingMenuItem
+			// 
+			this.TurboWhileBottingMenuItem.Text = "Turbo While Botting";
+			// 
+			// BigEndianMenuItem
+			// 
+			this.BigEndianMenuItem.Text = "Big Endian";
+			// 
+			// _4ByteMenuItem
+			// 
+			this._4ByteMenuItem.Text = "4 Bytes";
+			// 
+			// _2ByteMenuItem
+			// 
+			this._2ByteMenuItem.Text = "2 Bytes";
+			// 
+			// _1ByteMenuItem
+			// 
+			this._1ByteMenuItem.Text = "1 Byte";
+			// 
+			// DataSizeMenuItem
+			// 
+			this.DataSizeMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._1ByteMenuItem,
+            this._2ByteMenuItem,
+            this._4ByteMenuItem});
+			this.DataSizeMenuItem.Text = "Data Size";
+			// 
+			// OptionsSubMenu
+			// 
+			this.OptionsSubMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MemoryDomainsMenuItem,
+            this.DataSizeMenuItem,
+            this.BigEndianMenuItem,
+            this.toolStripSeparator4,
+            this.TurboWhileBottingMenuItem});
+			this.OptionsSubMenu.Text = "&Options";
+			// 
+			// MemoryDomainsMenuItem
+			// 
+			this.MemoryDomainsMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripSeparator3});
+			this.MemoryDomainsMenuItem.Text = "Memory Domains";
+			// 
+			// RecentSubMenu
+			// 
+			this.RecentSubMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripSeparator2});
+			this.RecentSubMenu.Text = "Recent";
+			// 
+			// SaveAsMenuItem
+			// 
+			this.SaveAsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
+			this.SaveAsMenuItem.Text = "Save &As...";
+			// 
+			// SaveMenuItem
+			// 
+			this.SaveMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+			this.SaveMenuItem.Text = "&Save";
+			// 
+			// OpenMenuItem
+			// 
+			this.OpenMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+			this.OpenMenuItem.Text = "&Open...";
+			// 
+			// NewMenuItem
+			// 
+			this.NewMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+			this.NewMenuItem.Text = "&New";
+			// 
+			// FileSubMenu
+			// 
+			this.FileSubMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.NewMenuItem,
+            this.OpenMenuItem,
+            this.SaveMenuItem,
+            this.SaveAsMenuItem,
+            this.RecentSubMenu});
+			this.FileSubMenu.Text = "&File";
+			// 
+			// BotMenu
+			// 
+			this.BotMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.FileSubMenu,
+            this.OptionsSubMenu,
+            this.SettingsSubMenu,
+            this.HelpSubMenu});
+			this.BotMenu.TabIndex = 2005;
 			// 
 			// GeneticAlgorithmBot
 			// 
@@ -1127,37 +1128,38 @@ namespace GeneticAlgorithmBot {
 			this.Controls.Add(this.BestGroupBox);
 			this.Controls.Add(this.GoalGroupBox);
 			this.Controls.Add(this.ControlsBox);
-			this.Load += new System.EventHandler(this.OnBotLoad);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "GeneticAlgorithmBot";
-			((System.ComponentModel.ISupportInitialize) (this.FrameLengthNumeric)).EndInit();
-			((System.ComponentModel.ISupportInitialize) (this.MainValueNumeric)).EndInit();
-			((System.ComponentModel.ISupportInitialize) (this.TieBreak1Numeric)).EndInit();
+			this.Load += new System.EventHandler(this.OnBotLoad);
+			((System.ComponentModel.ISupportInitialize)(this.FrameLengthNumeric)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.MainValueNumeric)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.TieBreak1Numeric)).EndInit();
 			this.panel3.ResumeLayout(false);
 			this.panel3.PerformLayout();
 			this.panel5.ResumeLayout(false);
 			this.panel5.PerformLayout();
-			((System.ComponentModel.ISupportInitialize) (this.TieBreak2Numeric)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.TieBreak2Numeric)).EndInit();
 			this.panel4.ResumeLayout(false);
 			this.panel4.PerformLayout();
-			this.StatsContextMenu.ResumeLayout(false);
-			this.panel2.ResumeLayout(false);
-			this.panel2.PerformLayout();
 			this.ControlGroupBox.ResumeLayout(false);
 			this.ControlGroupBox.PerformLayout();
-			((System.ComponentModel.ISupportInitialize) (this.TieBreak3Numeric)).EndInit();
+			this.panel2.ResumeLayout(false);
+			this.panel2.PerformLayout();
+			this.StatsContextMenu.ResumeLayout(false);
+			this.BestGroupBox.ResumeLayout(false);
+			this.BestGroupBox.PerformLayout();
+			this.panel1.ResumeLayout(false);
+			this.panel1.PerformLayout();
+			this.GoalGroupBox.ResumeLayout(false);
+			this.GoalGroupBox.PerformLayout();
 			this.panel6.ResumeLayout(false);
 			this.panel6.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.TieBreak3Numeric)).EndInit();
+			this.ControlsBox.ResumeLayout(false);
 			this.BotStatusStrip.ResumeLayout(false);
 			this.BotStatusStrip.PerformLayout();
 			this.BotMenu.ResumeLayout(false);
 			this.BotMenu.PerformLayout();
-			this.panel1.ResumeLayout(false);
-			this.panel1.PerformLayout();
-			this.BestGroupBox.ResumeLayout(false);
-			this.BestGroupBox.PerformLayout();
-			this.GoalGroupBox.ResumeLayout(false);
-			this.GoalGroupBox.PerformLayout();
-			this.ControlsBox.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

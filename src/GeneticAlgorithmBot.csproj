@@ -27,29 +27,21 @@
 			<SubType>Form</SubType>
 		</Compile>
 		<Compile Update="GeneticAlgorithmBot.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
 			<DependentUpon>GeneticAlgorithmBot.cs</DependentUpon>
 		</Compile>
 		<EmbeddedResource Update="GeneticAlgorithmBot.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>GeneticAlgorithmBot.Designer.cs</LastGenOutput>
-			<DependentUpon>GeneticAlgorithmBot.Designer.cs</DependentUpon>
+			<DependentUpon>GeneticAlgorithmBot.cs</DependentUpon>
 		</EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Update="BotControlsRow.cs">
-			<SubType>Form</SubType>
+			<SubType>UserControl</SubType>
 		</Compile>
 		<Compile Update="BotControlsRow.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
 			<DependentUpon>BotControlsRow.cs</DependentUpon>
 		</Compile>
 		<EmbeddedResource Update="BotControlsRow.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>BotControlsRow.Designer.cs</LastGenOutput>
-			<DependentUpon>BotControlsRow.Designer.cs</DependentUpon>
+			<DependentUpon>BotControlsRow.cs</DependentUpon>
 		</EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>
