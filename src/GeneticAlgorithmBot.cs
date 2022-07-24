@@ -4,6 +4,7 @@ using BizHawk.Client.EmuHawk.ToolExtensions;
 using BizHawk.Common;
 using BizHawk.Emulation.Common;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -49,8 +50,6 @@ namespace GeneticAlgorithmBot {
 
 		private bool _doNotUpdateValues;
 
-		private Dictionary<string, double> _cachedControlProbabilities;
-
 		private ILogEntryGenerator _logGenerator;
 
 		private readonly int POPULATION_SIZE = 4;
@@ -59,17 +58,18 @@ namespace GeneticAlgorithmBot {
 
 		public int _targetFrame;
 
-		public readonly BotAttempt _beginning;
-
-		public PopulationManager populationManager;
+		public GeneticAlgorithm populationManager;
 		#endregion
 
 		#region Variable Getters and Setters
-		private long Runs { get; set; }
-
-		private long Frames { get; set; }
-
-		private long Generations { get; set; }
+		private long Generations {
+			get {
+				return this.populationManager.Generation;
+			}
+			set {
+				this.populationManager.Generation = value;
+			}
+		}
 
 		private IMovie CurrentMovie => MovieSession.Movie;
 
@@ -88,6 +88,10 @@ namespace GeneticAlgorithmBot {
 		protected override string WindowTitle => _windowTitle;
 
 		protected override string WindowTitleStatic => _windowTitle;
+
+		public long Runs { get; set; }
+
+		public long Frames { get; set; }
 
 		[RequiredService]
 		public IEmulator Emulator { get; set; }
@@ -218,7 +222,7 @@ namespace GeneticAlgorithmBot {
 				this.Margin = new(0, 0, 0, 8);
 			}
 			this.Settings = new GeneticAlgorithmBotSettings();
-			this.populationManager = new PopulationManager(this, POPULATION_SIZE);
+			this.populationManager = new GeneticAlgorithm(this, POPULATION_SIZE);
 		}
 		public static T GetResourceIcons<T>(string iconName) {
 			FieldInfo fi = Resources.GetField(iconName, BindingFlags.NonPublic | BindingFlags.Static);
@@ -255,7 +259,6 @@ namespace GeneticAlgorithmBot {
 		public void ClearStatsContextMenuItem_Click(object sender, EventArgs e) {
 			Runs = 0;
 			Frames = 0;
-			Generations = 0;
 		}
 
 		public void FinishReplay() {
@@ -289,7 +292,7 @@ namespace GeneticAlgorithmBot {
 		public void StartBot() {
 			var message = CanStart();
 			if (!string.IsNullOrWhiteSpace(message)) {
-				DialogController.ShowMessageBox(message);
+				DialogController.ShowMessageBox(message!);
 				return;
 			}
 
@@ -299,6 +302,7 @@ namespace GeneticAlgorithmBot {
 			RunBtn.Visible = false;
 			StopBtn.Visible = true;
 			GoalGroupBox.Enabled = false;
+			this.populationManager.SetOrigin();
 			this.populationManager.GetCurrent().Reset(Runs);
 
 			if (MovieSession.Movie.IsRecording()) {
@@ -307,7 +311,6 @@ namespace GeneticAlgorithmBot {
 			}
 
 			_logGenerator = MovieSession.Movie.LogGeneratorInstance(InputManager.ClickyVirtualPadController);
-			_cachedControlProbabilities = ControlProbabilities;
 
 			_doNotUpdateValues = true;
 			PressButtons(true);
@@ -318,8 +321,8 @@ namespace GeneticAlgorithmBot {
 
 			_targetFrame = Emulator.Frame + (int) FrameLengthNumeric.Value;
 
-			_previousDisplayMessage = Config.DisplayMessages;
-			Config.DisplayMessages = false;
+			_previousDisplayMessage = Config!.DisplayMessages;
+			Config!.DisplayMessages = false;
 
 			MainForm.UnpauseEmulator();
 			if (Settings.TurboWhenBotting) {
@@ -389,15 +392,16 @@ namespace GeneticAlgorithmBot {
 			if (!this.populationManager.GetBest().GetAttempt().isReset) {
 				ClearBestButton.Enabled = true;
 				btnCopyBestInput.Enabled = true;
-				BestAttemptNumberLabel.Text = this.populationManager.GetBest().GetAttempt().Attempt.ToString();
-				BestMaximizeBox.Text = this.populationManager.GetBest().GetAttempt().Maximize.ToString();
-				BestTieBreak1Box.Text = this.populationManager.GetBest().GetAttempt().TieBreak1.ToString();
-				BestTieBreak2Box.Text = this.populationManager.GetBest().GetAttempt().TieBreak2.ToString();
-				BestTieBreak3Box.Text = this.populationManager.GetBest().GetAttempt().TieBreak3.ToString();
+				BotAttempt best = this.populationManager.GetBest().GetAttempt();
+				BestAttemptNumberLabel.Text = best.Attempt.ToString();
+				BestMaximizeBox.Text = best.Maximize.ToString();
+				BestTieBreak1Box.Text = best.TieBreak1.ToString();
+				BestTieBreak2Box.Text = best.TieBreak2.ToString();
+				BestTieBreak3Box.Text = best.TieBreak3.ToString();
 
-				Console.WriteLine($"Logging attempt:  Log size: {this.populationManager.GetBest().GetAttempt().Log.Count}");
+				Console.WriteLine($"Logging attempt:  Log size: {best.Log.Count}");
 				var sb = new StringBuilder();
-				foreach (var logEntry in this.populationManager.GetBest().GetAttempt().Log) {
+				foreach (var logEntry in best.Log) {
 					sb.AppendLine(logEntry);
 				}
 				BestAttemptLogLabel.Text = sb.ToString();
@@ -435,11 +439,12 @@ namespace GeneticAlgorithmBot {
 				return;
 			}
 
+			BotAttempt best = this.populationManager.GetBest().GetAttempt();
 			if (_replayMode) {
 				int index = Emulator.Frame - _startFrame;
 
-				if (index < this.populationManager.GetBest().GetAttempt().Log.Count) {
-					var logEntry = this.populationManager.GetBest().GetAttempt().Log[index];
+				if (index < best.Log.Count) {
+					var logEntry = best.Log[index];
 					var controller = MovieSession.GenerateMovieController();
 					controller.SetFromMnemonic(logEntry);
 					foreach (var button in controller.Definition.BoolButtons) {
@@ -460,19 +465,17 @@ namespace GeneticAlgorithmBot {
 					Runs++;
 					Frames += FrameLength;
 
-					BotAttempt currentAttempt = this.populationManager.GetCurrent().GetAttempt();
-					currentAttempt.Maximize = MaximizeValue;
-					currentAttempt.TieBreak1 = TieBreaker1Value;
-					currentAttempt.TieBreak2 = TieBreaker2Value;
-					currentAttempt.TieBreak3 = TieBreaker3Value;
+					this.populationManager.GetCurrent().SetResult();
 					PlayBestButton.Enabled = true;
 
-					if (this.populationManager.GetBest().GetAttempt().isReset || this.populationManager.IsCurrentAttemptBetter()) {
+					if (best.isReset || this.populationManager.IsCurrentAttemptBetter()) {
 						this.populationManager.CopyCurrentToBest();
 						UpdateBestAttempt();
 					}
 
-					this.populationManager.ResetCurrent(Runs);
+					if (this.populationManager.NextRecording()) {
+						this.populationManager.Reproduce();
+					}
 					_doNotUpdateValues = true;
 					PressButtons(true);
 					MainForm.LoadQuickSave(SelectedSlot, true);
@@ -733,17 +736,6 @@ namespace GeneticAlgorithmBot {
 		public static Random RNG { get; } = new Random((int) DateTime.Now.Ticks);
 
 		public static bool IsBetter(GeneticAlgorithmBot bot, BotAttempt comparison, BotAttempt current) {
-			static bool TestValue(byte operation, int currentValue, int bestValue)
-				=> operation switch {
-					0 => (currentValue > bestValue),
-					1 => (currentValue >= bestValue),
-					2 => (currentValue == bestValue),
-					3 => (currentValue <= bestValue),
-					4 => (currentValue < bestValue),
-					5 => (currentValue != bestValue),
-					_ => false
-				};
-
 			if (!TestValue(bot.MainComparisonType, current.Maximize, comparison.Maximize)) return false;
 			if (current.Maximize != comparison.Maximize) return true;
 
@@ -757,20 +749,53 @@ namespace GeneticAlgorithmBot {
 			/*if (current.TieBreak3 != comparison.TieBreak3)*/
 			return true;
 		}
+
+		public static bool TestValue(byte operation, int currentValue, int bestValue)
+				=> operation switch {
+					0 => (currentValue > bestValue),
+					1 => (currentValue >= bestValue),
+					2 => (currentValue == bestValue),
+					3 => (currentValue <= bestValue),
+					4 => (currentValue < bestValue),
+					5 => (currentValue != bestValue),
+					_ => false
+				};
+
+		public static void DeepCopyAttempt(BotAttempt source, ref BotAttempt target) {
+			target = new BotAttempt();
+			target.Attempt = source.Attempt;
+			target.Fitness = source.Fitness;
+			target.Generation = source.Generation;
+			target.Maximize = source.Maximize;
+			target.TieBreak1 = source.TieBreak1;
+			target.TieBreak2 = source.TieBreak2;
+			target.TieBreak3 = source.TieBreak3;
+			target.ComparisonTypeMain = source.ComparisonTypeMain;
+			target.ComparisonTypeTie1 = source.ComparisonTypeTie1;
+			target.ComparisonTypeTie2 = source.ComparisonTypeTie2;
+			target.ComparisonTypeTie3 = source.ComparisonTypeTie3;
+			target.isReset = source.isReset;
+
+			target.Log.Clear();
+			target.Log.AddRange(source.Log);
+		}
 	}
 
-	public class PopulationManager {
+	public class GeneticAlgorithm : IComparer {
+		private BotAttempt _beginning;
 		private InputRecording _bestRecording;
 		public InputRecording[] population;
 		public int currentIndex = 0;
 		public long Generation { get; set; }
 		private GeneticAlgorithmBot bot;
 
-		public PopulationManager(GeneticAlgorithmBot owner, int populationSize) {
-			this._bestRecording = new InputRecording(owner);
+		public GeneticAlgorithm(GeneticAlgorithmBot owner, int populationSize) {
+			this.bot = owner;
+			this._beginning = new BotAttempt();
+			this._bestRecording = new InputRecording(owner, this);
 			this.population = new InputRecording[populationSize];
 			for (int i = 0; i < populationSize; i++) {
-				this.population[i] = new InputRecording(owner);
+				this.population[i] = new InputRecording(owner, this);
 			}
 		}
 
@@ -780,6 +805,7 @@ namespace GeneticAlgorithmBot {
 
 		public void ClearBestRecordingLog() {
 			this._bestRecording.GetAttempt().Log.Clear();
+			this.Initialize();
 		}
 
 		public void SetBestRecordingLog(string log) {
@@ -818,15 +844,68 @@ namespace GeneticAlgorithmBot {
 			best.isReset = false;
 		}
 
-		public void ResetCurrent(long attemptNumber) {
-			BotAttempt current = this.population[this.currentIndex].GetAttempt();
-			current.Attempt = attemptNumber;
-			current.Maximize = 0;
-			current.TieBreak1 = 0;
-			current.TieBreak2 = 0;
-			current.TieBreak3 = 0;
-			current.Log.Clear();
-			current.isReset = true;
+		public void SetOrigin() {
+			this._beginning.Fitness = 0;
+			this._beginning.Attempt = 0;
+			this._beginning.Generation = 0;
+			this._beginning.ComparisonTypeMain = this.bot.MainComparisonType;
+			this._beginning.ComparisonTypeTie1 = this.bot.Tie1ComparisonType;
+			this._beginning.ComparisonTypeTie2 = this.bot.Tie2ComparisonType;
+			this._beginning.ComparisonTypeTie3 = this.bot.Tie3ComparisonType;
+			this._beginning.Maximize = this.bot.MaximizeValue;
+			this._beginning.TieBreak1 = this.bot.TieBreaker1Value;
+			this._beginning.TieBreak2 = this.bot.TieBreaker2Value;
+			this._beginning.TieBreak3 = this.bot.TieBreaker3Value;
+			this._beginning.isReset = false;
+		}
+
+		/*
+		 Proper Genetic Algorithm.
+		 */
+
+		public void Initialize() {
+			this.currentIndex = 0;
+			for (int i = 0; i < this.population.Length; i++) {
+				InputRecording rec = this.population[i];
+				rec.Reset(0);
+				rec.RandomizeInputRecording();
+			}
+		}
+
+		public void Reproduce() {
+			for (int i = 0; i< this.population.Length; i++) {
+				InputRecording rec = new InputRecording(this.bot, this);
+
+				// Uniform distribution crossover.
+				for (int f = 0; f < rec.FrameLength; f++) {
+					rec.SetFrameInput(f, (Utils.RNG.Next(2) == 0 ? this._bestRecording.GetFrameInput(f) : this.population[i].GetFrameInput(f)));
+				}
+
+				//Uniform distribution mutation.
+				rec.RandomizeFrameInput();
+
+				this.population[i] = rec;
+			}
+		}
+
+		// Comparer
+		/// <summary>
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <returns>
+		/// Less than zero (This instance precedes other in the sort order.)<br/>
+		/// Zero (This instance occurs in the same position in the sort order as other.)<br/>
+		/// Greater than zero (This instance follows other in the sort order.)
+		/// </returns>
+		public int Compare(object x, object y) {
+			if (x == null || y == null)
+				return 1;
+			BotAttempt xAttempt = ((InputRecording) x).GetAttempt();
+			BotAttempt yAttempt = ((InputRecording) y).GetAttempt();
+			if (Utils.IsBetter(this.bot, xAttempt, yAttempt))
+				return -1;
+			return 1;
+			// No zero. It can never be zero.
 		}
 	}
 
@@ -836,12 +915,14 @@ namespace GeneticAlgorithmBot {
 		public FrameInput[] recording;
 		public double fitness { get; set; }
 		public int StartFrameNumber { get; set; }
+		public int FrameLength { get; set; }
 		private GeneticAlgorithmBot bot;
+		private GeneticAlgorithm manager;
 
-		public BotAttempt SourceAttempt => bot._beginning;
-
-		public InputRecording(GeneticAlgorithmBot owner) {
+		public InputRecording(GeneticAlgorithmBot owner, GeneticAlgorithm parent) {
 			this.bot = owner;
+			this.manager = parent;
+			this.FrameLength = owner.FrameLength;
 			this.recording = new FrameInput[owner.FrameLength];
 			for (int i = 0; i < owner.FrameLength; i++) {
 				this.recording[i] = new FrameInput(i);
@@ -909,11 +990,16 @@ namespace GeneticAlgorithmBot {
 			}
 		}
 
-		public double Evaluate() {
-			if (result == null) {
-				this.fitness = 0.0;
-			}
-			return fitness;
+		public void SetResult() {
+			this.result.Attempt = this.bot.Runs;
+			this.result.Maximize = this.bot.MaximizeValue;
+			this.result.TieBreak1 = this.bot.TieBreaker1Value;
+			this.result.TieBreak2 = this.bot.TieBreaker2Value;
+			this.result.TieBreak3 = this.bot.TieBreaker3Value;
+			this.result.ComparisonTypeMain = this.bot.MainComparisonType;
+			this.result.ComparisonTypeTie1 = this.bot.Tie1ComparisonType;
+			this.result.ComparisonTypeTie2 = this.bot.Tie2ComparisonType;
+			this.result.ComparisonTypeTie3 = this.bot.Tie3ComparisonType;
 		}
 
 		public void Reset(long attemptNumber) {
