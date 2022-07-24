@@ -260,6 +260,7 @@ namespace GeneticAlgorithmBot {
 			0,
 			0,
 			0});
+			this.FrameLengthNumeric.ValueChanged += new System.EventHandler(this.FrameLengthNumeric_ValueChanged);
 			// 
 			// TieBreak1BestRadio
 			// 
@@ -586,6 +587,7 @@ namespace GeneticAlgorithmBot {
 			// ClearStatsContextMenuItem
 			// 
 			this.ClearStatsContextMenuItem.Text = "&Clear";
+			this.ClearStatsContextMenuItem.Click += new System.EventHandler(this.ClearStatsContextMenuItem_Click);
 			// 
 			// InvisibleEmulationCheckBox
 			// 

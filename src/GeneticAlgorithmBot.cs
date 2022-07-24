@@ -18,6 +18,10 @@ using System.Windows.Forms;
 namespace GeneticAlgorithmBot {
 	[ExternalTool("Genetic Algorithm Bot")]
 	public sealed partial class GeneticAlgorithmBot : ToolFormBase, IExternalToolForm, IToolFormAutoConfig {
+		#region Static Variables
+		public static Type Resources => typeof(ToolFormBase).Assembly.GetType("BizHawk.Client.EmuHawk.Properties.Resources");
+		#endregion
+
 		#region Variables
 		private string _windowTitle = "Genetic Algorithm Bot";
 
@@ -201,14 +205,9 @@ namespace GeneticAlgorithmBot {
 				char num = StartFromSlotBox.SelectedItem
 					.ToString()
 					.Last();
-
 				return $"QuickSave{num}";
 			}
 		}
-		#endregion
-
-		#region Static Variables
-		public static Type Resources => typeof(ToolFormBase).Assembly.GetType("BizHawk.Client.EmuHawk.Properties.Resources");
 		#endregion
 
 		#region Class Methods
@@ -249,8 +248,14 @@ namespace GeneticAlgorithmBot {
 			_previousDisplayMessage = Config.DisplayMessages;
 		}
 
-		public void UpdateValues(ToolFormUpdateType type) {
-			throw new NotImplementedException();
+		public void FrameLengthNumeric_ValueChanged(object sender, EventArgs e) {
+			AssessRunButtonStatus();
+		}
+
+		public void ClearStatsContextMenuItem_Click(object sender, EventArgs e) {
+			Runs = 0;
+			Frames = 0;
+			Generations = 0;
 		}
 
 		public void FinishReplay() {
@@ -366,24 +371,6 @@ namespace GeneticAlgorithmBot {
 			return null;
 		}
 
-		/*
-		public bool AskSaveChanges() {
-			throw new NotImplementedException();
-		}
-
-		public bool Focus() {
-			throw new NotImplementedException();
-		}
-
-		public void Show() {
-			throw new NotImplementedException();
-		}
-
-		public void Close() {
-			throw new NotImplementedException();
-		}
-		*/
-
 		public void PressButtons(bool clear_log) {
 			if (this.populationManager.GetBest() != null) {
 				FrameInput inputs = this.populationManager.GetBest().GetFrameInput(Emulator.Frame);
@@ -437,6 +424,76 @@ namespace GeneticAlgorithmBot {
 				target[i] = (float) ControlProbabilities[button] / 100.0f;
 			}
 			return target;
+		}
+
+		public void Update(bool fast) {
+			if (_doNotUpdateValues) {
+				return;
+			}
+
+			if (!HasFrameAdvanced()) {
+				return;
+			}
+
+			if (_replayMode) {
+				int index = Emulator.Frame - _startFrame;
+
+				if (index < this.populationManager.GetBest().GetAttempt().Log.Count) {
+					var logEntry = this.populationManager.GetBest().GetAttempt().Log[index];
+					var controller = MovieSession.GenerateMovieController();
+					controller.SetFromMnemonic(logEntry);
+					foreach (var button in controller.Definition.BoolButtons) {
+						// TODO: make an input adapter specifically for the bot?
+						InputManager.ButtonOverrideAdapter.SetButton(button, controller.IsPressed(button));
+					}
+
+					InputManager.SyncControls(Emulator, MovieSession, Config);
+
+					_lastFrameAdvanced = Emulator.Frame;
+				}
+				else {
+					FinishReplay();
+				}
+			}
+			else if (_isBotting) {
+				if (Emulator.Frame >= _targetFrame) {
+					Runs++;
+					Frames += FrameLength;
+
+					BotAttempt currentAttempt = this.populationManager.GetCurrent().GetAttempt();
+					currentAttempt.Maximize = MaximizeValue;
+					currentAttempt.TieBreak1 = TieBreaker1Value;
+					currentAttempt.TieBreak2 = TieBreaker2Value;
+					currentAttempt.TieBreak3 = TieBreaker3Value;
+					PlayBestButton.Enabled = true;
+
+					if (this.populationManager.GetBest().GetAttempt().isReset || this.populationManager.IsCurrentAttemptBetter()) {
+						this.populationManager.CopyCurrentToBest();
+						UpdateBestAttempt();
+					}
+
+					this.populationManager.ResetCurrent(Runs);
+					_doNotUpdateValues = true;
+					PressButtons(true);
+					MainForm.LoadQuickSave(SelectedSlot, true);
+					_lastFrameAdvanced = Emulator.Frame;
+					_doNotUpdateValues = false;
+					return;
+				}
+
+				// Before this would have 2 additional hits before the frame even advanced, making the amount of inputs greater than the number of frames to test.
+				if (this.populationManager.GetCurrent().GetAttempt().Log.Count < FrameLength) //aka do not Add more inputs than there are Frames to test
+				{
+					PressButtons(false);
+					_lastFrameAdvanced = Emulator.Frame;
+				}
+			}
+		}
+
+		public bool HasFrameAdvanced() {
+			// If the emulator frame is different from the last time it tried calling
+			// the function then we can continue, otherwise we need to stop.
+			return _lastFrameAdvanced != Emulator.Frame;
 		}
 		#endregion
 
@@ -615,6 +672,43 @@ namespace GeneticAlgorithmBot {
 			return true;
 		}
 
+		private void SaveBotFile(string path) {
+			BotData data = new BotData {
+				Best = this.populationManager.GetBest().GetAttempt(),
+				ControlProbabilities = ControlProbabilities,
+				Maximize = MaximizeAddress,
+				TieBreaker1 = TieBreaker1Address,
+				TieBreaker2 = TieBreaker2Address,
+				TieBreaker3 = TieBreaker3Address,
+				ComparisonTypeMain = MainComparisonType,
+				ComparisonTypeTie1 = Tie1ComparisonType,
+				ComparisonTypeTie2 = Tie2ComparisonType,
+				ComparisonTypeTie3 = Tie3ComparisonType,
+				MainCompareToBest = MainBestRadio.Checked,
+				TieBreaker1CompareToBest = TieBreak1BestRadio.Checked,
+				TieBreaker2CompareToBest = TieBreak2BestRadio.Checked,
+				TieBreaker3CompareToBest = TieBreak3BestRadio.Checked,
+				MainCompareToValue = (int) MainValueNumeric.Value,
+				TieBreaker1CompareToValue = (int) TieBreak1Numeric.Value,
+				TieBreaker2CompareToValue = (int) TieBreak2Numeric.Value,
+				TieBreaker3CompareToValue = (int) TieBreak3Numeric.Value,
+				FromSlot = FromSlot,
+				FrameLength = FrameLength,
+				Runs = Runs,
+				Frames = Frames,
+				MemoryDomain = _currentDomain.Name,
+				BigEndian = _bigEndian,
+				DataSize = _dataSize
+			};
+
+			string json = ConfigService.SaveWithType(data);
+
+			File.WriteAllText(path, json);
+			CurrentFilename = path;
+			Settings.RecentBotFiles.Add(CurrentFilename);
+			MessageLabel.Text = $"{Path.GetFileName(CurrentFilename)} saved";
+		}
+
 		private void SetMaxSpeed() {
 			MainForm.Unthrottle();
 		}
@@ -622,11 +716,47 @@ namespace GeneticAlgorithmBot {
 		private void SetNormalSpeed() {
 			MainForm.Throttle();
 		}
+
+		private void SetMemoryDomain(string name) {
+			_currentDomain = MemoryDomains[name]!;
+			_bigEndian = _currentDomain!.EndianType == MemoryDomain.Endian.Big;
+
+			MaximizeAddressBox.SetHexProperties(_currentDomain.Size);
+			TieBreaker1Box.SetHexProperties(_currentDomain.Size);
+			TieBreaker2Box.SetHexProperties(_currentDomain.Size);
+			TieBreaker3Box.SetHexProperties(_currentDomain.Size);
+		}
 		#endregion
 	}
 
-	public static class Rand {
+	public static class Utils {
 		public static Random RNG { get; } = new Random((int) DateTime.Now.Ticks);
+
+		public static bool IsBetter(GeneticAlgorithmBot bot, BotAttempt comparison, BotAttempt current) {
+			static bool TestValue(byte operation, int currentValue, int bestValue)
+				=> operation switch {
+					0 => (currentValue > bestValue),
+					1 => (currentValue >= bestValue),
+					2 => (currentValue == bestValue),
+					3 => (currentValue <= bestValue),
+					4 => (currentValue < bestValue),
+					5 => (currentValue != bestValue),
+					_ => false
+				};
+
+			if (!TestValue(bot.MainComparisonType, current.Maximize, comparison.Maximize)) return false;
+			if (current.Maximize != comparison.Maximize) return true;
+
+			if (!TestValue(bot.Tie1ComparisonType, current.TieBreak1, comparison.TieBreak1)) return false;
+			if (current.TieBreak1 != comparison.TieBreak1) return true;
+
+			if (!TestValue(bot.Tie2ComparisonType, current.TieBreak2, comparison.TieBreak2)) return false;
+			if (current.TieBreak2 != comparison.TieBreak2) return true;
+
+			if (!TestValue(bot.Tie3ComparisonType, current.TieBreak3, comparison.TieBreak3)) return false;
+			/*if (current.TieBreak3 != comparison.TieBreak3)*/
+			return true;
+		}
 	}
 
 	public class PopulationManager {
@@ -664,6 +794,39 @@ namespace GeneticAlgorithmBot {
 		public bool NextRecording() {
 			this.currentIndex = ++this.currentIndex % this.population.Length;
 			return this.currentIndex == 0;
+		}
+
+		public bool IsCurrentAttemptBetter() {
+			BotAttempt current = this.population[this.currentIndex].GetAttempt();
+			BotAttempt best = this._bestRecording.GetAttempt();
+			return Utils.IsBetter(this.bot, best, current);
+		}
+
+		public void CopyCurrentToBest() {
+			BotAttempt current = this.population[this.currentIndex].GetAttempt();
+			BotAttempt best = this._bestRecording.GetAttempt();
+			best.Attempt = current.Attempt;
+			best.Maximize = current.Maximize;
+			best.TieBreak1 = current.TieBreak1;
+			best.TieBreak2 = current.TieBreak2;
+			best.TieBreak3 = current.TieBreak3;
+
+			best.Log.Clear();
+			for (int i = 0; i < current.Log.Count; i++) {
+				best.Log.Add(current.Log[i]);
+			}
+			best.isReset = false;
+		}
+
+		public void ResetCurrent(long attemptNumber) {
+			BotAttempt current = this.population[this.currentIndex].GetAttempt();
+			current.Attempt = attemptNumber;
+			current.Maximize = 0;
+			current.TieBreak1 = 0;
+			current.TieBreak2 = 0;
+			current.TieBreak3 = 0;
+			current.Log.Clear();
+			current.isReset = true;
 		}
 	}
 
@@ -711,7 +874,7 @@ namespace GeneticAlgorithmBot {
 			float[] probabilities = bot.GetCachedInputProbabilities();
 			IList<int[]> a = Enumerable.Range(0, this.bot.FrameLength).Select(run => {
 				int[] times = Enumerable.Range(0, this.bot.ControllerButtons.Count)
-					.Where((buttonIndex, i) => Rand.RNG.NextDouble() < probabilities[buttonIndex])
+					.Where((buttonIndex, i) => Utils.RNG.NextDouble() < probabilities[buttonIndex])
 					.ToArray();
 				return times;
 			}).ToArray();
@@ -731,14 +894,14 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public void RandomizeFrameInput() {
-			int frameNumber = Rand.RNG.Next(bot._startFrame, bot._startFrame + this.recording.Length);
+			int frameNumber = Utils.RNG.Next(bot._startFrame, bot._startFrame + this.recording.Length);
 			int index = frameNumber - bot._startFrame;
 			FrameInput input = this.GetFrameInput(frameNumber);
 			input.Clear();
 
 			float[] probabilities = bot.GetCachedInputProbabilities();
 			int[] times = Enumerable.Range(0, count: this.bot.ControllerButtons.Count)
-					.Where((buttonIndex, i) => Rand.RNG.NextDouble() < probabilities[buttonIndex])
+					.Where((buttonIndex, i) => Utils.RNG.NextDouble() < probabilities[buttonIndex])
 					.ToArray();
 
 			for (int i = 0; i < times.Length; i++) {
@@ -812,7 +975,7 @@ namespace GeneticAlgorithmBot {
 		public bool InvisibleEmulation { get; set; }
 	}
 
-	public class BotData {
+	public struct BotData {
 		public BotAttempt Best { get; set; }
 		public Dictionary<string, double> ControlProbabilities { get; set; }
 		public int Maximize { get; set; }
@@ -823,10 +986,10 @@ namespace GeneticAlgorithmBot {
 		public byte ComparisonTypeTie1 { get; set; }
 		public byte ComparisonTypeTie2 { get; set; }
 		public byte ComparisonTypeTie3 { get; set; }
-		public bool MainCompareToBest { get; set; } = true;
-		public bool TieBreaker1CompareToBest { get; set; } = true;
-		public bool TieBreaker2CompareToBest { get; set; } = true;
-		public bool TieBreaker3CompareToBest { get; set; } = true;
+		public bool MainCompareToBest { get; set; }
+		public bool TieBreaker1CompareToBest { get; set; }
+		public bool TieBreaker2CompareToBest { get; set; }
+		public bool TieBreaker3CompareToBest { get; set; }
 		public int MainCompareToValue { get; set; }
 		public int TieBreaker1CompareToValue { get; set; }
 		public int TieBreaker2CompareToValue { get; set; }
