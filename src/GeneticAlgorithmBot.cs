@@ -392,8 +392,8 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public void UpdateBestAttempt() {
+			ClearBestButton.Enabled = true;
 			if (this.populationManager.GetBest().IsSet) {
-				ClearBestButton.Enabled = true;
 				btnCopyBestInput.Enabled = true;
 				BotAttempt best = this.populationManager.GetBest().GetAttempt();
 				BestAttemptNumberLabel.Text = best.Attempt.ToString();
@@ -412,7 +412,6 @@ namespace GeneticAlgorithmBot {
 				btnCopyBestInput.Enabled = true;
 			}
 			else {
-				ClearBestButton.Enabled = false;
 				BestAttemptNumberLabel.Text = "";
 				BestMaximizeBox.Text = "";
 				BestTieBreak1Box.Text = "";
@@ -758,6 +757,7 @@ namespace GeneticAlgorithmBot {
 
 		public void FrameLengthNumeric_ValueChanged(object sender, EventArgs e) {
 			AssessRunButtonStatus();
+			this.populationManager.IsInitialized = false;
 		}
 
 		public void ClearStatsContextMenuItem_Click(object sender, EventArgs e) {
@@ -988,6 +988,7 @@ namespace GeneticAlgorithmBot {
 		public InputRecording[] population;
 		public int currentIndex = 0;
 		public long Generation { get; set; }
+		public int StartFrameNumber { get; set; } = 0;
 		private GeneticAlgorithmBot bot;
 		public bool IsInitialized { get; set; }
 		public bool IsBestSet => this._bestRecording.IsSet;
@@ -1075,6 +1076,7 @@ namespace GeneticAlgorithmBot {
 		public void Initialize() {
 			this.SetOrigin();
 			this.currentIndex = 0;
+			this.StartFrameNumber = this.bot._startFrame;
 			this.population = new InputRecording[Utils.POPULATION_SIZE];
 			for (int i = 0; i < this.population.Length; i++) {
 				this.population[i] = new InputRecording(this.bot, this);
@@ -1131,7 +1133,6 @@ namespace GeneticAlgorithmBot {
 		public BotAttempt result;
 		public FrameInput[] recording;
 		public double fitness { get; set; }
-		public int StartFrameNumber { get; set; }
 		public int FrameLength { get; set; }
 		public bool IsSet { get; set; }
 		private GeneticAlgorithmBot bot;
@@ -1142,7 +1143,6 @@ namespace GeneticAlgorithmBot {
 			this.manager = parent;
 			this.IsSet = false;
 			this.FrameLength = owner.FrameLength;
-			this.StartFrameNumber = owner._startFrame;
 			this.recording = new FrameInput[owner.FrameLength];
 			for (int i = 0; i < owner.FrameLength; i++) {
 				this.recording[i] = new FrameInput(i);
@@ -1155,7 +1155,7 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public FrameInput GetFrameInput(int frameNumber) {
-			int index = frameNumber - this.StartFrameNumber;
+			int index = frameNumber - this.manager.StartFrameNumber;
 			if (index < 0 || index >= this.recording.Length) {
 				index = this.recording.Length - 1;
 			}
@@ -1188,7 +1188,7 @@ namespace GeneticAlgorithmBot {
 			}
 
 			for (int i = 0; i < length; i++) {
-				FrameInput input = this.GetFrameInput(this.StartFrameNumber + i);
+				FrameInput input = this.GetFrameInput(this.manager.StartFrameNumber + i);
 				for (int j = 0; j < values[i].Length; j++) {
 					input.Pressed(this.bot.ControllerButtons[values[i][j]]);
 				}
@@ -1240,7 +1240,6 @@ namespace GeneticAlgorithmBot {
 		public void DeepCopy(InputRecording other) {
 			this.result = new BotAttempt(other.result);
 			this.fitness = other.fitness;
-			this.StartFrameNumber = other.StartFrameNumber;
 			this.FrameLength = other.FrameLength;
 			this.bot = other.bot;
 			this.manager = other.manager;
