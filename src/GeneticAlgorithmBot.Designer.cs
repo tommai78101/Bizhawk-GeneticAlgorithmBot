@@ -128,6 +128,8 @@ namespace GeneticAlgorithmBot {
 		private BizHawk.WinForms.Controls.LocLabelEx locLabelEx1;
 		private BizHawk.WinForms.Controls.LocLabelEx GenerationsLabel;
 		private BotAttempt _bestAttempt;
+		private NumericUpDown PopulationSizeNumeric;
+		private Label PopulationSizeLabel;
 
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
@@ -225,6 +227,8 @@ namespace GeneticAlgorithmBot {
 			this.NewMenuItem = new BizHawk.WinForms.Controls.ToolStripMenuItemEx();
 			this.FileSubMenu = new BizHawk.WinForms.Controls.ToolStripMenuItemEx();
 			this.BotMenu = new BizHawk.WinForms.Controls.MenuStripEx();
+			this.PopulationSizeLabel = new System.Windows.Forms.Label();
+			this.PopulationSizeNumeric = new System.Windows.Forms.NumericUpDown();
 			((System.ComponentModel.ISupportInitialize)(this.FrameLengthNumeric)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.MainValueNumeric)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.TieBreak1Numeric)).BeginInit();
@@ -243,6 +247,7 @@ namespace GeneticAlgorithmBot {
 			this.panel1.SuspendLayout();
 			this.BotStatusStrip.SuspendLayout();
 			this.BotMenu.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.PopulationSizeNumeric)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// FrameLengthNumeric
@@ -548,7 +553,7 @@ namespace GeneticAlgorithmBot {
 			// 
 			// label4
 			// 
-			this.label4.Location = new System.Drawing.Point(113, 29);
+			this.label4.Location = new System.Drawing.Point(112, 29);
 			this.label4.Name = "label4";
 			this.label4.Text = "frames";
 			// 
@@ -609,6 +614,8 @@ namespace GeneticAlgorithmBot {
 			// 
 			this.GoalGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.GoalGroupBox.Controls.Add(this.PopulationSizeNumeric);
+			this.GoalGroupBox.Controls.Add(this.PopulationSizeLabel);
 			this.GoalGroupBox.Controls.Add(this.label4);
 			this.GoalGroupBox.Controls.Add(this.FrameLengthNumeric);
 			this.GoalGroupBox.Controls.Add(this.label3);
@@ -1138,6 +1145,38 @@ namespace GeneticAlgorithmBot {
             this.HelpSubMenu});
 			this.BotMenu.TabIndex = 0;
 			// 
+			// PopulationSizeLabel
+			// 
+			this.PopulationSizeLabel.AutoSize = true;
+			this.PopulationSizeLabel.Location = new System.Drawing.Point(214, 29);
+			this.PopulationSizeLabel.Name = "PopulationSizeLabel";
+			this.PopulationSizeLabel.Size = new System.Drawing.Size(83, 13);
+			this.PopulationSizeLabel.TabIndex = 1002;
+			this.PopulationSizeLabel.Text = "Population Size:";
+			// 
+			// PopulationSizeNumeric
+			// 
+			this.PopulationSizeNumeric.Location = new System.Drawing.Point(303, 25);
+			this.PopulationSizeNumeric.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+			this.PopulationSizeNumeric.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.PopulationSizeNumeric.Name = "PopulationSizeNumeric";
+			this.PopulationSizeNumeric.Size = new System.Drawing.Size(46, 20);
+			this.PopulationSizeNumeric.TabIndex = 1003;
+			this.PopulationSizeNumeric.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+			this.PopulationSizeNumeric.ValueChanged += new System.EventHandler(this.PopulationSizeNumeric_ValueChanged);
+			// 
 			// GeneticAlgorithmBot
 			// 
 			this.ClientSize = new System.Drawing.Size(707, 587);
@@ -1179,6 +1218,7 @@ namespace GeneticAlgorithmBot {
 			this.BotStatusStrip.PerformLayout();
 			this.BotMenu.ResumeLayout(false);
 			this.BotMenu.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.PopulationSizeNumeric)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

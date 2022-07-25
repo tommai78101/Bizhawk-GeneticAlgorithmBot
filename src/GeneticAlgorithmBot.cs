@@ -124,6 +124,11 @@ namespace GeneticAlgorithmBot {
 			set => FrameLengthNumeric.Value = value;
 		}
 
+		public int PopulationSize {
+			get => (int) PopulationSizeNumeric.Value;
+			set => PopulationSizeNumeric.Value = value;
+		}
+
 		public ClickyVirtualPadController Controller => InputManager.ClickyVirtualPadController;
 
 		public IList<string> ControllerButtons => Emulator.ControllerDefinition.BoolButtons;
@@ -250,7 +255,7 @@ namespace GeneticAlgorithmBot {
 				this.Margin = new(0, 0, 0, 8);
 			}
 			this.Settings = new GeneticAlgorithmBotSettings();
-			this.populationManager = new GeneticAlgorithm(this, Utils.POPULATION_SIZE);
+			this.populationManager = new GeneticAlgorithm(this);
 			this.MainOperator.SelectedItem = ">=";
 		}
 
@@ -760,6 +765,11 @@ namespace GeneticAlgorithmBot {
 			this.populationManager.IsInitialized = false;
 		}
 
+		public void PopulationSizeNumeric_ValueChanged(object sender, EventArgs e) {
+			AssessRunButtonStatus();
+			this.populationManager.IsInitialized = false;
+		}
+
 		public void ClearStatsContextMenuItem_Click(object sender, EventArgs e) {
 			Runs = 0;
 			Frames = 0;
@@ -930,8 +940,6 @@ namespace GeneticAlgorithmBot {
 	public static class Utils {
 		public static Random RNG { get; } = new Random((int) DateTime.Now.Ticks);
 
-		public static readonly int POPULATION_SIZE = 4;
-
 		public static readonly double MUTATION_RATE = 0.02;
 
 		public static readonly double CROSSOVER_RATE = 50.0;
@@ -993,13 +1001,13 @@ namespace GeneticAlgorithmBot {
 		public bool IsInitialized { get; set; }
 		public bool IsBestSet => this._bestRecording.IsSet;
 
-		public GeneticAlgorithm(GeneticAlgorithmBot owner, int populationSize) {
+		public GeneticAlgorithm(GeneticAlgorithmBot owner) {
 			this.bot = owner;
 			this.IsInitialized = false;
 			this._bestRecording = new InputRecording(owner, this);
 			this._beginning = new BotAttempt();
-			this.population = new InputRecording[populationSize];
-			for (int i = 0; i < populationSize; i++) {
+			this.population = new InputRecording[1];
+			for (int i = 0; i < this.population.Length; i++) {
 				this.population[i] = new InputRecording(owner, this);
 			}
 		}
@@ -1077,7 +1085,7 @@ namespace GeneticAlgorithmBot {
 			this.SetOrigin();
 			this.currentIndex = 0;
 			this.StartFrameNumber = this.bot._startFrame;
-			this.population = new InputRecording[Utils.POPULATION_SIZE];
+			this.population = new InputRecording[this.bot.PopulationSize];
 			for (int i = 0; i < this.population.Length; i++) {
 				this.population[i] = new InputRecording(this.bot, this);
 				this.population[i].Reset(0);
