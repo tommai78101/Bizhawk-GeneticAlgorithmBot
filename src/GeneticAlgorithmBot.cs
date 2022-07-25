@@ -364,8 +364,8 @@ namespace GeneticAlgorithmBot {
 				InputManager.SyncControls(Emulator, MovieSession, Config);
 
 				if (clear_log)
-					this.populationManager.ClearBestRecordingLog();
-				this.populationManager.SetBestRecordingLog(_logGenerator.GenerateLogEntry());
+					this.populationManager.ClearCurrentRecordingLog();
+				this.populationManager.SetCurrentRecordingLog(_logGenerator.GenerateLogEntry());
 			}
 		}
 
@@ -423,7 +423,6 @@ namespace GeneticAlgorithmBot {
 			BotAttempt best = this.populationManager.GetBest().GetAttempt();
 			if (_replayMode) {
 				int index = Emulator.Frame - _startFrame;
-
 				if (index < best.Log.Count) {
 					var logEntry = best.Log[index];
 					var controller = MovieSession.GenerateMovieController();
@@ -636,9 +635,7 @@ namespace GeneticAlgorithmBot {
 			Frames = botData.Frames;
 			Generations = botData.Generations;
 
-#pragma warning disable CS8601 // Possible null reference assignment.
-			_currentDomain = !string.IsNullOrWhiteSpace(botData.MemoryDomain) ? MemoryDomains[botData.MemoryDomain] : MemoryDomains.MainMemory;
-#pragma warning restore CS8601 // Possible null reference assignment.
+			_currentDomain = !string.IsNullOrWhiteSpace(botData.MemoryDomain) ? MemoryDomains[botData.MemoryDomain]! : MemoryDomains.MainMemory;
 
 			_bigEndian = botData.BigEndian;
 			_dataSize = botData.DataSize > 0 ? botData.DataSize : 1;
@@ -979,13 +976,12 @@ namespace GeneticAlgorithmBot {
 			return this.population[this.currentIndex];
 		}
 
-		public void ClearBestRecordingLog() {
-			this._bestRecording.GetAttempt().Log.Clear();
-			this.Initialize();
+		public void ClearCurrentRecordingLog() {
+			this.GetCurrent().GetAttempt().Log.Clear();
 		}
 
-		public void SetBestRecordingLog(string log) {
-			this._bestRecording.GetAttempt().Log.Add(log);
+		public void SetCurrentRecordingLog(string log) {
+			this.GetCurrent().GetAttempt().Log.Add(log);
 		}
 
 		public InputRecording GetBest() {
