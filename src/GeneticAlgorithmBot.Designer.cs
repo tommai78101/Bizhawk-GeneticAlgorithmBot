@@ -126,7 +126,7 @@ namespace GeneticAlgorithmBot {
 		private GroupBox GoalGroupBox;
 		private GroupBox ControlsBox;
 		private BizHawk.WinForms.Controls.LocLabelEx locLabelEx1;
-		private BizHawk.WinForms.Controls.LocLabelEx locLabelEx2;
+		private BizHawk.WinForms.Controls.LocLabelEx GenerationsLabel;
 		private BotAttempt _bestAttempt;
 
 		private void InitializeComponent() {
@@ -162,14 +162,25 @@ namespace GeneticAlgorithmBot {
 			this.label4 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.panel4 = new System.Windows.Forms.Panel();
 			this.BotToolTip = new System.Windows.Forms.ToolTip(this.components);
+			this.ControlsBox = new System.Windows.Forms.GroupBox();
+			this.ControlProbabilityPanel = new System.Windows.Forms.Panel();
 			this.btnCopyBestInput = new System.Windows.Forms.Button();
+			this.GoalGroupBox = new System.Windows.Forms.GroupBox();
+			this.panel6 = new System.Windows.Forms.Panel();
+			this.label12 = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.label7 = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.TieBreaker3Box = new BizHawk.Client.EmuHawk.HexTextBox();
+			this.TieBreak3Numeric = new System.Windows.Forms.NumericUpDown();
+			this.TieBreak3ValueRadio = new System.Windows.Forms.RadioButton();
+			this.TieBreak3BestRadio = new System.Windows.Forms.RadioButton();
+			this.Tiebreak3Operator = new System.Windows.Forms.ComboBox();
 			this.ControlGroupBox = new System.Windows.Forms.GroupBox();
 			this.InvisibleEmulationCheckBox = new System.Windows.Forms.CheckBox();
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.StatsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.ClearStatsContextMenuItem = new BizHawk.WinForms.Controls.ToolStripMenuItemEx();
 			this.locLabelEx1 = new BizHawk.WinForms.Controls.LocLabelEx();
-			this.locLabelEx2 = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.GenerationsLabel = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.FramesLabel = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.AttemptsLabel = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.StopBtn = new System.Windows.Forms.Button();
@@ -191,17 +202,6 @@ namespace GeneticAlgorithmBot {
 			this.label15 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.label14 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.label13 = new BizHawk.WinForms.Controls.LocLabelEx();
-			this.GoalGroupBox = new System.Windows.Forms.GroupBox();
-			this.panel6 = new System.Windows.Forms.Panel();
-			this.label12 = new BizHawk.WinForms.Controls.LocLabelEx();
-			this.label7 = new BizHawk.WinForms.Controls.LocLabelEx();
-			this.TieBreaker3Box = new BizHawk.Client.EmuHawk.HexTextBox();
-			this.TieBreak3Numeric = new System.Windows.Forms.NumericUpDown();
-			this.TieBreak3ValueRadio = new System.Windows.Forms.RadioButton();
-			this.TieBreak3BestRadio = new System.Windows.Forms.RadioButton();
-			this.Tiebreak3Operator = new System.Windows.Forms.ComboBox();
-			this.ControlsBox = new System.Windows.Forms.GroupBox();
-			this.ControlProbabilityPanel = new System.Windows.Forms.Panel();
 			this.BotStatusStrip = new System.Windows.Forms.StatusStrip();
 			this.BotStatusButton = new System.Windows.Forms.ToolStripStatusLabel();
 			this.MessageLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -232,399 +232,18 @@ namespace GeneticAlgorithmBot {
 			this.panel5.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.TieBreak2Numeric)).BeginInit();
 			this.panel4.SuspendLayout();
+			this.ControlsBox.SuspendLayout();
+			this.GoalGroupBox.SuspendLayout();
+			this.panel6.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.TieBreak3Numeric)).BeginInit();
 			this.ControlGroupBox.SuspendLayout();
 			this.panel2.SuspendLayout();
 			this.StatsContextMenu.SuspendLayout();
 			this.BestGroupBox.SuspendLayout();
 			this.panel1.SuspendLayout();
-			this.GoalGroupBox.SuspendLayout();
-			this.panel6.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.TieBreak3Numeric)).BeginInit();
-			this.ControlsBox.SuspendLayout();
 			this.BotStatusStrip.SuspendLayout();
 			this.BotMenu.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// BotMenu
-			// 
-			this.BotMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.FileSubMenu,
-			this.OptionsSubMenu,
-			this.SettingsSubMenu,
-			this.HelpSubMenu});
-			this.BotMenu.TabIndex = 0;
-			// 
-			// FileSubMenu
-			// 
-			this.FileSubMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.NewMenuItem,
-			this.OpenMenuItem,
-			this.SaveMenuItem,
-			this.SaveAsMenuItem,
-			this.RecentSubMenu});
-			this.FileSubMenu.Text = "&File";
-			this.FileSubMenu.DropDownOpened += new System.EventHandler(this.FileSubMenu_DropDownOpened);
-			// 
-			// NewMenuItem
-			// 
-			this.NewMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-			this.NewMenuItem.Text = "&New";
-			this.NewMenuItem.Click += new System.EventHandler(this.NewMenuItem_Click);
-			// 
-			// OpenMenuItem
-			// 
-			this.OpenMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-			this.OpenMenuItem.Text = "&Open...";
-			this.OpenMenuItem.Click += new System.EventHandler(this.OpenMenuItem_Click);
-			// 
-			// SaveMenuItem
-			// 
-			this.SaveMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-			this.SaveMenuItem.Text = "&Save";
-			this.SaveMenuItem.Click += new System.EventHandler(this.SaveMenuItem_Click);
-			// 
-			// SaveAsMenuItem
-			// 
-			this.SaveAsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys) (((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-			| System.Windows.Forms.Keys.S)));
-			this.SaveAsMenuItem.Text = "Save &As...";
-			this.SaveAsMenuItem.Click += new System.EventHandler(this.SaveAsMenuItem_Click);
-			// 
-			// RecentSubMenu
-			// 
-			this.RecentSubMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.toolStripSeparator2});
-			this.RecentSubMenu.Text = "Recent";
-			this.RecentSubMenu.DropDownOpened += new System.EventHandler(this.RecentSubMenu_DropDownOpened);
-			// 
-			// OptionsSubMenu
-			// 
-			this.OptionsSubMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.MemoryDomainsMenuItem,
-			this.DataSizeMenuItem,
-			this.BigEndianMenuItem,
-			this.toolStripSeparator4,
-			this.TurboWhileBottingMenuItem});
-			this.OptionsSubMenu.Text = "&Options";
-			this.OptionsSubMenu.DropDownOpened += new System.EventHandler(this.OptionsSubMenu_DropDownOpened);
-			// 
-			// MemoryDomainsMenuItem
-			// 
-			this.MemoryDomainsMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.toolStripSeparator3});
-			this.MemoryDomainsMenuItem.Text = "Memory Domains";
-			this.MemoryDomainsMenuItem.DropDownOpened += new System.EventHandler(this.MemoryDomainsMenuItem_DropDownOpened);
-			// 
-			// DataSizeMenuItem
-			// 
-			this.DataSizeMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this._1ByteMenuItem,
-			this._2ByteMenuItem,
-			this._4ByteMenuItem});
-			this.DataSizeMenuItem.Text = "Data Size";
-			this.DataSizeMenuItem.DropDownOpened += new System.EventHandler(this.DataSizeMenuItem_DropDownOpened);
-			// 
-			// _1ByteMenuItem
-			// 
-			this._1ByteMenuItem.Text = "1 Byte";
-			this._1ByteMenuItem.Click += new System.EventHandler(this.OneByteMenuItem_Click);
-			// 
-			// _2ByteMenuItem
-			// 
-			this._2ByteMenuItem.Text = "2 Bytes";
-			this._2ByteMenuItem.Click += new System.EventHandler(this.TwoByteMenuItem_Click);
-			// 
-			// _4ByteMenuItem
-			// 
-			this._4ByteMenuItem.Text = "4 Bytes";
-			this._4ByteMenuItem.Click += new System.EventHandler(this.FourByteMenuItem_Click);
-			// 
-			// BigEndianMenuItem
-			// 
-			this.BigEndianMenuItem.Text = "Big Endian";
-			this.BigEndianMenuItem.Click += new System.EventHandler(this.BigEndianMenuItem_Click);
-			// 
-			// TurboWhileBottingMenuItem
-			// 
-			this.TurboWhileBottingMenuItem.Text = "Turbo While Botting";
-			this.TurboWhileBottingMenuItem.Click += new System.EventHandler(this.TurboWhileBottingMenuItem_Click);
-			// 
-			// RunBtn
-			// 
-			this.RunBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.RunBtn.Location = new System.Drawing.Point(6, 56);
-			this.RunBtn.Name = "RunBtn";
-			this.RunBtn.Size = new System.Drawing.Size(75, 23);
-			this.RunBtn.TabIndex = 2001;
-			this.RunBtn.Text = "&Run";
-			this.RunBtn.UseVisualStyleBackColor = true;
-			this.RunBtn.Click += new System.EventHandler(this.RunBtn_Click);
-			// 
-			// BotStatusStrip
-			// 
-			this.BotStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.BotStatusButton,
-			this.MessageLabel});
-			this.BotStatusStrip.Location = new System.Drawing.Point(0, 565);
-			this.BotStatusStrip.Name = "BotStatusStrip";
-			this.BotStatusStrip.Size = new System.Drawing.Size(707, 22);
-			this.BotStatusStrip.TabIndex = 2;
-			this.BotStatusStrip.Text = "statusStrip1";
-			// 
-			// BotStatusButton
-			// 
-			this.BotStatusButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.BotStatusButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.BotStatusButton.Name = "BotStatusButton";
-			this.BotStatusButton.RightToLeftAutoMirrorImage = true;
-			this.BotStatusButton.Size = new System.Drawing.Size(16, 17);
-			this.BotStatusButton.Text = " ";
-			this.BotStatusButton.ToolTipText = " ";
-			// 
-			// MessageLabel
-			// 
-			this.MessageLabel.Name = "MessageLabel";
-			this.MessageLabel.Size = new System.Drawing.Size(109, 17);
-			this.MessageLabel.Text = "          ";
-			// 
-			// ControlsBox
-			// 
-			this.ControlsBox.Anchor = ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-			| System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
-			this.ControlsBox.Controls.Add(this.ControlProbabilityPanel);
-			this.ControlsBox.Location = new System.Drawing.Point(12, 183);
-			this.ControlsBox.Name = "ControlsBox";
-			this.ControlsBox.Size = new System.Drawing.Size(442, 369);
-			this.ControlsBox.TabIndex = 2007;
-			this.ControlsBox.TabStop = false;
-			this.ControlsBox.Text = "Input Probability Controls [?]";
-			this.BotToolTip.SetToolTip(this.ControlsBox, "This panel here indicates the likelihood the specified controls are chosen when t" +
-		"he bot mutates its training model.");
-			// 
-			// ControlProbabilityPanel
-			// 
-			this.ControlProbabilityPanel.Anchor = ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-			| System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
-			this.ControlProbabilityPanel.AutoScroll = true;
-			this.ControlProbabilityPanel.Location = new System.Drawing.Point(6, 19);
-			this.ControlProbabilityPanel.Name = "ControlProbabilityPanel";
-			this.ControlProbabilityPanel.Size = new System.Drawing.Size(430, 344);
-			this.ControlProbabilityPanel.TabIndex = 0;
-			// 
-			// BestGroupBox
-			// 
-			this.BestGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-			| System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
-			this.BestGroupBox.Controls.Add(this.btnCopyBestInput);
-			this.BestGroupBox.Controls.Add(this.PlayBestButton);
-			this.BestGroupBox.Controls.Add(this.ClearBestButton);
-			this.BestGroupBox.Controls.Add(this.BestAttemptNumberLabel);
-			this.BestGroupBox.Controls.Add(this.label17);
-			this.BestGroupBox.Controls.Add(this.panel1);
-			this.BestGroupBox.Controls.Add(this.BestTieBreak3Box);
-			this.BestGroupBox.Controls.Add(this.BestTieBreak2Box);
-			this.BestGroupBox.Controls.Add(this.BestTieBreak1Box);
-			this.BestGroupBox.Controls.Add(this.BestMaximizeBox);
-			this.BestGroupBox.Controls.Add(this.label16);
-			this.BestGroupBox.Controls.Add(this.label15);
-			this.BestGroupBox.Controls.Add(this.label14);
-			this.BestGroupBox.Controls.Add(this.label13);
-			this.BestGroupBox.Location = new System.Drawing.Point(461, 183);
-			this.BestGroupBox.Name = "BestGroupBox";
-			this.BestGroupBox.Size = new System.Drawing.Size(230, 369);
-			this.BestGroupBox.TabIndex = 4;
-			this.BestGroupBox.TabStop = false;
-			this.BestGroupBox.Text = "Best";
-			// 
-			// btnCopyBestInput
-			// 
-			this.btnCopyBestInput.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.btnCopyBestInput.Location = new System.Drawing.Point(12, 94);
-			this.btnCopyBestInput.Name = "btnCopyBestInput";
-			this.btnCopyBestInput.Size = new System.Drawing.Size(75, 23);
-			this.btnCopyBestInput.TabIndex = 2005;
-			this.btnCopyBestInput.Text = "&Copy";
-			this.BotToolTip.SetToolTip(this.btnCopyBestInput, "\"Copy to Clipboard.  Then possible to paste to text file or directly into TasStud" +
-					"io.");
-			this.btnCopyBestInput.UseVisualStyleBackColor = true;
-			this.btnCopyBestInput.Click += new System.EventHandler(this.BtnCopyBestInput_Click);
-			// 
-			// PlayBestButton
-			// 
-			this.PlayBestButton.Enabled = false;
-			this.PlayBestButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.PlayBestButton.Location = new System.Drawing.Point(12, 46);
-			this.PlayBestButton.Name = "PlayBestButton";
-			this.PlayBestButton.Size = new System.Drawing.Size(75, 23);
-			this.PlayBestButton.TabIndex = 2004;
-			this.PlayBestButton.Text = "&Play";
-			this.PlayBestButton.UseVisualStyleBackColor = true;
-			this.PlayBestButton.Click += new System.EventHandler(this.PlayBestButton_Click);
-			// 
-			// ClearBestButton
-			// 
-			this.ClearBestButton.Enabled = false;
-			this.ClearBestButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.ClearBestButton.Location = new System.Drawing.Point(12, 70);
-			this.ClearBestButton.Name = "ClearBestButton";
-			this.ClearBestButton.Size = new System.Drawing.Size(75, 23);
-			this.ClearBestButton.TabIndex = 2003;
-			this.ClearBestButton.Text = "&Clear";
-			this.ClearBestButton.UseVisualStyleBackColor = true;
-			this.ClearBestButton.Click += new System.EventHandler(this.ClearBestButton_Click);
-			// 
-			// BestAttemptNumberLabel
-			// 
-			this.BestAttemptNumberLabel.Location = new System.Drawing.Point(59, 20);
-			this.BestAttemptNumberLabel.Name = "BestAttemptNumberLabel";
-			this.BestAttemptNumberLabel.Text = "0";
-			// 
-			// label17
-			// 
-			this.label17.Location = new System.Drawing.Point(17, 20);
-			this.label17.Name = "label17";
-			this.label17.Text = "Attempt:";
-			// 
-			// panel1
-			// 
-			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-			| System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
-			this.panel1.AutoScroll = true;
-			this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.panel1.Controls.Add(this.BestAttemptLogLabel);
-			this.panel1.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (0)));
-			this.panel1.Location = new System.Drawing.Point(12, 125);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(217, 238);
-			this.panel1.TabIndex = 21;
-			// 
-			// BestAttemptLogLabel
-			// 
-			this.BestAttemptLogLabel.Location = new System.Drawing.Point(8, 8);
-			this.BestAttemptLogLabel.Name = "BestAttemptLogLabel";
-			this.BestAttemptLogLabel.Text = "     ";
-			// 
-			// BestTieBreak3Box
-			// 
-			this.BestTieBreak3Box.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.BestTieBreak3Box.Location = new System.Drawing.Point(168, 77);
-			this.BestTieBreak3Box.Name = "BestTieBreak3Box";
-			this.BestTieBreak3Box.ReadOnly = true;
-			this.BestTieBreak3Box.Size = new System.Drawing.Size(58, 20);
-			this.BestTieBreak3Box.TabIndex = 20;
-			this.BestTieBreak3Box.TabStop = false;
-			// 
-			// BestTieBreak2Box
-			// 
-			this.BestTieBreak2Box.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.BestTieBreak2Box.Location = new System.Drawing.Point(168, 57);
-			this.BestTieBreak2Box.Name = "BestTieBreak2Box";
-			this.BestTieBreak2Box.ReadOnly = true;
-			this.BestTieBreak2Box.Size = new System.Drawing.Size(58, 20);
-			this.BestTieBreak2Box.TabIndex = 19;
-			this.BestTieBreak2Box.TabStop = false;
-			// 
-			// BestTieBreak1Box
-			// 
-			this.BestTieBreak1Box.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.BestTieBreak1Box.Location = new System.Drawing.Point(168, 37);
-			this.BestTieBreak1Box.Name = "BestTieBreak1Box";
-			this.BestTieBreak1Box.ReadOnly = true;
-			this.BestTieBreak1Box.Size = new System.Drawing.Size(58, 20);
-			this.BestTieBreak1Box.TabIndex = 18;
-			this.BestTieBreak1Box.TabStop = false;
-			// 
-			// BestMaximizeBox
-			// 
-			this.BestMaximizeBox.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.BestMaximizeBox.Location = new System.Drawing.Point(168, 17);
-			this.BestMaximizeBox.Name = "BestMaximizeBox";
-			this.BestMaximizeBox.ReadOnly = true;
-			this.BestMaximizeBox.Size = new System.Drawing.Size(58, 20);
-			this.BestMaximizeBox.TabIndex = 17;
-			this.BestMaximizeBox.TabStop = false;
-			// 
-			// label16
-			// 
-			this.label16.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label16.Location = new System.Drawing.Point(101, 80);
-			this.label16.Name = "label16";
-			this.label16.Text = "Tiebreak 3:";
-			// 
-			// label15
-			// 
-			this.label15.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label15.Location = new System.Drawing.Point(101, 60);
-			this.label15.Name = "label15";
-			this.label15.Text = "Tiebreak 2:";
-			// 
-			// label14
-			// 
-			this.label14.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label14.Location = new System.Drawing.Point(101, 40);
-			this.label14.Name = "label14";
-			this.label14.Text = "Tiebreak 1:";
-			// 
-			// label13
-			// 
-			this.label13.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label13.Location = new System.Drawing.Point(101, 20);
-			this.label13.Name = "label13";
-			this.label13.Text = "Main Value:";
-			// 
-			// label1
-			// 
-			this.label1.Location = new System.Drawing.Point(26, 4);
-			this.label1.Name = "label1";
-			this.label1.Text = "Attempts:";
-			// 
-			// label2
-			// 
-			this.label2.Location = new System.Drawing.Point(33, 19);
-			this.label2.Name = "label2";
-			this.label2.Text = "Frames:";
-			// 
-			// AttemptsLabel
-			// 
-			this.AttemptsLabel.Location = new System.Drawing.Point(101, 4);
-			this.AttemptsLabel.Name = "AttemptsLabel";
-			this.AttemptsLabel.Text = "0";
-			// 
-			// FramesLabel
-			// 
-			this.FramesLabel.Location = new System.Drawing.Point(101, 19);
-			this.FramesLabel.Name = "FramesLabel";
-			this.FramesLabel.Text = "0";
-			// 
-			// GoalGroupBox
-			// 
-			this.GoalGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
-			this.GoalGroupBox.Controls.Add(this.label4);
-			this.GoalGroupBox.Controls.Add(this.FrameLengthNumeric);
-			this.GoalGroupBox.Controls.Add(this.label3);
-			this.GoalGroupBox.Controls.Add(this.panel3);
-			this.GoalGroupBox.Controls.Add(this.panel4);
-			this.GoalGroupBox.Controls.Add(this.panel5);
-			this.GoalGroupBox.Controls.Add(this.panel6);
-			this.GoalGroupBox.Location = new System.Drawing.Point(12, 27);
-			this.GoalGroupBox.Name = "GoalGroupBox";
-			this.GoalGroupBox.Size = new System.Drawing.Size(442, 150);
-			this.GoalGroupBox.TabIndex = 2009;
-			this.GoalGroupBox.TabStop = false;
-			this.GoalGroupBox.Text = "Memory Value Information [?]";
-			this.BotToolTip.SetToolTip(this.GoalGroupBox, "This panel indicates what RAM values in the memory you want to use for the bot to" +
-		" determine its fitness level as it undergoes training.");
-			// 
-			// label4
-			// 
-			this.label4.Location = new System.Drawing.Point(113, 29);
-			this.label4.Name = "label4";
-			this.label4.Text = "frames";
 			// 
 			// FrameLengthNumeric
 			// 
@@ -915,6 +534,24 @@ namespace GeneticAlgorithmBot {
 			this.TieBreaker2Box.Size = new System.Drawing.Size(67, 20);
 			this.TieBreaker2Box.TabIndex = 1003;
 			// 
+			// label1
+			// 
+			this.label1.Location = new System.Drawing.Point(26, 4);
+			this.label1.Name = "label1";
+			this.label1.Text = "Attempts:";
+			// 
+			// label2
+			// 
+			this.label2.Location = new System.Drawing.Point(33, 19);
+			this.label2.Name = "label2";
+			this.label2.Text = "Frames:";
+			// 
+			// label4
+			// 
+			this.label4.Location = new System.Drawing.Point(113, 29);
+			this.label4.Name = "label4";
+			this.label4.Text = "frames";
+			// 
 			// panel4
 			// 
 			this.panel4.Controls.Add(this.TieBreak1Numeric);
@@ -929,139 +566,64 @@ namespace GeneticAlgorithmBot {
 			this.panel4.Size = new System.Drawing.Size(427, 26);
 			this.panel4.TabIndex = 1;
 			// 
-			// ControlGroupBox
+			// ControlsBox
 			// 
-			this.ControlGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.ControlGroupBox.Controls.Add(this.InvisibleEmulationCheckBox);
-			this.ControlGroupBox.Controls.Add(this.panel2);
-			this.ControlGroupBox.Controls.Add(this.StopBtn);
-			this.ControlGroupBox.Controls.Add(this.RunBtn);
-			this.ControlGroupBox.Controls.Add(this.StartFromSlotBox);
-			this.ControlGroupBox.Controls.Add(this.label8);
-			this.ControlGroupBox.Location = new System.Drawing.Point(460, 27);
-			this.ControlGroupBox.Name = "ControlGroupBox";
-			this.ControlGroupBox.Size = new System.Drawing.Size(235, 150);
-			this.ControlGroupBox.TabIndex = 2010;
-			this.ControlGroupBox.TabStop = false;
-			this.ControlGroupBox.Text = "TAStudio Controls [?]";
-			this.BotToolTip.SetToolTip(this.ControlGroupBox, "This panel indicates which save state in the TAStudio to choose from, so the bot " +
-        "can repeatedly load that save state for training.");
-			// 
-			// InvisibleEmulationCheckBox
-			// 
-			this.InvisibleEmulationCheckBox.AutoSize = true;
-			this.InvisibleEmulationCheckBox.Location = new System.Drawing.Point(88, 60);
-			this.InvisibleEmulationCheckBox.Name = "InvisibleEmulationCheckBox";
-			this.InvisibleEmulationCheckBox.Size = new System.Drawing.Size(127, 17);
-			this.InvisibleEmulationCheckBox.TabIndex = 2004;
-			this.InvisibleEmulationCheckBox.Text = "Turn Off Audio/Video";
-			this.InvisibleEmulationCheckBox.UseVisualStyleBackColor = true;
-			// 
-			// panel2
-			// 
-			this.panel2.ContextMenuStrip = this.StatsContextMenu;
-			this.panel2.Controls.Add(this.locLabelEx1);
-			this.panel2.Controls.Add(this.locLabelEx2);
-			this.panel2.Controls.Add(this.label1);
-			this.panel2.Controls.Add(this.label2);
-			this.panel2.Controls.Add(this.FramesLabel);
-			this.panel2.Controls.Add(this.AttemptsLabel);
-			this.panel2.Location = new System.Drawing.Point(6, 85);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(140, 55);
-			this.panel2.TabIndex = 2003;
-			// 
-			// StatsContextMenu
-			// 
-			this.StatsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ClearStatsContextMenuItem});
-			this.StatsContextMenu.Name = "StatsContextMenu";
-			this.StatsContextMenu.Size = new System.Drawing.Size(102, 26);
-			// 
-			// ClearStatsContextMenuItem
-			// 
-			this.ClearStatsContextMenuItem.Text = "&Clear";
-			this.ClearStatsContextMenuItem.Click += new System.EventHandler(this.ClearStatsContextMenuItem_Click);
-			// 
-			// locLabelEx1
-			// 
-			this.locLabelEx1.Location = new System.Drawing.Point(10, 34);
-			this.locLabelEx1.Name = "locLabelEx1";
-			this.locLabelEx1.Text = "Generations:";
-			// 
-			// locLabelEx2
-			// 
-			this.locLabelEx2.Location = new System.Drawing.Point(101, 34);
-			this.locLabelEx2.Name = "locLabelEx2";
-			this.locLabelEx2.Text = "0";
-			// 
-			// StopBtn
-			// 
-			this.StopBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.StopBtn.Location = new System.Drawing.Point(6, 56);
-			this.StopBtn.Name = "StopBtn";
-			this.StopBtn.Size = new System.Drawing.Size(75, 23);
-			this.StopBtn.TabIndex = 2002;
-			this.StopBtn.Text = "&Stop";
-			this.StopBtn.UseVisualStyleBackColor = true;
-			this.StopBtn.Visible = false;
-			this.StopBtn.Click += new System.EventHandler(this.StopBtn_Click);
-			// 
-			// StartFromSlotBox
-			// 
-			this.StartFromSlotBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.StartFromSlotBox.FormattingEnabled = true;
-			this.StartFromSlotBox.Items.AddRange(new object[] {
-            "Slot 1",
-            "Slot 2",
-            "Slot 3",
-            "Slot 4",
-            "Slot 5",
-            "Slot 6",
-            "Slot 7",
-            "Slot 8",
-            "Slot 9",
-            "Slot 0"});
-			this.StartFromSlotBox.Location = new System.Drawing.Point(71, 25);
-			this.StartFromSlotBox.Name = "StartFromSlotBox";
-			this.StartFromSlotBox.Size = new System.Drawing.Size(75, 21);
-			this.StartFromSlotBox.TabIndex = 2000;
-			// 
-			// label8
-			// 
-			this.label8.Location = new System.Drawing.Point(7, 29);
-			this.label8.Name = "label8";
-			this.label8.Text = "Start From:";
-			// 
-			// BestGroupBox
-			// 
-			this.BestGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.ControlsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.BestGroupBox.Controls.Add(this.btnCopyBestInput);
-			this.BestGroupBox.Controls.Add(this.PlayBestButton);
-			this.BestGroupBox.Controls.Add(this.ClearBestButton);
-			this.BestGroupBox.Controls.Add(this.BestAttemptNumberLabel);
-			this.BestGroupBox.Controls.Add(this.label17);
-			this.BestGroupBox.Controls.Add(this.panel1);
-			this.BestGroupBox.Controls.Add(this.BestTieBreak3Box);
-			this.BestGroupBox.Controls.Add(this.BestTieBreak2Box);
-			this.BestGroupBox.Controls.Add(this.BestTieBreak1Box);
-			this.BestGroupBox.Controls.Add(this.BestMaximizeBox);
-			this.BestGroupBox.Controls.Add(this.label16);
-			this.BestGroupBox.Controls.Add(this.label15);
-			this.BestGroupBox.Controls.Add(this.label14);
-			this.BestGroupBox.Controls.Add(this.label13);
-			this.BestGroupBox.Location = new System.Drawing.Point(461, 183);
-			this.BestGroupBox.Name = "BestGroupBox";
-			this.BestGroupBox.Size = new System.Drawing.Size(235, 369);
-			this.BestGroupBox.TabIndex = 2008;
-			this.BestGroupBox.TabStop = false;
-			this.BestGroupBox.Text = "Best Fitness Information [?]";
-			this.BotToolTip.SetToolTip(this.BestGroupBox, "This panel records the best fitness the bot has achieved during its training mode" +
-        "l. It will persist the input controls to achieve the best fitness, until a bette" +
-        "r attempt is given.");
+			this.ControlsBox.Controls.Add(this.ControlProbabilityPanel);
+			this.ControlsBox.Location = new System.Drawing.Point(12, 183);
+			this.ControlsBox.Name = "ControlsBox";
+			this.ControlsBox.Size = new System.Drawing.Size(442, 369);
+			this.ControlsBox.TabIndex = 2007;
+			this.ControlsBox.TabStop = false;
+			this.ControlsBox.Text = "Input Probability Controls [?]";
+			this.BotToolTip.SetToolTip(this.ControlsBox, "This panel here indicates the likelihood the specified controls are chosen when t" +
+        "he bot mutates its training model.");
+			// 
+			// ControlProbabilityPanel
+			// 
+			this.ControlProbabilityPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.ControlProbabilityPanel.AutoScroll = true;
+			this.ControlProbabilityPanel.Location = new System.Drawing.Point(6, 19);
+			this.ControlProbabilityPanel.Name = "ControlProbabilityPanel";
+			this.ControlProbabilityPanel.Size = new System.Drawing.Size(430, 344);
+			this.ControlProbabilityPanel.TabIndex = 0;
+			// 
+			// btnCopyBestInput
+			// 
+			this.btnCopyBestInput.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.btnCopyBestInput.Location = new System.Drawing.Point(12, 94);
+			this.btnCopyBestInput.Name = "btnCopyBestInput";
+			this.btnCopyBestInput.Size = new System.Drawing.Size(75, 23);
+			this.btnCopyBestInput.TabIndex = 2005;
+			this.btnCopyBestInput.Text = "&Copy";
+			this.BotToolTip.SetToolTip(this.btnCopyBestInput, "\"Copy to Clipboard.  Then possible to paste to text file or directly into TasStud" +
+        "io.");
+			this.btnCopyBestInput.UseVisualStyleBackColor = true;
+			this.btnCopyBestInput.Click += new System.EventHandler(this.BtnCopyBestInput_Click);
+			// 
+			// GoalGroupBox
+			// 
+			this.GoalGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.GoalGroupBox.Controls.Add(this.label4);
+			this.GoalGroupBox.Controls.Add(this.FrameLengthNumeric);
+			this.GoalGroupBox.Controls.Add(this.label3);
+			this.GoalGroupBox.Controls.Add(this.panel3);
+			this.GoalGroupBox.Controls.Add(this.panel4);
+			this.GoalGroupBox.Controls.Add(this.panel5);
+			this.GoalGroupBox.Controls.Add(this.panel6);
+			this.GoalGroupBox.Location = new System.Drawing.Point(12, 27);
+			this.GoalGroupBox.Name = "GoalGroupBox";
+			this.GoalGroupBox.Size = new System.Drawing.Size(442, 150);
+			this.GoalGroupBox.TabIndex = 2009;
+			this.GoalGroupBox.TabStop = false;
+			this.GoalGroupBox.Text = "Memory Value Information [?]";
+			this.BotToolTip.SetToolTip(this.GoalGroupBox, "This panel indicates what RAM values in the memory you want to use for the bot to" +
+        " determine its fitness level as it undergoes training.");
 			// 
 			// panel6
 			// 
@@ -1156,6 +718,314 @@ namespace GeneticAlgorithmBot {
 			this.Tiebreak3Operator.Size = new System.Drawing.Size(40, 21);
 			this.Tiebreak3Operator.TabIndex = 1017;
 			// 
+			// ControlGroupBox
+			// 
+			this.ControlGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.ControlGroupBox.Controls.Add(this.InvisibleEmulationCheckBox);
+			this.ControlGroupBox.Controls.Add(this.panel2);
+			this.ControlGroupBox.Controls.Add(this.StopBtn);
+			this.ControlGroupBox.Controls.Add(this.RunBtn);
+			this.ControlGroupBox.Controls.Add(this.StartFromSlotBox);
+			this.ControlGroupBox.Controls.Add(this.label8);
+			this.ControlGroupBox.Location = new System.Drawing.Point(460, 27);
+			this.ControlGroupBox.Name = "ControlGroupBox";
+			this.ControlGroupBox.Size = new System.Drawing.Size(235, 150);
+			this.ControlGroupBox.TabIndex = 2010;
+			this.ControlGroupBox.TabStop = false;
+			this.ControlGroupBox.Text = "TAStudio Controls [?]";
+			this.BotToolTip.SetToolTip(this.ControlGroupBox, "This panel indicates which save state in the TAStudio to choose from, so the bot " +
+        "can repeatedly load that save state for training.");
+			// 
+			// InvisibleEmulationCheckBox
+			// 
+			this.InvisibleEmulationCheckBox.AutoSize = true;
+			this.InvisibleEmulationCheckBox.Location = new System.Drawing.Point(88, 60);
+			this.InvisibleEmulationCheckBox.Name = "InvisibleEmulationCheckBox";
+			this.InvisibleEmulationCheckBox.Size = new System.Drawing.Size(127, 17);
+			this.InvisibleEmulationCheckBox.TabIndex = 2004;
+			this.InvisibleEmulationCheckBox.Text = "Turn Off Audio/Video";
+			this.InvisibleEmulationCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// panel2
+			// 
+			this.panel2.ContextMenuStrip = this.StatsContextMenu;
+			this.panel2.Controls.Add(this.locLabelEx1);
+			this.panel2.Controls.Add(this.GenerationsLabel);
+			this.panel2.Controls.Add(this.label1);
+			this.panel2.Controls.Add(this.label2);
+			this.panel2.Controls.Add(this.FramesLabel);
+			this.panel2.Controls.Add(this.AttemptsLabel);
+			this.panel2.Location = new System.Drawing.Point(6, 85);
+			this.panel2.Name = "panel2";
+			this.panel2.Size = new System.Drawing.Size(140, 55);
+			this.panel2.TabIndex = 2003;
+			// 
+			// StatsContextMenu
+			// 
+			this.StatsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ClearStatsContextMenuItem});
+			this.StatsContextMenu.Name = "StatsContextMenu";
+			this.StatsContextMenu.Size = new System.Drawing.Size(102, 26);
+			// 
+			// ClearStatsContextMenuItem
+			// 
+			this.ClearStatsContextMenuItem.Text = "&Clear";
+			this.ClearStatsContextMenuItem.Click += new System.EventHandler(this.ClearStatsContextMenuItem_Click);
+			// 
+			// locLabelEx1
+			// 
+			this.locLabelEx1.Location = new System.Drawing.Point(10, 34);
+			this.locLabelEx1.Name = "locLabelEx1";
+			this.locLabelEx1.Text = "Generations:";
+			// 
+			// GenerationsLabel
+			// 
+			this.GenerationsLabel.Location = new System.Drawing.Point(101, 34);
+			this.GenerationsLabel.Name = "GenerationsLabel";
+			this.GenerationsLabel.Text = "0";
+			// 
+			// FramesLabel
+			// 
+			this.FramesLabel.Location = new System.Drawing.Point(101, 19);
+			this.FramesLabel.Name = "FramesLabel";
+			this.FramesLabel.Text = "0";
+			// 
+			// AttemptsLabel
+			// 
+			this.AttemptsLabel.Location = new System.Drawing.Point(101, 4);
+			this.AttemptsLabel.Name = "AttemptsLabel";
+			this.AttemptsLabel.Text = "0";
+			// 
+			// StopBtn
+			// 
+			this.StopBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.StopBtn.Location = new System.Drawing.Point(6, 56);
+			this.StopBtn.Name = "StopBtn";
+			this.StopBtn.Size = new System.Drawing.Size(75, 23);
+			this.StopBtn.TabIndex = 2002;
+			this.StopBtn.Text = "&Stop";
+			this.StopBtn.UseVisualStyleBackColor = true;
+			this.StopBtn.Visible = false;
+			this.StopBtn.Click += new System.EventHandler(this.StopBtn_Click);
+			// 
+			// RunBtn
+			// 
+			this.RunBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.RunBtn.Location = new System.Drawing.Point(6, 56);
+			this.RunBtn.Name = "RunBtn";
+			this.RunBtn.Size = new System.Drawing.Size(75, 23);
+			this.RunBtn.TabIndex = 2001;
+			this.RunBtn.Text = "&Run";
+			this.RunBtn.UseVisualStyleBackColor = true;
+			this.RunBtn.Click += new System.EventHandler(this.RunBtn_Click);
+			// 
+			// StartFromSlotBox
+			// 
+			this.StartFromSlotBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.StartFromSlotBox.FormattingEnabled = true;
+			this.StartFromSlotBox.Items.AddRange(new object[] {
+            "Slot 1",
+            "Slot 2",
+            "Slot 3",
+            "Slot 4",
+            "Slot 5",
+            "Slot 6",
+            "Slot 7",
+            "Slot 8",
+            "Slot 9",
+            "Slot 0"});
+			this.StartFromSlotBox.Location = new System.Drawing.Point(71, 25);
+			this.StartFromSlotBox.Name = "StartFromSlotBox";
+			this.StartFromSlotBox.Size = new System.Drawing.Size(75, 21);
+			this.StartFromSlotBox.TabIndex = 2000;
+			// 
+			// label8
+			// 
+			this.label8.Location = new System.Drawing.Point(7, 29);
+			this.label8.Name = "label8";
+			this.label8.Text = "Start From:";
+			// 
+			// BestGroupBox
+			// 
+			this.BestGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.BestGroupBox.Controls.Add(this.btnCopyBestInput);
+			this.BestGroupBox.Controls.Add(this.PlayBestButton);
+			this.BestGroupBox.Controls.Add(this.ClearBestButton);
+			this.BestGroupBox.Controls.Add(this.BestAttemptNumberLabel);
+			this.BestGroupBox.Controls.Add(this.label17);
+			this.BestGroupBox.Controls.Add(this.panel1);
+			this.BestGroupBox.Controls.Add(this.BestTieBreak3Box);
+			this.BestGroupBox.Controls.Add(this.BestTieBreak2Box);
+			this.BestGroupBox.Controls.Add(this.BestTieBreak1Box);
+			this.BestGroupBox.Controls.Add(this.BestMaximizeBox);
+			this.BestGroupBox.Controls.Add(this.label16);
+			this.BestGroupBox.Controls.Add(this.label15);
+			this.BestGroupBox.Controls.Add(this.label14);
+			this.BestGroupBox.Controls.Add(this.label13);
+			this.BestGroupBox.Location = new System.Drawing.Point(461, 183);
+			this.BestGroupBox.Name = "BestGroupBox";
+			this.BestGroupBox.Size = new System.Drawing.Size(235, 369);
+			this.BestGroupBox.TabIndex = 2008;
+			this.BestGroupBox.TabStop = false;
+			this.BestGroupBox.Text = "Best Fitness Information [?]";
+			this.BotToolTip.SetToolTip(this.BestGroupBox, "This panel records the best fitness the bot has achieved during its training mode" +
+        "l. It will persist the input controls to achieve the best fitness, until a bette" +
+        "r attempt is given.");
+			// 
+			// PlayBestButton
+			// 
+			this.PlayBestButton.Enabled = false;
+			this.PlayBestButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.PlayBestButton.Location = new System.Drawing.Point(12, 46);
+			this.PlayBestButton.Name = "PlayBestButton";
+			this.PlayBestButton.Size = new System.Drawing.Size(75, 23);
+			this.PlayBestButton.TabIndex = 2004;
+			this.PlayBestButton.Text = "&Play";
+			this.PlayBestButton.UseVisualStyleBackColor = true;
+			this.PlayBestButton.Click += new System.EventHandler(this.PlayBestButton_Click);
+			// 
+			// ClearBestButton
+			// 
+			this.ClearBestButton.Enabled = false;
+			this.ClearBestButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.ClearBestButton.Location = new System.Drawing.Point(12, 70);
+			this.ClearBestButton.Name = "ClearBestButton";
+			this.ClearBestButton.Size = new System.Drawing.Size(75, 23);
+			this.ClearBestButton.TabIndex = 2003;
+			this.ClearBestButton.Text = "&Clear";
+			this.ClearBestButton.UseVisualStyleBackColor = true;
+			this.ClearBestButton.Click += new System.EventHandler(this.ClearBestButton_Click);
+			// 
+			// BestAttemptNumberLabel
+			// 
+			this.BestAttemptNumberLabel.Location = new System.Drawing.Point(59, 20);
+			this.BestAttemptNumberLabel.Name = "BestAttemptNumberLabel";
+			this.BestAttemptNumberLabel.Text = "0";
+			// 
+			// label17
+			// 
+			this.label17.Location = new System.Drawing.Point(17, 20);
+			this.label17.Name = "label17";
+			this.label17.Text = "Attempt:";
+			// 
+			// panel1
+			// 
+			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.panel1.AutoScroll = true;
+			this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.panel1.Controls.Add(this.BestAttemptLogLabel);
+			this.panel1.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.panel1.Location = new System.Drawing.Point(12, 125);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(217, 238);
+			this.panel1.TabIndex = 21;
+			// 
+			// BestAttemptLogLabel
+			// 
+			this.BestAttemptLogLabel.Location = new System.Drawing.Point(8, 8);
+			this.BestAttemptLogLabel.Name = "BestAttemptLogLabel";
+			this.BestAttemptLogLabel.Text = "     ";
+			// 
+			// BestTieBreak3Box
+			// 
+			this.BestTieBreak3Box.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.BestTieBreak3Box.Location = new System.Drawing.Point(168, 77);
+			this.BestTieBreak3Box.Name = "BestTieBreak3Box";
+			this.BestTieBreak3Box.ReadOnly = true;
+			this.BestTieBreak3Box.Size = new System.Drawing.Size(58, 20);
+			this.BestTieBreak3Box.TabIndex = 20;
+			this.BestTieBreak3Box.TabStop = false;
+			// 
+			// BestTieBreak2Box
+			// 
+			this.BestTieBreak2Box.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.BestTieBreak2Box.Location = new System.Drawing.Point(168, 57);
+			this.BestTieBreak2Box.Name = "BestTieBreak2Box";
+			this.BestTieBreak2Box.ReadOnly = true;
+			this.BestTieBreak2Box.Size = new System.Drawing.Size(58, 20);
+			this.BestTieBreak2Box.TabIndex = 19;
+			this.BestTieBreak2Box.TabStop = false;
+			// 
+			// BestTieBreak1Box
+			// 
+			this.BestTieBreak1Box.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.BestTieBreak1Box.Location = new System.Drawing.Point(168, 37);
+			this.BestTieBreak1Box.Name = "BestTieBreak1Box";
+			this.BestTieBreak1Box.ReadOnly = true;
+			this.BestTieBreak1Box.Size = new System.Drawing.Size(58, 20);
+			this.BestTieBreak1Box.TabIndex = 18;
+			this.BestTieBreak1Box.TabStop = false;
+			// 
+			// BestMaximizeBox
+			// 
+			this.BestMaximizeBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.BestMaximizeBox.Location = new System.Drawing.Point(168, 17);
+			this.BestMaximizeBox.Name = "BestMaximizeBox";
+			this.BestMaximizeBox.ReadOnly = true;
+			this.BestMaximizeBox.Size = new System.Drawing.Size(58, 20);
+			this.BestMaximizeBox.TabIndex = 17;
+			this.BestMaximizeBox.TabStop = false;
+			// 
+			// label16
+			// 
+			this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.label16.Location = new System.Drawing.Point(101, 80);
+			this.label16.Name = "label16";
+			this.label16.Text = "Tiebreak 3:";
+			// 
+			// label15
+			// 
+			this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.label15.Location = new System.Drawing.Point(101, 60);
+			this.label15.Name = "label15";
+			this.label15.Text = "Tiebreak 2:";
+			// 
+			// label14
+			// 
+			this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.label14.Location = new System.Drawing.Point(101, 40);
+			this.label14.Name = "label14";
+			this.label14.Text = "Tiebreak 1:";
+			// 
+			// label13
+			// 
+			this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.label13.Location = new System.Drawing.Point(101, 20);
+			this.label13.Name = "label13";
+			this.label13.Text = "Main Value:";
+			// 
+			// BotStatusStrip
+			// 
+			this.BotStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.BotStatusButton,
+            this.MessageLabel});
+			this.BotStatusStrip.Location = new System.Drawing.Point(0, 565);
+			this.BotStatusStrip.Name = "BotStatusStrip";
+			this.BotStatusStrip.Size = new System.Drawing.Size(707, 22);
+			this.BotStatusStrip.TabIndex = 2;
+			this.BotStatusStrip.Text = "statusStrip1";
+			// 
+			// BotStatusButton
+			// 
+			this.BotStatusButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.BotStatusButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.BotStatusButton.Name = "BotStatusButton";
+			this.BotStatusButton.RightToLeftAutoMirrorImage = true;
+			this.BotStatusButton.Size = new System.Drawing.Size(0, 17);
+			this.BotStatusButton.Text = " ";
+			this.BotStatusButton.ToolTipText = " ";
+			// 
+			// MessageLabel
+			// 
+			this.MessageLabel.Name = "MessageLabel";
+			this.MessageLabel.Size = new System.Drawing.Size(37, 17);
+			this.MessageLabel.Text = "          ";
+			// 
 			// SettingsSubMenu
 			// 
 			this.SettingsSubMenu.Text = "Settings";
@@ -1163,6 +1033,110 @@ namespace GeneticAlgorithmBot {
 			// HelpSubMenu
 			// 
 			this.HelpSubMenu.Text = "Help";
+			// 
+			// TurboWhileBottingMenuItem
+			// 
+			this.TurboWhileBottingMenuItem.Text = "Turbo While Botting";
+			this.TurboWhileBottingMenuItem.Click += new System.EventHandler(this.TurboWhileBottingMenuItem_Click);
+			// 
+			// BigEndianMenuItem
+			// 
+			this.BigEndianMenuItem.Text = "Big Endian";
+			this.BigEndianMenuItem.Click += new System.EventHandler(this.BigEndianMenuItem_Click);
+			// 
+			// _4ByteMenuItem
+			// 
+			this._4ByteMenuItem.Text = "4 Bytes";
+			this._4ByteMenuItem.Click += new System.EventHandler(this.FourByteMenuItem_Click);
+			// 
+			// _2ByteMenuItem
+			// 
+			this._2ByteMenuItem.Text = "2 Bytes";
+			this._2ByteMenuItem.Click += new System.EventHandler(this.TwoByteMenuItem_Click);
+			// 
+			// _1ByteMenuItem
+			// 
+			this._1ByteMenuItem.Text = "1 Byte";
+			this._1ByteMenuItem.Click += new System.EventHandler(this.OneByteMenuItem_Click);
+			// 
+			// DataSizeMenuItem
+			// 
+			this.DataSizeMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._1ByteMenuItem,
+            this._2ByteMenuItem,
+            this._4ByteMenuItem});
+			this.DataSizeMenuItem.Text = "Data Size";
+			this.DataSizeMenuItem.DropDownOpened += new System.EventHandler(this.DataSizeMenuItem_DropDownOpened);
+			// 
+			// OptionsSubMenu
+			// 
+			this.OptionsSubMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MemoryDomainsMenuItem,
+            this.DataSizeMenuItem,
+            this.BigEndianMenuItem,
+            this.toolStripSeparator4,
+            this.TurboWhileBottingMenuItem});
+			this.OptionsSubMenu.Text = "&Options";
+			this.OptionsSubMenu.DropDownOpened += new System.EventHandler(this.OptionsSubMenu_DropDownOpened);
+			// 
+			// MemoryDomainsMenuItem
+			// 
+			this.MemoryDomainsMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripSeparator3});
+			this.MemoryDomainsMenuItem.Text = "Memory Domains";
+			this.MemoryDomainsMenuItem.DropDownOpened += new System.EventHandler(this.MemoryDomainsMenuItem_DropDownOpened);
+			// 
+			// RecentSubMenu
+			// 
+			this.RecentSubMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripSeparator2});
+			this.RecentSubMenu.Text = "Recent";
+			this.RecentSubMenu.DropDownOpened += new System.EventHandler(this.RecentSubMenu_DropDownOpened);
+			// 
+			// SaveAsMenuItem
+			// 
+			this.SaveAsMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
+			this.SaveAsMenuItem.Text = "Save &As...";
+			this.SaveAsMenuItem.Click += new System.EventHandler(this.SaveAsMenuItem_Click);
+			// 
+			// SaveMenuItem
+			// 
+			this.SaveMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+			this.SaveMenuItem.Text = "&Save";
+			this.SaveMenuItem.Click += new System.EventHandler(this.SaveMenuItem_Click);
+			// 
+			// OpenMenuItem
+			// 
+			this.OpenMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+			this.OpenMenuItem.Text = "&Open...";
+			this.OpenMenuItem.Click += new System.EventHandler(this.OpenMenuItem_Click);
+			// 
+			// NewMenuItem
+			// 
+			this.NewMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+			this.NewMenuItem.Text = "&New";
+			this.NewMenuItem.Click += new System.EventHandler(this.NewMenuItem_Click);
+			// 
+			// FileSubMenu
+			// 
+			this.FileSubMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.NewMenuItem,
+            this.OpenMenuItem,
+            this.SaveMenuItem,
+            this.SaveAsMenuItem,
+            this.RecentSubMenu});
+			this.FileSubMenu.Text = "&File";
+			this.FileSubMenu.DropDownOpened += new System.EventHandler(this.FileSubMenu_DropDownOpened);
+			// 
+			// BotMenu
+			// 
+			this.BotMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.FileSubMenu,
+            this.OptionsSubMenu,
+            this.SettingsSubMenu,
+            this.HelpSubMenu});
+			this.BotMenu.TabIndex = 0;
 			// 
 			// GeneticAlgorithmBot
 			// 
@@ -1186,6 +1160,12 @@ namespace GeneticAlgorithmBot {
 			((System.ComponentModel.ISupportInitialize)(this.TieBreak2Numeric)).EndInit();
 			this.panel4.ResumeLayout(false);
 			this.panel4.PerformLayout();
+			this.ControlsBox.ResumeLayout(false);
+			this.GoalGroupBox.ResumeLayout(false);
+			this.GoalGroupBox.PerformLayout();
+			this.panel6.ResumeLayout(false);
+			this.panel6.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.TieBreak3Numeric)).EndInit();
 			this.ControlGroupBox.ResumeLayout(false);
 			this.ControlGroupBox.PerformLayout();
 			this.panel2.ResumeLayout(false);
@@ -1195,12 +1175,6 @@ namespace GeneticAlgorithmBot {
 			this.BestGroupBox.PerformLayout();
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
-			this.GoalGroupBox.ResumeLayout(false);
-			this.GoalGroupBox.PerformLayout();
-			this.panel6.ResumeLayout(false);
-			this.panel6.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.TieBreak3Numeric)).EndInit();
-			this.ControlsBox.ResumeLayout(false);
 			this.BotStatusStrip.ResumeLayout(false);
 			this.BotStatusStrip.PerformLayout();
 			this.BotMenu.ResumeLayout(false);
