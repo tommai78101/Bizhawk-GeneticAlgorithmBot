@@ -27,111 +27,109 @@ namespace GeneticAlgorithmBot {
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public partial class GeneticAlgorithmBot {
         
-        private static global::System.Resources.ResourceManager resourceMan;
+        public static global::System.Resources.ResourceManager resourceMan;
         
-        private static global::System.Globalization.CultureInfo resourceCulture;
+        public static global::System.Globalization.CultureInfo resourceCulture;
 
-		private readonly BotAttempt _comparisonAttempt;
-		private BotAttempt _currentAttempt;
-		private NumericUpDown FrameLengthNumeric;
-		private RadioButton TieBreak1BestRadio;
-		private BizHawk.WinForms.Controls.LocLabelEx label5;
-		private HexTextBox TieBreaker1Box;
-		private BizHawk.WinForms.Controls.LocLabelEx label10;
-		private NumericUpDown MainValueNumeric;
-		private RadioButton MainValueRadio;
-		private RadioButton MainBestRadio;
-		private ComboBox MainOperator;
-		private BizHawk.WinForms.Controls.LocLabelEx label9;
-		private NumericUpDown TieBreak1Numeric;
-		private RadioButton TieBreak1ValueRadio;
-		private ComboBox Tiebreak1Operator;
-		private HexTextBox MaximizeAddressBox;
-		private BizHawk.WinForms.Controls.LocLabelEx maximizeLabeltext;
-		private BizHawk.WinForms.Controls.LocLabelEx label3;
-		private Panel panel3;
-		private Panel panel5;
-		private NumericUpDown TieBreak2Numeric;
-		private ComboBox Tiebreak2Operator;
-		private RadioButton TieBreak2ValueRadio;
-		private RadioButton TieBreak2BestRadio;
-		private BizHawk.WinForms.Controls.LocLabelEx label11;
-		private BizHawk.WinForms.Controls.LocLabelEx label6;
-		private HexTextBox TieBreaker2Box;
-		private BizHawk.WinForms.Controls.LocLabelEx label1;
-		private BizHawk.WinForms.Controls.LocLabelEx label2;
-		private BizHawk.WinForms.Controls.LocLabelEx label4;
-		private Panel panel4;
-		private ToolTip BotToolTip;
-		private IContainer components;
-		private Button btnCopyBestInput;
-		private ContextMenuStrip StatsContextMenu;
-		private BizHawk.WinForms.Controls.ToolStripMenuItemEx ClearStatsContextMenuItem;
-		private CheckBox InvisibleEmulationCheckBox;
-		private Panel panel2;
-		private BizHawk.WinForms.Controls.LocLabelEx FramesLabel;
-		private BizHawk.WinForms.Controls.LocLabelEx AttemptsLabel;
-		private GroupBox ControlGroupBox;
-		private Button StopBtn;
-		private Button RunBtn;
-		private ComboBox StartFromSlotBox;
-		private BizHawk.WinForms.Controls.LocLabelEx label8;
-		private BizHawk.WinForms.Controls.LocLabelEx label12;
-		private BizHawk.WinForms.Controls.LocLabelEx label7;
-		private HexTextBox TieBreaker3Box;
-		private NumericUpDown TieBreak3Numeric;
-		private RadioButton TieBreak3ValueRadio;
-		private RadioButton TieBreak3BestRadio;
-		private Panel panel6;
-		private ComboBox Tiebreak3Operator;
-		private StatusStrip BotStatusStrip;
-		private ToolStripStatusLabel BotStatusButton;
-		private ToolStripStatusLabel MessageLabel;
-		private BizHawk.WinForms.Controls.ToolStripMenuItemEx SettingsSubMenu;
-		private BizHawk.WinForms.Controls.ToolStripMenuItemEx HelpSubMenu;
-		private BizHawk.WinForms.Controls.ToolStripMenuItemEx TurboWhileBottingMenuItem;
-		private BizHawk.WinForms.Controls.ToolStripSeparatorEx toolStripSeparator4;
-		private BizHawk.WinForms.Controls.ToolStripMenuItemEx BigEndianMenuItem;
-		private BizHawk.WinForms.Controls.ToolStripMenuItemEx _4ByteMenuItem;
-		private BizHawk.WinForms.Controls.ToolStripMenuItemEx _2ByteMenuItem;
-		private BizHawk.WinForms.Controls.ToolStripMenuItemEx _1ByteMenuItem;
-		private BizHawk.WinForms.Controls.ToolStripMenuItemEx DataSizeMenuItem;
-		private BizHawk.WinForms.Controls.ToolStripSeparatorEx toolStripSeparator3;
-		private BizHawk.WinForms.Controls.ToolStripMenuItemEx OptionsSubMenu;
-		private BizHawk.WinForms.Controls.ToolStripMenuItemEx MemoryDomainsMenuItem;
-		private BizHawk.WinForms.Controls.ToolStripSeparatorEx toolStripSeparator2;
-		private BizHawk.WinForms.Controls.ToolStripMenuItemEx RecentSubMenu;
-		private BizHawk.WinForms.Controls.ToolStripMenuItemEx SaveAsMenuItem;
-		private BizHawk.WinForms.Controls.ToolStripMenuItemEx SaveMenuItem;
-		private BizHawk.WinForms.Controls.ToolStripMenuItemEx OpenMenuItem;
-		private BizHawk.WinForms.Controls.ToolStripMenuItemEx NewMenuItem;
-		private BizHawk.WinForms.Controls.ToolStripMenuItemEx FileSubMenu;
-		private BizHawk.WinForms.Controls.MenuStripEx BotMenu;
-		private TextBox BestTieBreak3Box;
-		private TextBox BestTieBreak2Box;
-		private TextBox BestTieBreak1Box;
-		private TextBox BestMaximizeBox;
-		private BizHawk.WinForms.Controls.LocLabelEx label16;
-		private BizHawk.WinForms.Controls.LocLabelEx label15;
-		private BizHawk.WinForms.Controls.LocLabelEx label14;
-		private BizHawk.WinForms.Controls.LocLabelEx label13;
-		private BizHawk.WinForms.Controls.LocLabelEx BestAttemptLogLabel;
-		private Button PlayBestButton;
-		private Button ClearBestButton;
-		private BizHawk.WinForms.Controls.LocLabelEx BestAttemptNumberLabel;
-		private BizHawk.WinForms.Controls.LocLabelEx label17;
-		private Panel panel1;
-		private GroupBox BestGroupBox;
-		private Panel ControlProbabilityPanel;
-		private GroupBox GoalGroupBox;
-		private GroupBox ControlsBox;
-		private BizHawk.WinForms.Controls.LocLabelEx locLabelEx1;
-		private BizHawk.WinForms.Controls.LocLabelEx GenerationsLabel;
-		private BotAttempt _bestAttempt;
-		private NumericUpDown PopulationSizeNumeric;
-		private Label PopulationSizeLabel;
+		public NumericUpDown FrameLengthNumeric;
+		public RadioButton TieBreak1BestRadio;
+		public BizHawk.WinForms.Controls.LocLabelEx label5;
+		public HexTextBox TieBreaker1Box;
+		public BizHawk.WinForms.Controls.LocLabelEx label10;
+		public NumericUpDown MainValueNumeric;
+		public RadioButton MainValueRadio;
+		public RadioButton MainBestRadio;
+		public ComboBox MainOperator;
+		public BizHawk.WinForms.Controls.LocLabelEx label9;
+		public NumericUpDown TieBreak1Numeric;
+		public RadioButton TieBreak1ValueRadio;
+		public ComboBox Tiebreak1Operator;
+		public HexTextBox MaximizeAddressBox;
+		public BizHawk.WinForms.Controls.LocLabelEx maximizeLabeltext;
+		public BizHawk.WinForms.Controls.LocLabelEx label3;
+		public Panel panel3;
+		public Panel panel5;
+		public NumericUpDown TieBreak2Numeric;
+		public ComboBox Tiebreak2Operator;
+		public RadioButton TieBreak2ValueRadio;
+		public RadioButton TieBreak2BestRadio;
+		public BizHawk.WinForms.Controls.LocLabelEx label11;
+		public BizHawk.WinForms.Controls.LocLabelEx label6;
+		public HexTextBox TieBreaker2Box;
+		public BizHawk.WinForms.Controls.LocLabelEx label1;
+		public BizHawk.WinForms.Controls.LocLabelEx label2;
+		public BizHawk.WinForms.Controls.LocLabelEx label4;
+		public Panel panel4;
+		public ToolTip BotToolTip;
+		public IContainer components;
+		public Button btnCopyBestInput;
+		public ContextMenuStrip StatsContextMenu;
+		public BizHawk.WinForms.Controls.ToolStripMenuItemEx ClearStatsContextMenuItem;
+		public CheckBox InvisibleEmulationCheckBox;
+		public Panel panel2;
+		public BizHawk.WinForms.Controls.LocLabelEx FramesLabel;
+		public BizHawk.WinForms.Controls.LocLabelEx AttemptsLabel;
+		public GroupBox ControlGroupBox;
+		public Button StopBtn;
+		public Button RunBtn;
+		public ComboBox StartFromSlotBox;
+		public BizHawk.WinForms.Controls.LocLabelEx label8;
+		public BizHawk.WinForms.Controls.LocLabelEx label12;
+		public BizHawk.WinForms.Controls.LocLabelEx label7;
+		public HexTextBox TieBreaker3Box;
+		public NumericUpDown TieBreak3Numeric;
+		public RadioButton TieBreak3ValueRadio;
+		public RadioButton TieBreak3BestRadio;
+		public Panel panel6;
+		public ComboBox Tiebreak3Operator;
+		public StatusStrip BotStatusStrip;
+		public ToolStripStatusLabel BotStatusButton;
+		public ToolStripStatusLabel MessageLabel;
+		public BizHawk.WinForms.Controls.ToolStripMenuItemEx SettingsSubMenu;
+		public BizHawk.WinForms.Controls.ToolStripMenuItemEx HelpSubMenu;
+		public BizHawk.WinForms.Controls.ToolStripMenuItemEx TurboWhileBottingMenuItem;
+		public BizHawk.WinForms.Controls.ToolStripSeparatorEx toolStripSeparator4;
+		public BizHawk.WinForms.Controls.ToolStripMenuItemEx BigEndianMenuItem;
+		public BizHawk.WinForms.Controls.ToolStripMenuItemEx _4ByteMenuItem;
+		public BizHawk.WinForms.Controls.ToolStripMenuItemEx _2ByteMenuItem;
+		public BizHawk.WinForms.Controls.ToolStripMenuItemEx _1ByteMenuItem;
+		public BizHawk.WinForms.Controls.ToolStripMenuItemEx DataSizeMenuItem;
+		public BizHawk.WinForms.Controls.ToolStripSeparatorEx toolStripSeparator3;
+		public BizHawk.WinForms.Controls.ToolStripMenuItemEx OptionsSubMenu;
+		public BizHawk.WinForms.Controls.ToolStripMenuItemEx MemoryDomainsMenuItem;
+		public BizHawk.WinForms.Controls.ToolStripSeparatorEx toolStripSeparator2;
+		public BizHawk.WinForms.Controls.ToolStripMenuItemEx RecentSubMenu;
+		public BizHawk.WinForms.Controls.ToolStripMenuItemEx SaveAsMenuItem;
+		public BizHawk.WinForms.Controls.ToolStripMenuItemEx SaveMenuItem;
+		public BizHawk.WinForms.Controls.ToolStripMenuItemEx OpenMenuItem;
+		public BizHawk.WinForms.Controls.ToolStripMenuItemEx NewMenuItem;
+		public BizHawk.WinForms.Controls.ToolStripMenuItemEx FileSubMenu;
+		public BizHawk.WinForms.Controls.MenuStripEx BotMenu;
+		public TextBox BestTieBreak3Box;
+		public TextBox BestTieBreak2Box;
+		public TextBox BestTieBreak1Box;
+		public TextBox BestMaximizeBox;
+		public BizHawk.WinForms.Controls.LocLabelEx label16;
+		public BizHawk.WinForms.Controls.LocLabelEx label15;
+		public BizHawk.WinForms.Controls.LocLabelEx label14;
+		public BizHawk.WinForms.Controls.LocLabelEx label13;
+		public BizHawk.WinForms.Controls.LocLabelEx BestAttemptLogLabel;
+		public Button PlayBestButton;
+		public Button ClearBestButton;
+		public BizHawk.WinForms.Controls.LocLabelEx BestAttemptNumberLabel;
+		public BizHawk.WinForms.Controls.LocLabelEx label17;
+		public Panel panel1;
+		public GroupBox BestGroupBox;
+		public Panel ControlProbabilityPanel;
+		public GroupBox GoalGroupBox;
+		public GroupBox ControlsBox;
+		public BizHawk.WinForms.Controls.LocLabelEx locLabelEx1;
+		public BizHawk.WinForms.Controls.LocLabelEx GenerationsLabel;
+		public BotAttempt _bestAttempt;
+		public NumericUpDown PopulationSizeNumeric;
+		public Label PopulationSizeLabel;
 
-		private void InitializeComponent() {
+		public void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GeneticAlgorithmBot));
 			this.FrameLengthNumeric = new System.Windows.Forms.NumericUpDown();
@@ -279,6 +277,7 @@ namespace GeneticAlgorithmBot {
 			this.TieBreak1BestRadio.TabStop = true;
 			this.TieBreak1BestRadio.Text = "Best";
 			this.TieBreak1BestRadio.UseVisualStyleBackColor = true;
+			this.TieBreak1BestRadio.CheckedChanged += new System.EventHandler(this.Tiebreak1BestRadio_CheckedChanged);
 			// 
 			// label5
 			// 
@@ -320,6 +319,7 @@ namespace GeneticAlgorithmBot {
 			this.MainValueNumeric.Name = "MainValueNumeric";
 			this.MainValueNumeric.Size = new System.Drawing.Size(61, 20);
 			this.MainValueNumeric.TabIndex = 1013;
+			this.MainValueNumeric.ValueChanged += new System.EventHandler(this.MainValueNumeric_ValueChanged);
 			// 
 			// MainValueRadio
 			// 
@@ -330,6 +330,7 @@ namespace GeneticAlgorithmBot {
 			this.MainValueRadio.TabIndex = 1012;
 			this.MainValueRadio.Text = "Value";
 			this.MainValueRadio.UseVisualStyleBackColor = true;
+			this.MainValueRadio.CheckedChanged += new System.EventHandler(this.MainValueRadio_CheckedChanged);
 			// 
 			// MainBestRadio
 			// 
@@ -342,6 +343,7 @@ namespace GeneticAlgorithmBot {
 			this.MainBestRadio.TabStop = true;
 			this.MainBestRadio.Text = "Best";
 			this.MainBestRadio.UseVisualStyleBackColor = true;
+			this.MainBestRadio.CheckedChanged += new System.EventHandler(this.MainBestRadio_CheckedChanged);
 			// 
 			// MainOperator
 			// 
@@ -382,6 +384,7 @@ namespace GeneticAlgorithmBot {
 			this.TieBreak1Numeric.Name = "TieBreak1Numeric";
 			this.TieBreak1Numeric.Size = new System.Drawing.Size(61, 20);
 			this.TieBreak1Numeric.TabIndex = 1013;
+			this.TieBreak1Numeric.ValueChanged += new System.EventHandler(this.TieBreak1Numeric_ValueChanged);
 			// 
 			// TieBreak1ValueRadio
 			// 
@@ -392,6 +395,7 @@ namespace GeneticAlgorithmBot {
 			this.TieBreak1ValueRadio.TabIndex = 1012;
 			this.TieBreak1ValueRadio.Text = "Value";
 			this.TieBreak1ValueRadio.UseVisualStyleBackColor = true;
+			this.TieBreak1ValueRadio.CheckedChanged += new System.EventHandler(this.TieBreak1ValueRadio_CheckedChanged);
 			// 
 			// Tiebreak1Operator
 			// 
@@ -477,6 +481,7 @@ namespace GeneticAlgorithmBot {
 			this.TieBreak2Numeric.Name = "TieBreak2Numeric";
 			this.TieBreak2Numeric.Size = new System.Drawing.Size(61, 20);
 			this.TieBreak2Numeric.TabIndex = 1013;
+			this.TieBreak2Numeric.ValueChanged += new System.EventHandler(this.TieBreak2Numeric_ValueChanged);
 			// 
 			// Tiebreak2Operator
 			// 
@@ -503,6 +508,7 @@ namespace GeneticAlgorithmBot {
 			this.TieBreak2ValueRadio.TabIndex = 1012;
 			this.TieBreak2ValueRadio.Text = "Value";
 			this.TieBreak2ValueRadio.UseVisualStyleBackColor = true;
+			this.TieBreak2ValueRadio.CheckedChanged += new System.EventHandler(this.TieBreak2ValueRadio_CheckedChanged);
 			// 
 			// TieBreak2BestRadio
 			// 
@@ -515,6 +521,7 @@ namespace GeneticAlgorithmBot {
 			this.TieBreak2BestRadio.TabStop = true;
 			this.TieBreak2BestRadio.Text = "Best";
 			this.TieBreak2BestRadio.UseVisualStyleBackColor = true;
+			this.TieBreak2BestRadio.CheckedChanged += new System.EventHandler(this.Tiebreak2BestRadio_CheckedChanged);
 			// 
 			// label11
 			// 
@@ -686,6 +693,7 @@ namespace GeneticAlgorithmBot {
 			this.TieBreak3Numeric.Name = "TieBreak3Numeric";
 			this.TieBreak3Numeric.Size = new System.Drawing.Size(61, 20);
 			this.TieBreak3Numeric.TabIndex = 1013;
+			this.TieBreak3Numeric.ValueChanged += new System.EventHandler(this.TieBreak3Numeric_ValueChanged);
 			// 
 			// TieBreak3ValueRadio
 			// 
@@ -696,6 +704,7 @@ namespace GeneticAlgorithmBot {
 			this.TieBreak3ValueRadio.TabIndex = 1012;
 			this.TieBreak3ValueRadio.Text = "Value";
 			this.TieBreak3ValueRadio.UseVisualStyleBackColor = true;
+			this.TieBreak3ValueRadio.CheckedChanged += new System.EventHandler(this.TieBreak3ValueRadio_CheckedChanged);
 			// 
 			// TieBreak3BestRadio
 			// 
@@ -708,6 +717,7 @@ namespace GeneticAlgorithmBot {
 			this.TieBreak3BestRadio.TabStop = true;
 			this.TieBreak3BestRadio.Text = "Best";
 			this.TieBreak3BestRadio.UseVisualStyleBackColor = true;
+			this.TieBreak3BestRadio.CheckedChanged += new System.EventHandler(this.Tiebreak3BestRadio_CheckedChanged);
 			// 
 			// Tiebreak3Operator
 			// 

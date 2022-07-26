@@ -36,7 +36,7 @@ namespace GeneticAlgorithmBot {
 
 		private string _lastOpenedRom = "";
 
-		private MemoryDomain _currentDomain;
+		private MemoryDomain _currentDomain = default!;
 
 		private bool _bigEndian;
 
@@ -58,7 +58,12 @@ namespace GeneticAlgorithmBot {
 
 		private bool _doNotUpdateValues;
 
-		private ILogEntryGenerator _logGenerator;
+		private ILogEntryGenerator _logGenerator = default!;
+
+		/// <summary>
+		/// Comparison bot attempt is a bot attempt with current best bot attempt values from Population Manager, containing values where the "best" radio buttons are selected
+		/// </summary>
+		public BotAttempt comparisonAttempt;
 
 		public int _startFrame;
 
@@ -111,10 +116,10 @@ namespace GeneticAlgorithmBot {
 		}
 
 		[RequiredService]
-		public IEmulator Emulator { get; set; }
+		public IEmulator Emulator { get; set; } = default!;
 
 		[RequiredService]
-		public IMemoryDomains MemoryDomains { get; set; }
+		public IMemoryDomains MemoryDomains { get; set; } = default!;
 
 		[ConfigPersist]
 		public GeneticAlgorithmBotSettings Settings { get; set; }
@@ -138,7 +143,7 @@ namespace GeneticAlgorithmBot {
 			set => MaximizeAddressBox.SetFromRawInt(value);
 		}
 
-		public int MaximizeValue {
+		public uint MaximizeValue {
 			get {
 				int? addr = MaximizeAddressBox.ToRawInt();
 				return addr.HasValue ? GetRamValue(addr.Value) : 0;
@@ -150,7 +155,7 @@ namespace GeneticAlgorithmBot {
 			set => TieBreaker1Box.SetFromRawInt(value);
 		}
 
-		public int TieBreaker1Value {
+		public uint TieBreaker1Value {
 			get {
 				int? addr = TieBreaker1Box.ToRawInt();
 				return addr.HasValue ? GetRamValue(addr.Value) : 0;
@@ -162,7 +167,7 @@ namespace GeneticAlgorithmBot {
 			set => TieBreaker2Box.SetFromRawInt(value);
 		}
 
-		public int TieBreaker2Value {
+		public uint TieBreaker2Value {
 			get {
 				int? addr = TieBreaker2Box.ToRawInt();
 				return addr.HasValue ? GetRamValue(addr.Value) : 0;
@@ -174,7 +179,7 @@ namespace GeneticAlgorithmBot {
 			set => TieBreaker3Box.SetFromRawInt(value);
 		}
 
-		public int TieBreaker3Value {
+		public uint TieBreaker3Value {
 			get {
 				int? addr = TieBreaker3Box.ToRawInt();
 				return addr.HasValue ? GetRamValue(addr.Value) : 0;
@@ -201,14 +206,13 @@ namespace GeneticAlgorithmBot {
 			set => Tiebreak3Operator.SelectedIndex = value < 6 ? value : 0;
 		}
 
-		public int GetRamValue(int addr) {
-			var val = _dataSize switch {
+		public uint GetRamValue(int addr) {
+			uint val = _dataSize switch {
 				1 => _currentDomain.PeekByte(addr),
 				2 => _currentDomain.PeekUshort(addr, _bigEndian),
-				4 => (int) _currentDomain.PeekUint(addr, _bigEndian),
+				4 => _currentDomain.PeekUint(addr, _bigEndian),
 				_ => _currentDomain.PeekByte(addr)
 			};
-
 			return val;
 		}
 
@@ -257,6 +261,7 @@ namespace GeneticAlgorithmBot {
 			this.Settings = new GeneticAlgorithmBotSettings();
 			this.populationManager = new GeneticAlgorithm(this);
 			this.MainOperator.SelectedItem = ">=";
+			this.comparisonAttempt = new BotAttempt();
 		}
 
 		public static T GetResourceIcons<T>(string iconName) {
@@ -396,7 +401,7 @@ namespace GeneticAlgorithmBot {
 			}
 		}
 
-		public void UpdateBestAttempt() {
+		public void UpdateBestAttemptUI() {
 			ClearBestButton.Enabled = true;
 			if (this.populationManager.GetBest().IsSet) {
 				btnCopyBestInput.Enabled = true;
@@ -480,7 +485,8 @@ namespace GeneticAlgorithmBot {
 					if (this.populationManager.NextRecording()) {
 						this.populationManager.Reproduce();
 						Generations = this.populationManager.EvaluateGeneration();
-						UpdateBestAttempt();
+						UpdateBestAttemptUI();
+						UpdateComparisonBotAttempt();
 					}
 
 					_doNotUpdateValues = true;
@@ -508,6 +514,47 @@ namespace GeneticAlgorithmBot {
 		#endregion
 
 		#region Private methods
+		/// <summary>
+		/// Updates comparison bot attempt with current best bot attempt values for values where the "best" radio button is selected
+		/// </summary>
+		private void UpdateComparisonBotAttempt() {
+			BotAttempt best = this.populationManager.GetBest().GetAttempt();
+			if (best.isReset) {
+				if (MainBestRadio.Checked) {
+					this.comparisonAttempt.Maximize = 0;
+				}
+
+				if (TieBreak1BestRadio.Checked) {
+					this.comparisonAttempt.TieBreak1 = 0;
+				}
+
+				if (TieBreak2BestRadio.Checked) {
+					this.comparisonAttempt.TieBreak2 = 0;
+				}
+
+				if (TieBreak3BestRadio.Checked) {
+					this.comparisonAttempt.TieBreak3 = 0;
+				}
+			}
+			else {
+				if (MainBestRadio.Checked && best.Maximize != comparisonAttempt.Maximize) {
+					this.comparisonAttempt.Maximize = best.Maximize;
+				}
+
+				if (TieBreak1BestRadio.Checked && best.TieBreak1 != comparisonAttempt.TieBreak1) {
+					this.comparisonAttempt.TieBreak1 = best.TieBreak1;
+				}
+
+				if (TieBreak2BestRadio.Checked && best.TieBreak2 != comparisonAttempt.TieBreak2) {
+					this.comparisonAttempt.TieBreak2 = best.TieBreak2;
+				}
+
+				if (TieBreak3BestRadio.Checked && best.TieBreak3 != comparisonAttempt.TieBreak3) {
+					this.comparisonAttempt.TieBreak3 = best.TieBreak3;
+				}
+			}
+		}
+
 		private void SetupControlsAndProperties() {
 			MaximizeAddressBox.SetHexProperties(_currentDomain.Size);
 			TieBreaker1Box.SetHexProperties(_currentDomain.Size);
@@ -666,7 +713,7 @@ namespace GeneticAlgorithmBot {
 			_bigEndian = botData.BigEndian;
 			_dataSize = botData.DataSize > 0 ? botData.DataSize : 1;
 
-			UpdateBestAttempt();
+			UpdateBestAttemptUI();
 
 			if (this.populationManager.GetBest().IsSet) {
 				PlayBestButton.Enabled = true;
@@ -806,7 +853,7 @@ namespace GeneticAlgorithmBot {
 			TieBreak2BestRadio.Checked = true;
 			TieBreak3BestRadio.Checked = true;
 
-			UpdateBestAttempt();
+			UpdateBestAttemptUI();
 		}
 
 		public void OpenMenuItem_Click(object sender, EventArgs e) {
@@ -815,7 +862,6 @@ namespace GeneticAlgorithmBot {
 					Config!.PathEntries.ToolsAbsolutePath(),
 					"Bot files",
 					"bot");
-
 			if (file != null) {
 				LoadBotFile(file.FullName);
 			}
@@ -839,7 +885,6 @@ namespace GeneticAlgorithmBot {
 				"Bot files",
 				"bot",
 				this);
-
 			if (file != null) {
 				SaveBotFile(file.FullName);
 				_currentFilename = file.FullName;
@@ -932,7 +977,87 @@ namespace GeneticAlgorithmBot {
 			Runs = 0;
 			Frames = 0;
 			Generations = 0;
-			UpdateBestAttempt();
+			UpdateBestAttemptUI();
+		}
+
+		public void MainBestRadio_CheckedChanged(object sender, EventArgs e) {
+			if (sender is RadioButton radioButton && radioButton.Checked) {
+				BotAttempt best = this.populationManager.GetBest().GetAttempt();
+				MainValueNumeric.Enabled = false;
+				comparisonAttempt.Maximize = best?.Maximize ?? 0;
+			}
+		}
+
+		public void Tiebreak1BestRadio_CheckedChanged(object sender, EventArgs e) {
+			if (sender is RadioButton radioButton && radioButton.Checked) {
+				BotAttempt best = this.populationManager.GetBest().GetAttempt();
+				TieBreak1Numeric.Enabled = false;
+				comparisonAttempt.TieBreak1 = best?.TieBreak1 ?? 0;
+			}
+		}
+
+		public void Tiebreak2BestRadio_CheckedChanged(object sender, EventArgs e) {
+			if (sender is RadioButton radioButton && radioButton.Checked) {
+				BotAttempt best = this.populationManager.GetBest().GetAttempt();
+				TieBreak2Numeric.Enabled = false;
+				comparisonAttempt.TieBreak2 = best?.TieBreak2 ?? 0;
+			}
+		}
+
+		public void Tiebreak3BestRadio_CheckedChanged(object sender, EventArgs e) {
+			if (sender is RadioButton radioButton && radioButton.Checked) {
+				BotAttempt best = this.populationManager.GetBest().GetAttempt();
+				TieBreak3Numeric.Enabled = false;
+				comparisonAttempt.TieBreak3 = best?.TieBreak3 ?? 0;
+			}
+		}
+
+		public void MainValueRadio_CheckedChanged(object sender, EventArgs e) {
+			if (sender is RadioButton radioButton && radioButton.Checked) {
+				MainValueNumeric.Enabled = true;
+				comparisonAttempt.Maximize = (uint) MainValueNumeric.Value;
+			}
+		}
+
+		public void TieBreak1ValueRadio_CheckedChanged(object sender, EventArgs e) {
+			if (sender is RadioButton radioButton && radioButton.Checked) {
+				TieBreak1Numeric.Enabled = true;
+				comparisonAttempt.TieBreak1 = (uint) TieBreak1Numeric.Value;
+			}
+		}
+
+		public void TieBreak2ValueRadio_CheckedChanged(object sender, EventArgs e) {
+			if (sender is RadioButton radioButton && radioButton.Checked) {
+				TieBreak2Numeric.Enabled = true;
+				comparisonAttempt.TieBreak2 = (uint) TieBreak2Numeric.Value;
+			}
+		}
+
+		public void TieBreak3ValueRadio_CheckedChanged(object sender, EventArgs e) {
+			if (sender is RadioButton radioButton && radioButton.Checked) {
+				TieBreak3Numeric.Enabled = true;
+				comparisonAttempt.TieBreak3 = (uint) TieBreak3Numeric.Value;
+			}
+		}
+
+		public void MainValueNumeric_ValueChanged(object sender, EventArgs e) {
+			NumericUpDown numericUpDown = (NumericUpDown) sender;
+			comparisonAttempt.Maximize = (uint) numericUpDown.Value;
+		}
+
+		public void TieBreak1Numeric_ValueChanged(object sender, EventArgs e) {
+			NumericUpDown numericUpDown = (NumericUpDown) sender;
+			comparisonAttempt.TieBreak1 = (uint) numericUpDown.Value;
+		}
+
+		public void TieBreak2Numeric_ValueChanged(object sender, EventArgs e) {
+			NumericUpDown numericUpDown = (NumericUpDown) sender;
+			comparisonAttempt.TieBreak2 = (uint) numericUpDown.Value;
+		}
+
+		public void TieBreak3Numeric_ValueChanged(object sender, EventArgs e) {
+			NumericUpDown numericUpDown = (NumericUpDown) sender;
+			comparisonAttempt.TieBreak3 = (uint) numericUpDown.Value;
 		}
 		#endregion
 	}
@@ -944,22 +1069,27 @@ namespace GeneticAlgorithmBot {
 
 		public static readonly double CROSSOVER_RATE = 50.0;
 
-		public static bool IsBetter(GeneticAlgorithmBot bot, BotAttempt comparison, BotAttempt current) {
-			if (!TestValue(bot.MainComparisonType, current.Maximize, comparison.Maximize)) return false;
+		public static bool IsBetter(GeneticAlgorithmBot bot, BotAttempt best, BotAttempt comparison, BotAttempt current) {
+			uint max = bot.MainValueRadio.Checked ? comparison.Maximize : best.Maximize;
+			if (!TestValue(bot.MainComparisonType, current.Maximize, max)) return false;
 			if (current.Maximize != comparison.Maximize) return true;
 
-			if (!TestValue(bot.Tie1ComparisonType, current.TieBreak1, comparison.TieBreak1)) return false;
+			uint tie1 = bot.TieBreak1ValueRadio.Checked ? comparison.TieBreak1 : best.TieBreak1;
+			if (!TestValue(bot.Tie1ComparisonType, current.TieBreak1, tie1)) return false;
 			if (current.TieBreak1 != comparison.TieBreak1) return true;
 
-			if (!TestValue(bot.Tie2ComparisonType, current.TieBreak2, comparison.TieBreak2)) return false;
+			uint tie2 = bot.TieBreak2ValueRadio.Checked ? comparison.TieBreak2 : best.TieBreak2;
+			if (!TestValue(bot.Tie2ComparisonType, current.TieBreak2, tie2)) return false;
 			if (current.TieBreak2 != comparison.TieBreak2) return true;
 
-			if (!TestValue(bot.Tie3ComparisonType, current.TieBreak3, comparison.TieBreak3)) return false;
-			/*if (current.TieBreak3 != comparison.TieBreak3)*/
+			uint tie3 = bot.TieBreak3ValueRadio.Checked ? comparison.TieBreak3 : best.TieBreak3;
+			if (!TestValue(bot.Tie3ComparisonType, current.TieBreak3, tie3)) return false;
+
+			// TieBreak3 is equal, regardless of which attempt type they are.
 			return true;
 		}
 
-		public static bool TestValue(byte operation, int currentValue, int bestValue)
+		public static bool TestValue(byte operation, long currentValue, long bestValue)
 				=> operation switch {
 					0 => (currentValue > bestValue),
 					1 => (currentValue >= bestValue),
@@ -990,7 +1120,7 @@ namespace GeneticAlgorithmBot {
 		}
 	}
 
-	public class GeneticAlgorithm : IComparer {
+	public class GeneticAlgorithm {
 		private BotAttempt _beginning;
 		private InputRecording _bestRecording;
 		public InputRecording[] population;
@@ -1041,9 +1171,11 @@ namespace GeneticAlgorithmBot {
 		public long EvaluateGeneration() {
 			int chosenIndex = -1;
 			for (int i = 0; i < this.population.Length; i++) {
-				if (Utils.IsBetter(this.bot, this.GetBest().result, this.population[i].result)) {
+				if (Utils.IsBetter(this.bot, this.GetBest().result, this.bot.comparisonAttempt, this.population[i].result)) {
 					chosenIndex = i;
 				}
+				// After evaluation, we can discard the input recording in the population pool.
+				this.population[i].IsSet = false;
 			}
 			if (chosenIndex > -1) {
 				CopyCurrentToBest(chosenIndex);
@@ -1054,7 +1186,7 @@ namespace GeneticAlgorithmBot {
 		public bool IsCurrentAttemptBetter() {
 			BotAttempt current = this.population[this.currentIndex].GetAttempt();
 			BotAttempt best = this._bestRecording.GetAttempt();
-			return Utils.IsBetter(this.bot, best, current);
+			return Utils.IsBetter(this.bot, best, this.bot.comparisonAttempt, current);
 		}
 
 		public void CopyCurrentToBest(int index) {
@@ -1113,26 +1245,6 @@ namespace GeneticAlgorithmBot {
 					}
 				}
 			}
-		}
-
-		// Comparer
-		/// <summary>
-		/// </summary>
-		/// <param name="obj"></param>
-		/// <returns>
-		/// Less than zero (This instance precedes other in the sort order.)<br/>
-		/// Zero (This instance occurs in the same position in the sort order as other.)<br/>
-		/// Greater than zero (This instance follows other in the sort order.)
-		/// </returns>
-		public int Compare(object x, object y) {
-			if (x == null || y == null)
-				return 1;
-			BotAttempt xAttempt = ((InputRecording) x).GetAttempt();
-			BotAttempt yAttempt = ((InputRecording) y).GetAttempt();
-			if (Utils.IsBetter(this.bot, xAttempt, yAttempt))
-				return -1;
-			return 1;
-			// No zero. It can never be zero.
 		}
 	}
 
@@ -1296,10 +1408,10 @@ namespace GeneticAlgorithmBot {
 		public long Attempt { get; set; }
 		public long Generation { get; set; }
 		public int Fitness { get; set; }
-		public int Maximize { get; set; }
-		public int TieBreak1 { get; set; }
-		public int TieBreak2 { get; set; }
-		public int TieBreak3 { get; set; }
+		public uint Maximize { get; set; }
+		public uint TieBreak1 { get; set; }
+		public uint TieBreak2 { get; set; }
+		public uint TieBreak3 { get; set; }
 		public byte ComparisonTypeMain { get; set; }
 		public byte ComparisonTypeTie1 { get; set; }
 		public byte ComparisonTypeTie2 { get; set; }
