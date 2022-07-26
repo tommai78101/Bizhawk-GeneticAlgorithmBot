@@ -189,6 +189,8 @@ namespace GeneticAlgorithmBot {
 			this.StartFromSlotBox = new System.Windows.Forms.ComboBox();
 			this.label8 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.BestGroupBox = new System.Windows.Forms.GroupBox();
+			this.BestGenerationNumberLabel = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.locLabelEx3 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.PlayBestButton = new System.Windows.Forms.Button();
 			this.ClearBestButton = new System.Windows.Forms.Button();
 			this.BestAttemptNumberLabel = new BizHawk.WinForms.Controls.LocLabelEx();
@@ -606,7 +608,7 @@ namespace GeneticAlgorithmBot {
 			// btnCopyBestInput
 			// 
 			this.btnCopyBestInput.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.btnCopyBestInput.Location = new System.Drawing.Point(12, 94);
+			this.btnCopyBestInput.Location = new System.Drawing.Point(12, 105);
 			this.btnCopyBestInput.Name = "btnCopyBestInput";
 			this.btnCopyBestInput.Size = new System.Drawing.Size(75, 23);
 			this.btnCopyBestInput.TabIndex = 2005;
@@ -899,6 +901,8 @@ namespace GeneticAlgorithmBot {
 			this.BestGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.BestGroupBox.Controls.Add(this.BestGenerationNumberLabel);
+			this.BestGroupBox.Controls.Add(this.locLabelEx3);
 			this.BestGroupBox.Controls.Add(this.btnCopyBestInput);
 			this.BestGroupBox.Controls.Add(this.PlayBestButton);
 			this.BestGroupBox.Controls.Add(this.ClearBestButton);
@@ -923,11 +927,23 @@ namespace GeneticAlgorithmBot {
         "l. It will persist the input controls to achieve the best fitness, until a bette" +
         "r attempt is given.");
 			// 
+			// BestGenerationNumberLabel
+			// 
+			this.BestGenerationNumberLabel.Location = new System.Drawing.Point(183, 19);
+			this.BestGenerationNumberLabel.Name = "BestGenerationNumberLabel";
+			this.BestGenerationNumberLabel.Text = "0";
+			// 
+			// locLabelEx3
+			// 
+			this.locLabelEx3.Location = new System.Drawing.Point(115, 19);
+			this.locLabelEx3.Name = "locLabelEx3";
+			this.locLabelEx3.Text = "Generation:";
+			// 
 			// PlayBestButton
 			// 
 			this.PlayBestButton.Enabled = false;
 			this.PlayBestButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.PlayBestButton.Location = new System.Drawing.Point(12, 46);
+			this.PlayBestButton.Location = new System.Drawing.Point(12, 57);
 			this.PlayBestButton.Name = "PlayBestButton";
 			this.PlayBestButton.Size = new System.Drawing.Size(75, 23);
 			this.PlayBestButton.TabIndex = 2004;
@@ -939,7 +955,7 @@ namespace GeneticAlgorithmBot {
 			// 
 			this.ClearBestButton.Enabled = false;
 			this.ClearBestButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.ClearBestButton.Location = new System.Drawing.Point(12, 70);
+			this.ClearBestButton.Location = new System.Drawing.Point(12, 81);
 			this.ClearBestButton.Name = "ClearBestButton";
 			this.ClearBestButton.Size = new System.Drawing.Size(75, 23);
 			this.ClearBestButton.TabIndex = 2003;
@@ -949,13 +965,13 @@ namespace GeneticAlgorithmBot {
 			// 
 			// BestAttemptNumberLabel
 			// 
-			this.BestAttemptNumberLabel.Location = new System.Drawing.Point(69, 20);
+			this.BestAttemptNumberLabel.Location = new System.Drawing.Point(58, 19);
 			this.BestAttemptNumberLabel.Name = "BestAttemptNumberLabel";
 			this.BestAttemptNumberLabel.Text = "0";
 			// 
 			// label17
 			// 
-			this.label17.Location = new System.Drawing.Point(17, 20);
+			this.label17.Location = new System.Drawing.Point(6, 19);
 			this.label17.Name = "label17";
 			this.label17.Text = "Attempt:";
 			// 
@@ -968,9 +984,9 @@ namespace GeneticAlgorithmBot {
 			this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.panel1.Controls.Add(this.BestAttemptLogLabel);
 			this.panel1.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.panel1.Location = new System.Drawing.Point(12, 125);
+			this.panel1.Location = new System.Drawing.Point(12, 134);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(217, 238);
+			this.panel1.Size = new System.Drawing.Size(217, 229);
 			this.panel1.TabIndex = 21;
 			// 
 			// BestAttemptLogLabel
@@ -982,7 +998,7 @@ namespace GeneticAlgorithmBot {
 			// BestTieBreak3Box
 			// 
 			this.BestTieBreak3Box.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.BestTieBreak3Box.Location = new System.Drawing.Point(168, 77);
+			this.BestTieBreak3Box.Location = new System.Drawing.Point(171, 108);
 			this.BestTieBreak3Box.Name = "BestTieBreak3Box";
 			this.BestTieBreak3Box.ReadOnly = true;
 			this.BestTieBreak3Box.Size = new System.Drawing.Size(58, 20);
@@ -992,7 +1008,7 @@ namespace GeneticAlgorithmBot {
 			// BestTieBreak2Box
 			// 
 			this.BestTieBreak2Box.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.BestTieBreak2Box.Location = new System.Drawing.Point(168, 57);
+			this.BestTieBreak2Box.Location = new System.Drawing.Point(171, 88);
 			this.BestTieBreak2Box.Name = "BestTieBreak2Box";
 			this.BestTieBreak2Box.ReadOnly = true;
 			this.BestTieBreak2Box.Size = new System.Drawing.Size(58, 20);
@@ -1002,7 +1018,7 @@ namespace GeneticAlgorithmBot {
 			// BestTieBreak1Box
 			// 
 			this.BestTieBreak1Box.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.BestTieBreak1Box.Location = new System.Drawing.Point(168, 37);
+			this.BestTieBreak1Box.Location = new System.Drawing.Point(171, 68);
 			this.BestTieBreak1Box.Name = "BestTieBreak1Box";
 			this.BestTieBreak1Box.ReadOnly = true;
 			this.BestTieBreak1Box.Size = new System.Drawing.Size(58, 20);
@@ -1012,7 +1028,7 @@ namespace GeneticAlgorithmBot {
 			// BestMaximizeBox
 			// 
 			this.BestMaximizeBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.BestMaximizeBox.Location = new System.Drawing.Point(168, 17);
+			this.BestMaximizeBox.Location = new System.Drawing.Point(171, 48);
 			this.BestMaximizeBox.Name = "BestMaximizeBox";
 			this.BestMaximizeBox.ReadOnly = true;
 			this.BestMaximizeBox.Size = new System.Drawing.Size(58, 20);
@@ -1022,28 +1038,28 @@ namespace GeneticAlgorithmBot {
 			// label16
 			// 
 			this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label16.Location = new System.Drawing.Point(101, 80);
+			this.label16.Location = new System.Drawing.Point(104, 111);
 			this.label16.Name = "label16";
 			this.label16.Text = "Tiebreak 3:";
 			// 
 			// label15
 			// 
 			this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label15.Location = new System.Drawing.Point(101, 60);
+			this.label15.Location = new System.Drawing.Point(104, 91);
 			this.label15.Name = "label15";
 			this.label15.Text = "Tiebreak 2:";
 			// 
 			// label14
 			// 
 			this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label14.Location = new System.Drawing.Point(101, 40);
+			this.label14.Location = new System.Drawing.Point(104, 71);
 			this.label14.Name = "label14";
 			this.label14.Text = "Tiebreak 1:";
 			// 
 			// label13
 			// 
 			this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label13.Location = new System.Drawing.Point(101, 20);
+			this.label13.Location = new System.Drawing.Point(104, 51);
 			this.label13.Name = "label13";
 			this.label13.Text = "Main Value:";
 			// 
@@ -1234,6 +1250,8 @@ namespace GeneticAlgorithmBot {
 		}
 
 		private IContainer components;
+		public BizHawk.WinForms.Controls.LocLabelEx BestGenerationNumberLabel;
+		public BizHawk.WinForms.Controls.LocLabelEx locLabelEx3;
 
 		/// <summary>
 		///   Returns the cached ResourceManager instance used by this class.

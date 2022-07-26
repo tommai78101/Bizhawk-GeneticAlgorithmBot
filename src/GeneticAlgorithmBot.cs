@@ -407,12 +407,12 @@ namespace GeneticAlgorithmBot {
 				btnCopyBestInput.Enabled = true;
 				BotAttempt best = this.populationManager.GetBest().GetAttempt();
 				BestAttemptNumberLabel.Text = best.Attempt.ToString();
+				BestGenerationNumberLabel.Text = best.Generation.ToString();
 				BestMaximizeBox.Text = best.Maximize.ToString();
 				BestTieBreak1Box.Text = best.TieBreak1.ToString();
 				BestTieBreak2Box.Text = best.TieBreak2.ToString();
 				BestTieBreak3Box.Text = best.TieBreak3.ToString();
 
-				Console.WriteLine($"Logging attempt:  Log size: {best.Log.Count}");
 				var sb = new StringBuilder();
 				foreach (var logEntry in best.Log) {
 					sb.AppendLine(logEntry);
@@ -422,6 +422,7 @@ namespace GeneticAlgorithmBot {
 				btnCopyBestInput.Enabled = true;
 			}
 			else {
+				BestAttemptNumberLabel.Text = "";
 				BestAttemptNumberLabel.Text = "";
 				BestMaximizeBox.Text = "";
 				BestTieBreak1Box.Text = "";
@@ -1343,6 +1344,7 @@ namespace GeneticAlgorithmBot {
 			this.result.ComparisonTypeTie2 = this.bot.Tie2ComparisonType;
 			this.result.ComparisonTypeTie3 = this.bot.Tie3ComparisonType;
 			this.IsSet = true;
+			this.bot.ClearBestButton.Enabled = true;
 		}
 
 		public void Reset(long attemptNumber) {
@@ -1419,6 +1421,7 @@ namespace GeneticAlgorithmBot {
 		public bool isReset { get; set; } = true;
 
 		public BotAttempt() { }
+
 		public BotAttempt(BotAttempt source) {
 			this.Attempt = source.Attempt;
 			this.Fitness = source.Fitness;
