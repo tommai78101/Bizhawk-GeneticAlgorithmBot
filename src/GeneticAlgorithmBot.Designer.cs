@@ -61,7 +61,6 @@ namespace GeneticAlgorithmBot {
 		public BizHawk.WinForms.Controls.LocLabelEx label4;
 		public Panel panel4;
 		public ToolTip BotToolTip;
-		public IContainer components;
 		public Button btnCopyBestInput;
 		public ContextMenuStrip StatsContextMenu;
 		public BizHawk.WinForms.Controls.ToolStripMenuItemEx ClearStatsContextMenuItem;
@@ -166,6 +165,8 @@ namespace GeneticAlgorithmBot {
 			this.ControlProbabilityPanel = new System.Windows.Forms.Panel();
 			this.btnCopyBestInput = new System.Windows.Forms.Button();
 			this.GoalGroupBox = new System.Windows.Forms.GroupBox();
+			this.PopulationSizeNumeric = new System.Windows.Forms.NumericUpDown();
+			this.PopulationSizeLabel = new System.Windows.Forms.Label();
 			this.panel6 = new System.Windows.Forms.Panel();
 			this.label12 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.label7 = new BizHawk.WinForms.Controls.LocLabelEx();
@@ -225,8 +226,6 @@ namespace GeneticAlgorithmBot {
 			this.NewMenuItem = new BizHawk.WinForms.Controls.ToolStripMenuItemEx();
 			this.FileSubMenu = new BizHawk.WinForms.Controls.ToolStripMenuItemEx();
 			this.BotMenu = new BizHawk.WinForms.Controls.MenuStripEx();
-			this.PopulationSizeLabel = new System.Windows.Forms.Label();
-			this.PopulationSizeNumeric = new System.Windows.Forms.NumericUpDown();
 			((System.ComponentModel.ISupportInitialize)(this.FrameLengthNumeric)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.MainValueNumeric)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.TieBreak1Numeric)).BeginInit();
@@ -236,6 +235,7 @@ namespace GeneticAlgorithmBot {
 			this.panel4.SuspendLayout();
 			this.ControlsBox.SuspendLayout();
 			this.GoalGroupBox.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.PopulationSizeNumeric)).BeginInit();
 			this.panel6.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.TieBreak3Numeric)).BeginInit();
 			this.ControlGroupBox.SuspendLayout();
@@ -245,7 +245,6 @@ namespace GeneticAlgorithmBot {
 			this.panel1.SuspendLayout();
 			this.BotStatusStrip.SuspendLayout();
 			this.BotMenu.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.PopulationSizeNumeric)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// FrameLengthNumeric
@@ -639,6 +638,38 @@ namespace GeneticAlgorithmBot {
 			this.BotToolTip.SetToolTip(this.GoalGroupBox, "This panel indicates what RAM values in the memory you want to use for the bot to" +
         " determine its fitness level as it undergoes training.");
 			// 
+			// PopulationSizeNumeric
+			// 
+			this.PopulationSizeNumeric.Location = new System.Drawing.Point(303, 25);
+			this.PopulationSizeNumeric.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+			this.PopulationSizeNumeric.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.PopulationSizeNumeric.Name = "PopulationSizeNumeric";
+			this.PopulationSizeNumeric.Size = new System.Drawing.Size(46, 20);
+			this.PopulationSizeNumeric.TabIndex = 1003;
+			this.PopulationSizeNumeric.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+			this.PopulationSizeNumeric.ValueChanged += new System.EventHandler(this.PopulationSizeNumeric_ValueChanged);
+			// 
+			// PopulationSizeLabel
+			// 
+			this.PopulationSizeLabel.AutoSize = true;
+			this.PopulationSizeLabel.Location = new System.Drawing.Point(214, 29);
+			this.PopulationSizeLabel.Name = "PopulationSizeLabel";
+			this.PopulationSizeLabel.Size = new System.Drawing.Size(83, 13);
+			this.PopulationSizeLabel.TabIndex = 1002;
+			this.PopulationSizeLabel.Text = "Population Size:";
+			// 
 			// panel6
 			// 
 			this.panel6.Controls.Add(this.label12);
@@ -918,7 +949,7 @@ namespace GeneticAlgorithmBot {
 			// 
 			// BestAttemptNumberLabel
 			// 
-			this.BestAttemptNumberLabel.Location = new System.Drawing.Point(59, 20);
+			this.BestAttemptNumberLabel.Location = new System.Drawing.Point(69, 20);
 			this.BestAttemptNumberLabel.Name = "BestAttemptNumberLabel";
 			this.BestAttemptNumberLabel.Text = "0";
 			// 
@@ -1155,38 +1186,6 @@ namespace GeneticAlgorithmBot {
             this.HelpSubMenu});
 			this.BotMenu.TabIndex = 0;
 			// 
-			// PopulationSizeLabel
-			// 
-			this.PopulationSizeLabel.AutoSize = true;
-			this.PopulationSizeLabel.Location = new System.Drawing.Point(214, 29);
-			this.PopulationSizeLabel.Name = "PopulationSizeLabel";
-			this.PopulationSizeLabel.Size = new System.Drawing.Size(83, 13);
-			this.PopulationSizeLabel.TabIndex = 1002;
-			this.PopulationSizeLabel.Text = "Population Size:";
-			// 
-			// PopulationSizeNumeric
-			// 
-			this.PopulationSizeNumeric.Location = new System.Drawing.Point(303, 25);
-			this.PopulationSizeNumeric.Maximum = new decimal(new int[] {
-            9999,
-            0,
-            0,
-            0});
-			this.PopulationSizeNumeric.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			this.PopulationSizeNumeric.Name = "PopulationSizeNumeric";
-			this.PopulationSizeNumeric.Size = new System.Drawing.Size(46, 20);
-			this.PopulationSizeNumeric.TabIndex = 1003;
-			this.PopulationSizeNumeric.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-			this.PopulationSizeNumeric.ValueChanged += new System.EventHandler(this.PopulationSizeNumeric_ValueChanged);
-			// 
 			// GeneticAlgorithmBot
 			// 
 			this.ClientSize = new System.Drawing.Size(707, 587);
@@ -1212,6 +1211,7 @@ namespace GeneticAlgorithmBot {
 			this.ControlsBox.ResumeLayout(false);
 			this.GoalGroupBox.ResumeLayout(false);
 			this.GoalGroupBox.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.PopulationSizeNumeric)).EndInit();
 			this.panel6.ResumeLayout(false);
 			this.panel6.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.TieBreak3Numeric)).EndInit();
@@ -1228,11 +1228,12 @@ namespace GeneticAlgorithmBot {
 			this.BotStatusStrip.PerformLayout();
 			this.BotMenu.ResumeLayout(false);
 			this.BotMenu.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.PopulationSizeNumeric)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
 		}
+
+		private IContainer components;
 
 		/// <summary>
 		///   Returns the cached ResourceManager instance used by this class.
