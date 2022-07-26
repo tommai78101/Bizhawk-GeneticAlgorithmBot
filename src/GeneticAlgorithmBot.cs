@@ -1121,7 +1121,6 @@ namespace GeneticAlgorithmBot {
 	}
 
 	public class GeneticAlgorithm {
-		private BotAttempt _beginning;
 		private InputRecording _bestRecording;
 		public InputRecording[] population;
 		public int currentIndex = 0;
@@ -1135,7 +1134,6 @@ namespace GeneticAlgorithmBot {
 			this.bot = owner;
 			this.IsInitialized = false;
 			this._bestRecording = new InputRecording(owner, this);
-			this._beginning = new BotAttempt();
 			this.population = new InputRecording[1];
 			for (int i = 0; i < this.population.Length; i++) {
 				this.population[i] = new InputRecording(owner, this);
@@ -1195,18 +1193,19 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public void SetOrigin() {
-			this._beginning.Fitness = 0;
-			this._beginning.Attempt = 0;
-			this._beginning.Generation = 0;
-			this._beginning.ComparisonTypeMain = this.bot.MainComparisonType;
-			this._beginning.ComparisonTypeTie1 = this.bot.Tie1ComparisonType;
-			this._beginning.ComparisonTypeTie2 = this.bot.Tie2ComparisonType;
-			this._beginning.ComparisonTypeTie3 = this.bot.Tie3ComparisonType;
-			this._beginning.Maximize = this.bot.MaximizeValue;
-			this._beginning.TieBreak1 = this.bot.TieBreaker1Value;
-			this._beginning.TieBreak2 = this.bot.TieBreaker2Value;
-			this._beginning.TieBreak3 = this.bot.TieBreaker3Value;
-			this._beginning.isReset = false;
+			BotAttempt origin = this.GetBest().GetAttempt();
+			origin.Fitness = 0;
+			origin.Attempt = 0;
+			origin.Generation = 0;
+			origin.ComparisonTypeMain = this.bot.MainComparisonType;
+			origin.ComparisonTypeTie1 = this.bot.Tie1ComparisonType;
+			origin.ComparisonTypeTie2 = this.bot.Tie2ComparisonType;
+			origin.ComparisonTypeTie3 = this.bot.Tie3ComparisonType;
+			origin.Maximize = this.bot.MaximizeValue;
+			origin.TieBreak1 = this.bot.TieBreaker1Value;
+			origin.TieBreak2 = this.bot.TieBreaker2Value;
+			origin.TieBreak3 = this.bot.TieBreaker3Value;
+			origin.isReset = false;
 		}
 
 		/*
