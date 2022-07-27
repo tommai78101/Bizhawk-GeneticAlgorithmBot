@@ -802,7 +802,7 @@ namespace GeneticAlgorithmBot {
 			Type configType = Config!.GetType();
 			// For BizHawk versions > 2.8. (git commit af2d8da36e50a9004d6ecfd456381956b9245d66)
 			if (configType.GetProperty("OpposingDirPolicy") != null) {
-				if (Config!.OpposingDirPolicy is not OpposingDirPolicy.Allow) {
+				if (!configType.GetProperty("OpposingDirPolicy").GetValue(Config!).ToString().Contains("Allow")) {
 					DialogController.ShowMessageBox("In order to proceed to use this tool, please check if the U+D/L+R controller binds policy is set to 'Allow'.");
 					this.Close();
 					DialogResult = DialogResult.Cancel;
