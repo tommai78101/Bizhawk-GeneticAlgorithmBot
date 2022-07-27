@@ -296,6 +296,7 @@ namespace GeneticAlgorithmBot {
 			this.TieBreaker1Box.Nullable = true;
 			this.TieBreaker1Box.Size = new System.Drawing.Size(67, 20);
 			this.TieBreaker1Box.TabIndex = 1002;
+			this.TieBreaker1Box.TextChanged += new System.EventHandler(this.TieBreaker1Box_TextChanged);
 			// 
 			// label10
 			// 
@@ -424,6 +425,7 @@ namespace GeneticAlgorithmBot {
 			this.MaximizeAddressBox.Nullable = true;
 			this.MaximizeAddressBox.Size = new System.Drawing.Size(67, 20);
 			this.MaximizeAddressBox.TabIndex = 1009;
+			this.MaximizeAddressBox.TextChanged += new System.EventHandler(this.MaximizeAddressBox_TextChanged);
 			// 
 			// maximizeLabeltext
 			// 
@@ -546,6 +548,7 @@ namespace GeneticAlgorithmBot {
 			this.TieBreaker2Box.Nullable = true;
 			this.TieBreaker2Box.Size = new System.Drawing.Size(67, 20);
 			this.TieBreaker2Box.TabIndex = 1003;
+			this.TieBreaker2Box.TextChanged += new System.EventHandler(this.TieBreaker2Box_TextChanged);
 			// 
 			// label1
 			// 
@@ -708,6 +711,7 @@ namespace GeneticAlgorithmBot {
 			this.TieBreaker3Box.Nullable = true;
 			this.TieBreaker3Box.Size = new System.Drawing.Size(67, 20);
 			this.TieBreaker3Box.TabIndex = 1016;
+			this.TieBreaker3Box.TextChanged += new System.EventHandler(this.TieBreaker3Box_TextChanged);
 			// 
 			// TieBreak3Numeric
 			// 

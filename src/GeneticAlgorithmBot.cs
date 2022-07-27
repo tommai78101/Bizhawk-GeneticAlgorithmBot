@@ -423,7 +423,7 @@ namespace GeneticAlgorithmBot {
 			}
 			else {
 				BestAttemptNumberLabel.Text = "";
-				BestAttemptNumberLabel.Text = "";
+				BestGenerationNumberLabel.Text = "";
 				BestMaximizeBox.Text = "";
 				BestTieBreak1Box.Text = "";
 				BestTieBreak2Box.Text = "";
@@ -579,7 +579,7 @@ namespace GeneticAlgorithmBot {
 						Probability = 0.0,
 						Location = new Point(marginLeft, startY + accumulatedY),
 						TabIndex = count + 1,
-						ProbabilityChangedCallback = AssessRunButtonStatus
+						ProbabilityChangedCallback = this.AssessRunButtonStatus
 					};
 					control.Scale(UIHelper.AutoScaleFactor);
 
@@ -632,19 +632,25 @@ namespace GeneticAlgorithmBot {
 			}
 
 			string json = File.ReadAllText(path);
-			BotData botData = (BotData) ConfigService.LoadWithType(json);
-
-			this.populationManager.GetBest().GetAttempt().Attempt = botData.Best.Attempt;
-			this.populationManager.GetBest().GetAttempt().Maximize = botData.Best.Maximize;
-			this.populationManager.GetBest().GetAttempt().TieBreak1 = botData.Best.TieBreak1;
-			this.populationManager.GetBest().GetAttempt().TieBreak2 = botData.Best.TieBreak2;
-			this.populationManager.GetBest().GetAttempt().TieBreak3 = botData.Best.TieBreak3;
+			BotData botData = default!;
+			try {
+				// Attempts to load GeneticAlgorithmBot .BOT file save data.
+				botData = (BotData) ConfigService.LoadWithType(json);
+			} catch (InvalidCastException e) {
+				// If exception is thrown, attempt to load BasicBot .BOT file save data instead.
+				botData = Utils.BotDataReflectionCopy(ConfigService.LoadWithType(json));
+			}
+			this.populationManager.GetBest().GetAttempt().Attempt = botData.Best?.Attempt ?? 0;
+			this.populationManager.GetBest().GetAttempt().Maximize = botData.Best?.Maximize ?? 0;
+			this.populationManager.GetBest().GetAttempt().TieBreak1 = botData.Best?.TieBreak1 ?? 0;
+			this.populationManager.GetBest().GetAttempt().TieBreak2 = botData.Best?.TieBreak2 ?? 0;
+			this.populationManager.GetBest().GetAttempt().TieBreak3 = botData.Best?.TieBreak3 ?? 0;
 
 			// no references to ComparisonType parameters
 
 			this.populationManager.GetBest().GetAttempt().Log.Clear();
 
-			for (int i = 0; i < botData.Best.Log.Count; i++) {
+			for (int i = 0; i < botData.Best?.Log?.Count; i++) {
 				this.populationManager.GetBest().GetAttempt().Log.Add(botData.Best.Log[i]);
 			}
 
@@ -793,8 +799,29 @@ namespace GeneticAlgorithmBot {
 				return;
 			}
 
-			if (Config!.OpposingDirPolicy is not OpposingDirPolicy.Allow) {
-				DialogController.ShowMessageBox("In order to proceed to use this tool, please check if the U+D/L+R controller binds policy is set to 'Allow'.");
+			Type configType = Config!.GetType();
+			// For BizHawk versions > 2.8. (git commit af2d8da36e50a9004d6ecfd456381956b9245d66)
+			if (configType.GetProperty("OpposingDirPolicy") != null) {
+				if (Config!.OpposingDirPolicy is not OpposingDirPolicy.Allow) {
+					DialogController.ShowMessageBox("In order to proceed to use this tool, please check if the U+D/L+R controller binds policy is set to 'Allow'.");
+					this.Close();
+					DialogResult = DialogResult.Cancel;
+					return;
+				}
+			}
+			// To be made compatible with BizHawk 2.8.
+			else if (configType.GetProperty("AllowUdlr") != null) {
+				bool allowUldrFlag = (bool) configType.GetProperty("AllowUdlr").GetValue(Config!);
+				if (!allowUldrFlag) {
+					DialogController.ShowMessageBox("In order to use this tool, 'Allow U+D / L+R' must be checked in the controller menu.");
+					this.Close();
+					DialogResult = DialogResult.Cancel;
+					return;
+				}
+			} 
+			// Reject the tool from loading.
+			else {
+				DialogController.ShowMessageBox("Unsupported BizHawk version detected. Please report the issue on TASVideo Forum @ https://tasvideos.org/Forum/Topics/23453");
 				this.Close();
 				DialogResult = DialogResult.Cancel;
 				return;
@@ -977,7 +1004,7 @@ namespace GeneticAlgorithmBot {
 			this.populationManager.GetBest().Reset(0);
 			Runs = 0;
 			Frames = 0;
-			Generations = 0;
+			Generations = 1;
 			UpdateBestAttemptUI();
 		}
 
@@ -1060,6 +1087,22 @@ namespace GeneticAlgorithmBot {
 			NumericUpDown numericUpDown = (NumericUpDown) sender;
 			comparisonAttempt.TieBreak3 = (uint) numericUpDown.Value;
 		}
+
+		public void MaximizeAddressBox_TextChanged(object sender, EventArgs e) {
+			AssessRunButtonStatus();
+		}
+
+		public void TieBreaker1Box_TextChanged(object sender, EventArgs e) {
+			AssessRunButtonStatus();
+		}
+
+		public void TieBreaker2Box_TextChanged(object sender, EventArgs e) {
+			AssessRunButtonStatus();
+		}
+
+		public void TieBreaker3Box_TextChanged(object sender, EventArgs e) {
+			AssessRunButtonStatus();
+		}
 		#endregion
 	}
 
@@ -1119,6 +1162,50 @@ namespace GeneticAlgorithmBot {
 			target.Log.Clear();
 			target.Log.AddRange(source.Log);
 		}
+
+		public static BotData BotDataReflectionCopy(object source) {
+			BotData target = (BotData) Activator.CreateInstance(typeof(BotData));
+			foreach (PropertyInfo p in source.GetType().GetProperties()) {
+				if (p.Name.Equals("Best")) {
+					BotAttempt attempt = Utils.BotAttemptReflectionCopy(p.GetValue(source));
+					target.Best = new BotAttempt(attempt);
+				}
+				else if (p.Name.Equals("ControlProbabilities")) {
+					Dictionary<string, double> sourceDict = (Dictionary<string, double>) p.GetValue(source);
+					target.ControlProbabilities = new Dictionary<string, double>(sourceDict);
+				}
+				else if (p.Name.Equals("Attempts")) {
+					target.GetType().GetProperty("Runs")!.SetValue(target, p.GetValue(source));
+				}
+				else {
+					target.GetType().GetProperty(p.Name)!.SetValue(target, p.GetValue(source));
+				}
+			}
+			return target;
+		}
+
+		public static BotAttempt BotAttemptReflectionCopy(object source) {
+			BotAttempt target = (BotAttempt) Activator.CreateInstance(typeof(BotAttempt));
+			foreach (PropertyInfo p in source.GetType().GetProperties()) {
+				object value = p.GetValue(source);
+				PropertyInfo targetInfo = typeof(BotAttempt).GetProperty(p.Name);
+				if (value.GetType() == typeof(int)) {
+					targetInfo!.SetValue(target, Convert.ToUInt32(value));
+				}
+				else if (p.Name.Equals("Log")) {
+					List<string> logs = (List<string>) targetInfo.GetValue(target);
+					logs.Clear();
+					logs.AddRange((List<string>) p.GetValue(source));
+				}
+				else if (p.Name.Equals("is_Reset")) {
+					typeof(BotAttempt).GetProperty("isReset")!.SetValue(target, p.GetValue(source));
+				}
+				else {
+					typeof(BotAttempt).GetProperty(p.Name)!.SetValue(target, p.GetValue(source));
+				}
+			}
+			return target;
+		}
 	}
 
 	public class GeneticAlgorithm {
@@ -1134,6 +1221,7 @@ namespace GeneticAlgorithmBot {
 		public GeneticAlgorithm(GeneticAlgorithmBot owner) {
 			this.bot = owner;
 			this.IsInitialized = false;
+			this.Generation = 1;
 			this._bestRecording = new InputRecording(owner, this);
 			this.population = new InputRecording[1];
 			for (int i = 0; i < this.population.Length; i++) {
@@ -1197,7 +1285,7 @@ namespace GeneticAlgorithmBot {
 			BotAttempt origin = this.GetBest().GetAttempt();
 			origin.Fitness = 0;
 			origin.Attempt = 0;
-			origin.Generation = 0;
+			origin.Generation = 1;
 			origin.ComparisonTypeMain = this.bot.MainComparisonType;
 			origin.ComparisonTypeTie1 = this.bot.Tie1ComparisonType;
 			origin.ComparisonTypeTie2 = this.bot.Tie2ComparisonType;
@@ -1216,6 +1304,7 @@ namespace GeneticAlgorithmBot {
 		public void Initialize() {
 			this.SetOrigin();
 			this.currentIndex = 0;
+			this.Generation = 1;
 			this.StartFrameNumber = this.bot._startFrame;
 			this.population = new InputRecording[this.bot.PopulationSize];
 			for (int i = 0; i < this.population.Length; i++) {
@@ -1335,6 +1424,7 @@ namespace GeneticAlgorithmBot {
 
 		public void SetResult() {
 			this.result.Attempt = this.bot.Runs;
+			this.result.Generation = this.bot.Generations;
 			this.result.Maximize = this.bot.MaximizeValue;
 			this.result.TieBreak1 = this.bot.TieBreaker1Value;
 			this.result.TieBreak2 = this.bot.TieBreaker2Value;
@@ -1349,6 +1439,7 @@ namespace GeneticAlgorithmBot {
 
 		public void Reset(long attemptNumber) {
 			this.result.Attempt = attemptNumber;
+			this.result.Generation = 1;
 			this.result.Maximize = 0;
 			this.result.TieBreak1 = 0;
 			this.result.TieBreak2 = 0;
