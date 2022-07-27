@@ -138,53 +138,33 @@ namespace GeneticAlgorithmBot {
 
 		public IList<string> ControllerButtons => Emulator.ControllerDefinition.BoolButtons;
 
-		public int MaximizeAddress {
-			get => MaximizeAddressBox.ToRawInt() ?? 0;
-			set => MaximizeAddressBox.SetFromRawInt(value);
+		public ulong? MaximizeAddress {
+			get => MaximizeAddressBox.ToU64();
+			set => MaximizeAddressBox.SetFromU64(value);
 		}
 
-		public uint MaximizeValue {
-			get {
-				int? addr = MaximizeAddressBox.ToRawInt();
-				return addr.HasValue ? GetRamValue(addr.Value) : 0;
-			}
+		public int MaximizeValue => GetRamValue(MaximizeAddress);
+
+		public ulong? TieBreaker1Address {
+			get => TieBreaker1Box.ToU64();
+			set => TieBreaker1Box.SetFromU64(value);
 		}
 
-		public int TieBreaker1Address {
-			get => TieBreaker1Box.ToRawInt() ?? 0;
-			set => TieBreaker1Box.SetFromRawInt(value);
+		public int TieBreaker1Value => GetRamValue(TieBreaker1Address);
+
+		public ulong? TieBreaker2Address {
+			get => TieBreaker2Box.ToU64();
+			set => TieBreaker2Box.SetFromU64(value);
 		}
 
-		public uint TieBreaker1Value {
-			get {
-				int? addr = TieBreaker1Box.ToRawInt();
-				return addr.HasValue ? GetRamValue(addr.Value) : 0;
-			}
+		public int TieBreaker2Value => GetRamValue(TieBreaker2Address);
+
+		public ulong? TieBreaker3Address {
+			get => TieBreaker3Box.ToU64();
+			set => TieBreaker3Box.SetFromU64(value);
 		}
 
-		public int TieBreaker2Address {
-			get => TieBreaker2Box.ToRawInt() ?? 0;
-			set => TieBreaker2Box.SetFromRawInt(value);
-		}
-
-		public uint TieBreaker2Value {
-			get {
-				int? addr = TieBreaker2Box.ToRawInt();
-				return addr.HasValue ? GetRamValue(addr.Value) : 0;
-			}
-		}
-
-		public int TieBreaker3Address {
-			get => TieBreaker3Box.ToRawInt() ?? 0;
-			set => TieBreaker3Box.SetFromRawInt(value);
-		}
-
-		public uint TieBreaker3Value {
-			get {
-				int? addr = TieBreaker3Box.ToRawInt();
-				return addr.HasValue ? GetRamValue(addr.Value) : 0;
-			}
-		}
+		public int TieBreaker3Value => GetRamValue(TieBreaker3Address);
 
 		public byte MainComparisonType {
 			get => (byte) MainOperator.SelectedIndex;
@@ -206,11 +186,14 @@ namespace GeneticAlgorithmBot {
 			set => Tiebreak3Operator.SelectedIndex = value < 6 ? value : 0;
 		}
 
-		public uint GetRamValue(int addr) {
-			uint val = _dataSize switch {
+		public int GetRamValue(ulong? address) {
+			if (address is null)
+				return 0;
+			var addr = checked((long) address);
+			int val = _dataSize switch {
 				1 => _currentDomain.PeekByte(addr),
 				2 => _currentDomain.PeekUshort(addr, _bigEndian),
-				4 => _currentDomain.PeekUint(addr, _bigEndian),
+				4 => (int) _currentDomain.PeekUint(addr, _bigEndian),
 				_ => _currentDomain.PeekByte(addr)
 			};
 			return val;
@@ -605,7 +588,7 @@ namespace GeneticAlgorithmBot {
 
 		private void LoadFileFromRecent(string path) {
 			var result = LoadBotFile(path);
-			if (!result) {
+			if (!result && !File.Exists(path)) {
 				Settings.RecentBotFiles.HandleLoadError(MainForm, path);
 			}
 		}
@@ -634,12 +617,64 @@ namespace GeneticAlgorithmBot {
 			string json = File.ReadAllText(path);
 			BotData botData = default!;
 			try {
-				// Attempts to load GeneticAlgorithmBot .BOT file save data.
-				botData = (BotData) ConfigService.LoadWithType(json);
+				try {
+					// Attempts to load GeneticAlgorithmBot .BOT file save data.
+					botData = (BotData) ConfigService.LoadWithType(json);
+				}
+				catch (InvalidCastException e) {
+					// If exception is thrown, attempt to load BasicBot .BOT file save data instead.
+					botData = Utils.BotDataReflectionCopy(ConfigService.LoadWithType(json));
+				}
 			} catch (InvalidCastException e) {
-				// If exception is thrown, attempt to load BasicBot .BOT file save data instead.
-				botData = Utils.BotDataReflectionCopy(ConfigService.LoadWithType(json));
+				using ExceptionBox dialog = new(e);
+				this.ShowDialogAsChild(dialog);
+				return false;
 			}
+
+			// Additional checks to make sure the BOT file is targeted at the loaded ROM game.
+			if (botData.SysID != Emulator.SystemId) {
+				this.ModalMessageBox(text: $"This file was made for a different system ({botData.SysID}).");
+				if (!string.IsNullOrEmpty(botData.SysID)) {
+					// there's little chance the file would load without throwing, and if it did, it wouldn't be useful
+					// Otherwise grandfathered (made with old version, sysID unknowable), user has been warned.
+					return false;
+				}
+			}
+			bool isHawkVersionMatches = VersionInfo.DeveloperBuild || botData.HawkVersion == VersionInfo.GetEmuVersion();
+			bool isCoreNameMatches = botData.CoreName == Emulator.Attributes().CoreName;
+			bool isGameNameMatches = botData.GameName == Game.Name;
+			if (!(isHawkVersionMatches && isCoreNameMatches && isGameNameMatches)) {
+				// Inconsistent data found. Warn the user.
+				string msg = isHawkVersionMatches
+					? isCoreNameMatches
+						? string.Empty
+						: $" with a different core ({botData.CoreName ?? "unknown"})"
+					: isCoreNameMatches
+						? " with a different version of EmuHawk"
+						: $" with a different core ({botData.CoreName ?? "unknown"}) on a different version of EmuHawk";
+				if (!isGameNameMatches)
+					msg = $"for a different game ({botData.GameName ?? "unknown"}){msg}";
+				if (!this.ModalMessageBox2(
+						text: $"This file was made {msg}. Load it anyway?",
+						caption: "Confirm file load",
+						icon: EMsgBoxIcon.Question)) {
+					return false;
+				}
+			}
+
+			try {
+				LoadBotFileInner(botData, path);
+				return true;
+			}
+			catch (Exception e) {
+				using ExceptionBox dialog = new(e);
+				this.ShowDialogAsChild(dialog);
+				return false;
+			}
+		}
+
+		private void LoadBotFileInner(BotData botData, string path) {
+			// At this point, BotData is guaranteed to be valid.
 			this.populationManager.GetBest().GetAttempt().Attempt = botData.Best?.Attempt ?? 0;
 			this.populationManager.GetBest().GetAttempt().Maximize = botData.Best?.Maximize ?? 0;
 			this.populationManager.GetBest().GetAttempt().TieBreak1 = botData.Best?.TieBreak1 ?? 0;
@@ -731,7 +766,6 @@ namespace GeneticAlgorithmBot {
 			MessageLabel.Text = $"{Path.GetFileNameWithoutExtension(path)} loaded";
 
 			AssessRunButtonStatus();
-			return true;
 		}
 
 		private void SaveBotFile(string path) {
@@ -760,7 +794,11 @@ namespace GeneticAlgorithmBot {
 				Frames = Frames,
 				MemoryDomain = _currentDomain.Name,
 				BigEndian = _bigEndian,
-				DataSize = _dataSize
+				DataSize = _dataSize,
+				HawkVersion = VersionInfo.GetEmuVersion(),
+				SysID = Emulator.SystemId,
+				CoreName = Emulator.Attributes().CoreName,
+				GameName = Game.Name
 			};
 
 			string json = ConfigService.SaveWithType(data);
@@ -891,7 +929,8 @@ namespace GeneticAlgorithmBot {
 					"Bot files",
 					"bot");
 			if (file != null) {
-				LoadBotFile(file.FullName);
+				// Discarding the returned value.
+				_ = LoadBotFile(file.FullName);
 			}
 		}
 
@@ -1043,49 +1082,49 @@ namespace GeneticAlgorithmBot {
 		public void MainValueRadio_CheckedChanged(object sender, EventArgs e) {
 			if (sender is RadioButton radioButton && radioButton.Checked) {
 				MainValueNumeric.Enabled = true;
-				comparisonAttempt.Maximize = (uint) MainValueNumeric.Value;
+				comparisonAttempt.Maximize = (int) MainValueNumeric.Value;
 			}
 		}
 
 		public void TieBreak1ValueRadio_CheckedChanged(object sender, EventArgs e) {
 			if (sender is RadioButton radioButton && radioButton.Checked) {
 				TieBreak1Numeric.Enabled = true;
-				comparisonAttempt.TieBreak1 = (uint) TieBreak1Numeric.Value;
+				comparisonAttempt.TieBreak1 = (int) TieBreak1Numeric.Value;
 			}
 		}
 
 		public void TieBreak2ValueRadio_CheckedChanged(object sender, EventArgs e) {
 			if (sender is RadioButton radioButton && radioButton.Checked) {
 				TieBreak2Numeric.Enabled = true;
-				comparisonAttempt.TieBreak2 = (uint) TieBreak2Numeric.Value;
+				comparisonAttempt.TieBreak2 = (int) TieBreak2Numeric.Value;
 			}
 		}
 
 		public void TieBreak3ValueRadio_CheckedChanged(object sender, EventArgs e) {
 			if (sender is RadioButton radioButton && radioButton.Checked) {
 				TieBreak3Numeric.Enabled = true;
-				comparisonAttempt.TieBreak3 = (uint) TieBreak3Numeric.Value;
+				comparisonAttempt.TieBreak3 = (int) TieBreak3Numeric.Value;
 			}
 		}
 
 		public void MainValueNumeric_ValueChanged(object sender, EventArgs e) {
 			NumericUpDown numericUpDown = (NumericUpDown) sender;
-			comparisonAttempt.Maximize = (uint) numericUpDown.Value;
+			comparisonAttempt.Maximize = (int) numericUpDown.Value;
 		}
 
 		public void TieBreak1Numeric_ValueChanged(object sender, EventArgs e) {
 			NumericUpDown numericUpDown = (NumericUpDown) sender;
-			comparisonAttempt.TieBreak1 = (uint) numericUpDown.Value;
+			comparisonAttempt.TieBreak1 = (int) numericUpDown.Value;
 		}
 
 		public void TieBreak2Numeric_ValueChanged(object sender, EventArgs e) {
 			NumericUpDown numericUpDown = (NumericUpDown) sender;
-			comparisonAttempt.TieBreak2 = (uint) numericUpDown.Value;
+			comparisonAttempt.TieBreak2 = (int) numericUpDown.Value;
 		}
 
 		public void TieBreak3Numeric_ValueChanged(object sender, EventArgs e) {
 			NumericUpDown numericUpDown = (NumericUpDown) sender;
-			comparisonAttempt.TieBreak3 = (uint) numericUpDown.Value;
+			comparisonAttempt.TieBreak3 = (int) numericUpDown.Value;
 		}
 
 		public void MaximizeAddressBox_TextChanged(object sender, EventArgs e) {
@@ -1114,19 +1153,19 @@ namespace GeneticAlgorithmBot {
 		public static readonly double CROSSOVER_RATE = 50.0;
 
 		public static bool IsBetter(GeneticAlgorithmBot bot, BotAttempt best, BotAttempt comparison, BotAttempt current) {
-			uint max = bot.MainValueRadio.Checked ? comparison.Maximize : best.Maximize;
+			int max = bot.MainValueRadio.Checked ? comparison.Maximize : best.Maximize;
 			if (!TestValue(bot.MainComparisonType, current.Maximize, max)) return false;
 			if (current.Maximize != comparison.Maximize) return true;
 
-			uint tie1 = bot.TieBreak1ValueRadio.Checked ? comparison.TieBreak1 : best.TieBreak1;
+			int tie1 = bot.TieBreak1ValueRadio.Checked ? comparison.TieBreak1 : best.TieBreak1;
 			if (!TestValue(bot.Tie1ComparisonType, current.TieBreak1, tie1)) return false;
 			if (current.TieBreak1 != comparison.TieBreak1) return true;
 
-			uint tie2 = bot.TieBreak2ValueRadio.Checked ? comparison.TieBreak2 : best.TieBreak2;
+			int tie2 = bot.TieBreak2ValueRadio.Checked ? comparison.TieBreak2 : best.TieBreak2;
 			if (!TestValue(bot.Tie2ComparisonType, current.TieBreak2, tie2)) return false;
 			if (current.TieBreak2 != comparison.TieBreak2) return true;
 
-			uint tie3 = bot.TieBreak3ValueRadio.Checked ? comparison.TieBreak3 : best.TieBreak3;
+			int tie3 = bot.TieBreak3ValueRadio.Checked ? comparison.TieBreak3 : best.TieBreak3;
 			if (!TestValue(bot.Tie3ComparisonType, current.TieBreak3, tie3)) return false;
 
 			// TieBreak3 is equal, regardless of which attempt type they are.
@@ -1500,10 +1539,10 @@ namespace GeneticAlgorithmBot {
 		public long Attempt { get; set; }
 		public long Generation { get; set; }
 		public int Fitness { get; set; }
-		public uint Maximize { get; set; }
-		public uint TieBreak1 { get; set; }
-		public uint TieBreak2 { get; set; }
-		public uint TieBreak3 { get; set; }
+		public int Maximize { get; set; }
+		public int TieBreak1 { get; set; }
+		public int TieBreak2 { get; set; }
+		public int TieBreak3 { get; set; }
 		public byte ComparisonTypeMain { get; set; }
 		public byte ComparisonTypeTie1 { get; set; }
 		public byte ComparisonTypeTie2 { get; set; }
@@ -1541,10 +1580,10 @@ namespace GeneticAlgorithmBot {
 	public struct BotData {
 		public BotAttempt Best { get; set; }
 		public Dictionary<string, double> ControlProbabilities { get; set; }
-		public int Maximize { get; set; }
-		public int TieBreaker1 { get; set; }
-		public int TieBreaker2 { get; set; }
-		public int TieBreaker3 { get; set; }
+		public ulong? Maximize { get; set; }
+		public ulong? TieBreaker1 { get; set; }
+		public ulong? TieBreaker2 { get; set; }
+		public ulong? TieBreaker3 { get; set; }
 		public byte ComparisonTypeMain { get; set; }
 		public byte ComparisonTypeTie1 { get; set; }
 		public byte ComparisonTypeTie2 { get; set; }
@@ -1565,5 +1604,9 @@ namespace GeneticAlgorithmBot {
 		public string MemoryDomain { get; set; }
 		public bool BigEndian { get; set; }
 		public int DataSize { get; set; }
+		public string HawkVersion { get; set; }
+		public string SysID { get; set; }
+		public string CoreName { get; set; }
+		public string GameName { get; set; }
 	}
 }
