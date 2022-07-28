@@ -32,7 +32,7 @@ namespace GeneticAlgorithmBot {
 
 		private bool _previousInvisibleEmulation = false;
 
-		private bool _debug_mode_skipRestart = false;
+		private const bool _debug_mode_skipRestart = false;
 
 		private string _lastOpenedRom = "";
 
@@ -117,6 +117,9 @@ namespace GeneticAlgorithmBot {
 
 		[RequiredService]
 		public IEmulator Emulator { get; set; } = default!;
+
+		[RequiredService]
+		private IStatable StatableCore { get; set; } = default!;
 
 		[RequiredService]
 		public IMemoryDomains MemoryDomains { get; set; } = default!;
@@ -261,6 +264,9 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public override void Restart() {
+			// This has to do with loading and saving save states, which is something the bot needs to function.
+			_ = StatableCore!;
+
 			if (_debug_mode_skipRestart) {
 				return;
 			}
