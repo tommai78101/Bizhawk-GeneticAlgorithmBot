@@ -1,9 +1,5 @@
 {
   "profiles": {
-    "GeneticAlgorithmBot": {
-      "commandName": "Project",
-      "nativeDebugging": true
-    },
     "EmuHawk": {
       "commandName": "Executable",
       "executablePath": "E:\\LargeGithubProjects\\Bizhawk-GeneticAlgorithmBot\\BizHawk\\EmuHawk.exe",

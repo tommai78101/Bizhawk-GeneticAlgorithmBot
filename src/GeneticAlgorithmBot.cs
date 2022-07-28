@@ -32,8 +32,6 @@ namespace GeneticAlgorithmBot {
 
 		private bool _previousInvisibleEmulation = false;
 
-		private const bool _debug_mode_skipRestart = false;
-
 		private string _lastOpenedRom = "";
 
 		private MemoryDomain _currentDomain = default!;
@@ -135,6 +133,11 @@ namespace GeneticAlgorithmBot {
 		public int PopulationSize {
 			get => (int) PopulationSizeNumeric.Value;
 			set => PopulationSizeNumeric.Value = value;
+		}
+
+		public decimal MutationRate {
+			get => MutationRateNumeric.Value;
+			set => MutationRateNumeric.Value = (decimal) value;
 		}
 
 		public ClickyVirtualPadController Controller => InputManager.ClickyVirtualPadController;
@@ -266,10 +269,6 @@ namespace GeneticAlgorithmBot {
 		public override void Restart() {
 			// This has to do with loading and saving save states, which is something the bot needs to function.
 			_ = StatableCore!;
-
-			if (_debug_mode_skipRestart) {
-				return;
-			}
 
 			if (_currentDomain == null || MemoryDomains.Contains(_currentDomain)) {
 				_currentDomain = MemoryDomains.MainMemory;
@@ -627,11 +626,12 @@ namespace GeneticAlgorithmBot {
 					// Attempts to load GeneticAlgorithmBot .BOT file save data.
 					botData = (BotData) ConfigService.LoadWithType(json);
 				}
-				catch (InvalidCastException e) {
+				catch (InvalidCastException) {
 					// If exception is thrown, attempt to load BasicBot .BOT file save data instead.
 					botData = Utils.BotDataReflectionCopy(ConfigService.LoadWithType(json));
 				}
-			} catch (InvalidCastException e) {
+			}
+			catch (InvalidCastException e) {
 				using ExceptionBox dialog = new(e);
 				this.ShowDialogAsChild(dialog);
 				return false;
@@ -862,7 +862,7 @@ namespace GeneticAlgorithmBot {
 					DialogResult = DialogResult.Cancel;
 					return;
 				}
-			} 
+			}
 			// Reject the tool from loading.
 			else {
 				DialogController.ShowMessageBox("Unsupported BizHawk version detected. Please report the issue on TASVideo Forum @ https://tasvideos.org/Forum/Topics/23453");
@@ -885,6 +885,11 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public void PopulationSizeNumeric_ValueChanged(object sender, EventArgs e) {
+			AssessRunButtonStatus();
+			this.populationManager.IsInitialized = false;
+		}
+
+		public void MutationRateNumeric_ValueChanged(object sender, EventArgs e) {
 			AssessRunButtonStatus();
 			this.populationManager.IsInitialized = false;
 		}
@@ -1154,8 +1159,6 @@ namespace GeneticAlgorithmBot {
 	public static class Utils {
 		public static Random RNG { get; } = new Random((int) DateTime.Now.Ticks);
 
-		public static readonly double MUTATION_RATE = 0.02;
-
 		public static readonly double CROSSOVER_RATE = 50.0;
 
 		public static bool IsBetter(GeneticAlgorithmBot bot, BotAttempt best, BotAttempt comparison, BotAttempt current) {
@@ -1374,7 +1377,7 @@ namespace GeneticAlgorithmBot {
 
 				// Uniform distribution mutation.
 				for (int rate = 0; rate < child.FrameLength; rate++) {
-					if (Utils.RNG.NextDouble() <= Utils.MUTATION_RATE) {
+					if (Utils.RNG.NextDouble() <= decimal.ToDouble(this.bot.MutationRate)) {
 						child.RandomizeFrameInput();
 					}
 				}
