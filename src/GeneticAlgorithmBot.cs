@@ -1056,6 +1056,7 @@ namespace GeneticAlgorithmBot {
 			Frames = 0;
 			Generations = 1;
 			UpdateBestAttemptUI();
+			this.ClearBestButton.Enabled = false;
 		}
 
 		public void MainBestRadio_CheckedChanged(object sender, EventArgs e) {
