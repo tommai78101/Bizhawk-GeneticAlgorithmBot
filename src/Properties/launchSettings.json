@@ -6,9 +6,9 @@
     },
     "EmuHawk": {
       "commandName": "Executable",
-      "executablePath": "E:\\LargeGithubProjects\\Bizhawk-GeneticAlgorithmBot\\BizHawk\\EmuHawk.exe",
+      "executablePath": "..\\BizHawk\\EmuHawk.exe",
       "commandLineArgs": "--open-ext-tool-dll=GeneticAlgorithmBot",
-      "workingDirectory": "E:\\LargeGithubProjects\\Bizhawk-GeneticAlgorithmBot\\BizHawk",
+      "workingDirectory": "..\\BizHawk",
       "nativeDebugging": true
     }
   }
