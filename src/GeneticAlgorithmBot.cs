@@ -76,6 +76,7 @@ namespace GeneticAlgorithmBot {
 			get => this.Settings.RecentBotFiles;
 			set => this.Settings.RecentBotFiles = value;
 		}
+
 		[ConfigPersist]
 		public bool TurboWhenBotting {
 			get => this.Settings.TurboWhenBotting;
