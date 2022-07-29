@@ -165,6 +165,8 @@ namespace GeneticAlgorithmBot {
 			this.ControlProbabilityPanel = new System.Windows.Forms.Panel();
 			this.btnCopyBestInput = new System.Windows.Forms.Button();
 			this.GoalGroupBox = new System.Windows.Forms.GroupBox();
+			this.MutationRateNumeric = new System.Windows.Forms.NumericUpDown();
+			this.MutationRateLabel = new System.Windows.Forms.Label();
 			this.PopulationSizeNumeric = new System.Windows.Forms.NumericUpDown();
 			this.PopulationSizeLabel = new System.Windows.Forms.Label();
 			this.panel6 = new System.Windows.Forms.Panel();
@@ -237,6 +239,7 @@ namespace GeneticAlgorithmBot {
 			this.panel4.SuspendLayout();
 			this.ControlsBox.SuspendLayout();
 			this.GoalGroupBox.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.MutationRateNumeric)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PopulationSizeNumeric)).BeginInit();
 			this.panel6.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.TieBreak3Numeric)).BeginInit();
@@ -593,9 +596,8 @@ namespace GeneticAlgorithmBot {
 			this.ControlsBox.Size = new System.Drawing.Size(442, 369);
 			this.ControlsBox.TabIndex = 2007;
 			this.ControlsBox.TabStop = false;
-			this.ControlsBox.Text = "Input Probability Controls [?]";
-			this.BotToolTip.SetToolTip(this.ControlsBox, "This panel here indicates the likelihood the specified controls are chosen when t" +
-        "he bot mutates its training model.");
+			this.ControlsBox.Text = "Input Mutation Probability Controls [?]";
+			this.BotToolTip.SetToolTip(this.ControlsBox, resources.GetString("ControlsBox.ToolTip"));
 			// 
 			// ControlProbabilityPanel
 			// 
@@ -625,6 +627,8 @@ namespace GeneticAlgorithmBot {
 			// 
 			this.GoalGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.GoalGroupBox.Controls.Add(this.MutationRateNumeric);
+			this.GoalGroupBox.Controls.Add(this.MutationRateLabel);
 			this.GoalGroupBox.Controls.Add(this.PopulationSizeNumeric);
 			this.GoalGroupBox.Controls.Add(this.PopulationSizeLabel);
 			this.GoalGroupBox.Controls.Add(this.label4);
@@ -643,9 +647,42 @@ namespace GeneticAlgorithmBot {
 			this.BotToolTip.SetToolTip(this.GoalGroupBox, "This panel indicates what RAM values in the memory you want to use for the bot to" +
         " determine its fitness level as it undergoes training.");
 			// 
+			// MutationRateNumeric
+			// 
+			this.MutationRateNumeric.DecimalPlaces = 3;
+			this.MutationRateNumeric.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            196608});
+			this.MutationRateNumeric.Location = new System.Drawing.Point(380, 25);
+			this.MutationRateNumeric.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.MutationRateNumeric.Name = "MutationRateNumeric";
+			this.MutationRateNumeric.Size = new System.Drawing.Size(47, 20);
+			this.MutationRateNumeric.TabIndex = 1007;
+			this.MutationRateNumeric.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            131072});
+			this.MutationRateNumeric.ValueChanged += new System.EventHandler(this.MutationRateNumeric_ValueChanged);
+			// 
+			// MutationRateLabel
+			// 
+			this.MutationRateLabel.AutoSize = true;
+			this.MutationRateLabel.Location = new System.Drawing.Point(297, 29);
+			this.MutationRateLabel.Name = "MutationRateLabel";
+			this.MutationRateLabel.Size = new System.Drawing.Size(77, 13);
+			this.MutationRateLabel.TabIndex = 1006;
+			this.MutationRateLabel.Text = "Mutation Rate:";
+			// 
 			// PopulationSizeNumeric
 			// 
-			this.PopulationSizeNumeric.Location = new System.Drawing.Point(303, 25);
+			this.PopulationSizeNumeric.Location = new System.Drawing.Point(245, 25);
 			this.PopulationSizeNumeric.Maximum = new decimal(new int[] {
             9999,
             0,
@@ -669,7 +706,7 @@ namespace GeneticAlgorithmBot {
 			// PopulationSizeLabel
 			// 
 			this.PopulationSizeLabel.AutoSize = true;
-			this.PopulationSizeLabel.Location = new System.Drawing.Point(214, 29);
+			this.PopulationSizeLabel.Location = new System.Drawing.Point(156, 28);
 			this.PopulationSizeLabel.Name = "PopulationSizeLabel";
 			this.PopulationSizeLabel.Size = new System.Drawing.Size(83, 13);
 			this.PopulationSizeLabel.TabIndex = 1002;
@@ -1231,6 +1268,7 @@ namespace GeneticAlgorithmBot {
 			this.ControlsBox.ResumeLayout(false);
 			this.GoalGroupBox.ResumeLayout(false);
 			this.GoalGroupBox.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.MutationRateNumeric)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.PopulationSizeNumeric)).EndInit();
 			this.panel6.ResumeLayout(false);
 			this.panel6.PerformLayout();
@@ -1256,6 +1294,8 @@ namespace GeneticAlgorithmBot {
 		private IContainer components;
 		public BizHawk.WinForms.Controls.LocLabelEx BestGenerationNumberLabel;
 		public BizHawk.WinForms.Controls.LocLabelEx locLabelEx3;
+		private NumericUpDown MutationRateNumeric;
+		private Label MutationRateLabel;
 
 		/// <summary>
 		///   Returns the cached ResourceManager instance used by this class.
