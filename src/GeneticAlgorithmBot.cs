@@ -70,6 +70,27 @@ namespace GeneticAlgorithmBot {
 		public GeneticAlgorithm populationManager;
 		#endregion
 
+		#region Settings
+		[ConfigPersist]
+		public RecentFiles recentFiles {
+			get => this.Settings.RecentBotFiles;
+			set => this.Settings.RecentBotFiles = value;
+		}
+		[ConfigPersist]
+		public bool TurboWhenBotting {
+			get => this.Settings.TurboWhenBotting;
+			set => this.Settings.TurboWhenBotting = value;
+		}
+
+		[ConfigPersist]
+		public bool InvisibleEmulation {
+			get => this.Settings.InvisibleEmulation;
+			set => this.Settings.InvisibleEmulation = value;
+		}
+
+		public GeneticAlgorithmBotSettings Settings { get; set; }
+		#endregion
+
 		#region Variable Getters and Setters
 		private IMovie CurrentMovie => MovieSession.Movie;
 
@@ -121,9 +142,6 @@ namespace GeneticAlgorithmBot {
 
 		[RequiredService]
 		public IMemoryDomains MemoryDomains { get; set; } = default!;
-
-		[ConfigPersist]
-		public GeneticAlgorithmBotSettings Settings { get; set; }
 
 		public int FrameLength {
 			get => (int) FrameLengthNumeric.Value;
@@ -1581,10 +1599,11 @@ namespace GeneticAlgorithmBot {
 		}
 	}
 
+	// Temporary class to store all of the settings (class member properties) marked with [ConfigPersist] attribute.
 	public class GeneticAlgorithmBotSettings {
 		public RecentFiles RecentBotFiles { get; set; } = new RecentFiles();
 		public bool TurboWhenBotting { get; set; } = true;
-		public bool InvisibleEmulation { get; set; }
+		public bool InvisibleEmulation { get; set; } = true;
 	}
 
 	public struct BotData {
