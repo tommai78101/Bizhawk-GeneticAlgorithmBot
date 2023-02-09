@@ -21,6 +21,8 @@ namespace GeneticAlgorithmBot {
 	public sealed partial class GeneticAlgorithmBot : ToolFormBase, IExternalToolForm, IToolFormAutoConfig {
 		#region Static Variables
 		public static Type Resources => typeof(ToolFormBase).Assembly.GetType("BizHawk.Client.EmuHawk.Properties.Resources");
+
+		private static readonly FilesystemFilterSet BotFilesFSFilterSet = new(new FilesystemFilter("Bot files", new[] { "bot" }));
 		#endregion
 
 		#region Variables
@@ -238,14 +240,7 @@ namespace GeneticAlgorithmBot {
 			}
 		}
 
-		public string SelectedSlot {
-			get {
-				char num = StartFromSlotBox.SelectedItem
-					.ToString()
-					.Last();
-				return $"QuickSave{num}";
-			}
-		}
+		public int SelectedSlot => 1 + StartFromSlotBox.SelectedIndex;
 		#endregion
 
 		#region Class Methods
@@ -954,10 +949,9 @@ namespace GeneticAlgorithmBot {
 
 		public void OpenMenuItem_Click(object sender, EventArgs e) {
 			var file = OpenFileDialog(
-					CurrentFilename,
-					Config!.PathEntries.ToolsAbsolutePath(),
-					"Bot files",
-					"bot");
+					currentFile: CurrentFilename,
+					path: Config!.PathEntries.ToolsAbsolutePath(),
+					BotFilesFSFilterSet);
 			if (file != null) {
 				// Discarding the returned value.
 				_ = LoadBotFile(file.FullName);
@@ -977,10 +971,9 @@ namespace GeneticAlgorithmBot {
 			}
 
 			var file = SaveFileDialog(
-				fileName,
-				Config!.PathEntries.ToolsAbsolutePath(),
-				"Bot files",
-				"bot",
+				currentFile: fileName,
+				path: Config!.PathEntries.ToolsAbsolutePath(),
+				BotFilesFSFilterSet,
 				this);
 			if (file != null) {
 				SaveBotFile(file.FullName);
@@ -990,7 +983,7 @@ namespace GeneticAlgorithmBot {
 
 		public void RecentSubMenu_DropDownOpened(object sender, EventArgs e) {
 			RecentSubMenu.DropDownItems.Clear();
-			RecentSubMenu.DropDownItems.AddRange(Settings.RecentBotFiles.RecentMenu(MainForm, LoadFileFromRecent, "Bot Parameters"));
+			RecentSubMenu.DropDownItems.AddRange(Settings.RecentBotFiles.RecentMenu(this, LoadFileFromRecent, "Bot Parameters"));
 		}
 
 		public void OptionsSubMenu_DropDownOpened(object sender, EventArgs e) {
