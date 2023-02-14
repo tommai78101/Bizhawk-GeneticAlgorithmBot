@@ -1,6 +1,12 @@
 # Bizhawk-GeneticAlgorithmBot
 Genetic algorithm control input bot for Bizhawk for the creation of tools-assisted speedruns.
 
+# Requirements
+
+* [Visual Studio 2022 for C#](https://learn.microsoft.com/en-us/visualstudio/install/install-visual-studio?view=vs-2022)
+* [BizHawk Pre-requisite Installer](https://github.com/TASEmulators/BizHawk-Prereqs)
+* [Git](https://git-scm.com/downloads)
+
 # Source Code Installation
 
 1. Make sure you unzip a working copy of BizHawk (the full folder) and copy the entire folder to this project's root directory. File structure should look something like this:
