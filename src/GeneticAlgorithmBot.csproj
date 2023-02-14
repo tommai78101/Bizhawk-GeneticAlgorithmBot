@@ -9,8 +9,8 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="System.Resources.Extensions" Version="7.0.0" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 		<Reference Include="System.Windows.Forms" />
 		<Reference Include="BizHawk.BizInvoke" HintPath="$(ProjectDir)../BizHawk/dll/BizHawk.BizInvoke.dll" />
 		<Reference Include="BizHawk.Bizware.BizwareGL" HintPath="$(ProjectDir)../BizHawk/dll/BizHawk.Bizware.BizwareGL.dll" />
