@@ -23,6 +23,10 @@ GeneticAlgorithmBot
 
 2. Run the run_build.cmd batch file.
 
+Click the video below to see the installation process using Windows Sandbox:
+
+[![Bizhawk Genetic Algorithm Bot Source Installation](https://img.youtube.com/vi/YSm8GEpnsLk/hqdefault.jpg)](https://youtu.be/YSm8GEpnsLk)
+
 # Release Installation
 
 1. Make sure you back up your BizHawk's `config.ini` file before you attempt to load the bot (See https://github.com/TASEmulators/BizHawk/issues/3337 for more info).
