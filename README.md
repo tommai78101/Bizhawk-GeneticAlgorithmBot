@@ -13,7 +13,7 @@ Genetic algorithm control input bot for Bizhawk for the creation of tools-assist
 
 ```
 GeneticAlgorithmBot
- ├ BizHawk/
+ ├ BizHawk/         <-----    This is where you put the full Bizhawk folder at.
  ├ src/
  ├ run_build.cmd
  ├ LICENSE
