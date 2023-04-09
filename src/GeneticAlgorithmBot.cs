@@ -344,10 +344,8 @@ namespace GeneticAlgorithmBot {
 				SetMaxSpeed();
 			}
 
-			if (InvisibleEmulationCheckBox.Checked) {
-				_previousInvisibleEmulation = MainForm.InvisibleEmulation;
-				MainForm.InvisibleEmulation = true;
-			}
+			_previousInvisibleEmulation = MainForm.InvisibleEmulation;
+			MainForm.InvisibleEmulation = InvisibleEmulationCheckBox.Checked;
 
 			UpdateBotStatusIcon();
 			MessageLabel.Text = "Running...";
