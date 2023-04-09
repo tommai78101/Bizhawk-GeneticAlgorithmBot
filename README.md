@@ -3,6 +3,10 @@ Genetic algorithm control input bot for Bizhawk for the creation of tools-assist
 
 # Requirements
 
+* Runs in BizHawk Emulator v2.9 and above.
+
+# Development Requirements
+
 * [Visual Studio 2022 for C#](https://learn.microsoft.com/en-us/visualstudio/install/install-visual-studio?view=vs-2022)
 * [BizHawk Pre-requisite Installer](https://github.com/TASEmulators/BizHawk-Prereqs)
 * [Git](https://git-scm.com/downloads)
