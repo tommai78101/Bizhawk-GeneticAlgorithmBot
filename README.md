@@ -39,3 +39,8 @@ Click the video below to see the installation process using Windows Sandbox:
 4. Make sure you have U+D/L+R controller buttons set to **Allow**.
 5. Open TAStudio. (Required)
 6. In the toolbar menu: Tools -> External Tools -> Genetic Algorithm Bot.
+
+# Credits
+
+* Genetic Algorithm Bot - tom_mai78101
+* [NEAT C# Implementation](https://github.com/dnazirso/NeatSharp) - [dnazirso](https://github.com/dnazirso)
