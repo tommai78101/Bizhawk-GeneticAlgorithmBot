@@ -231,6 +231,7 @@ namespace GeneticAlgorithmBot {
 			this.NewMenuItem = new BizHawk.WinForms.Controls.ToolStripMenuItemEx();
 			this.FileSubMenu = new BizHawk.WinForms.Controls.ToolStripMenuItemEx();
 			this.BotMenu = new BizHawk.WinForms.Controls.MenuStripEx();
+			this.NeatInputRegionControlsBox = new System.Windows.Forms.GroupBox();
 			((System.ComponentModel.ISupportInitialize)(this.FrameLengthNumeric)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.MainValueNumeric)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.TieBreak1Numeric)).BeginInit();
@@ -239,6 +240,7 @@ namespace GeneticAlgorithmBot {
 			((System.ComponentModel.ISupportInitialize)(this.TieBreak2Numeric)).BeginInit();
 			this.panel4.SuspendLayout();
 			this.ControlsBox.SuspendLayout();
+			this.NeatInputRegionControlsBox.SuspendLayout();
 			this.GoalGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.MutationRateNumeric)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PopulationSizeNumeric)).BeginInit();
@@ -1255,6 +1257,17 @@ namespace GeneticAlgorithmBot {
             this.HelpSubMenu});
 			this.BotMenu.TabIndex = 0;
 			// 
+			// NeatInputRegionControlsBox
+			// 
+			this.NeatInputRegionControlsBox.Anchor = (System.Windows.Forms.AnchorStyles) (System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom);
+			this.NeatInputRegionControlsBox.Location = new System.Drawing.Point(12, 183);
+			this.NeatInputRegionControlsBox.Name = "NeatInputRegionControlsBox";
+			this.NeatInputRegionControlsBox.Size = new System.Drawing.Size(442, 369);
+			this.NeatInputRegionControlsBox.TabIndex = 2023;
+			this.NeatInputRegionControlsBox.TabStop = false;
+			this.NeatInputRegionControlsBox.Text = "Input Region Controls [?]";
+			this.BotToolTip.SetToolTip(this.NeatInputRegionControlsBox, resources.GetString("NeatInputRegionControlsBox.ToolTip"));
+			// 
 			// GeneticAlgorithmBot
 			// 
 			this.ClientSize = new System.Drawing.Size(707, 587);
@@ -1264,6 +1277,7 @@ namespace GeneticAlgorithmBot {
 			this.Controls.Add(this.BestGroupBox);
 			this.Controls.Add(this.GoalGroupBox);
 			this.Controls.Add(this.ControlsBox);
+			this.Controls.Add(this.NeatInputRegionControlsBox);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "GeneticAlgorithmBot";
 			this.Load += new System.EventHandler(this.OnBotLoad);
@@ -1278,6 +1292,7 @@ namespace GeneticAlgorithmBot {
 			this.panel4.ResumeLayout(false);
 			this.panel4.PerformLayout();
 			this.ControlsBox.ResumeLayout(false);
+			this.NeatInputRegionControlsBox.ResumeLayout(false);
 			this.GoalGroupBox.ResumeLayout(false);
 			this.GoalGroupBox.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.MutationRateNumeric)).EndInit();
@@ -1300,7 +1315,6 @@ namespace GeneticAlgorithmBot {
 			this.BotMenu.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
-
 		}
 
 		private IContainer components;
@@ -1309,6 +1323,7 @@ namespace GeneticAlgorithmBot {
 		private NumericUpDown MutationRateNumeric;
 		private Label MutationRateLabel;
 		public CheckBox UseNeatCheckBox;
+		private GroupBox NeatInputRegionControlsBox;
 
 		/// <summary>
 		///   Returns the cached ResourceManager instance used by this class.

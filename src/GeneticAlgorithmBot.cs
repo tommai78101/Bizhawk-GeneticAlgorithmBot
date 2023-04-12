@@ -280,7 +280,9 @@ namespace GeneticAlgorithmBot {
 			this.neat = new NeatAlgorithm(this);
 			this.MainOperator.SelectedItem = ">=";
 			this.comparisonAttempt = new BotAttempt();
+
 			RunBtn.Enabled = false;
+			AssessNeatInputRegionStatus();
 		}
 
 		public static T GetResourceIcons<T>(string iconName) {
@@ -768,6 +770,20 @@ namespace GeneticAlgorithmBot {
 				FrameLength > 0
 				&& !string.IsNullOrWhiteSpace(MaximizeAddressBox.Text)
 				&& ((!_useNeat && ControlProbabilities.Any(kvp => kvp.Value > 0)) || (_useNeat));
+		}
+
+		private void AssessNeatInputRegionStatus() {
+			if (UseNeatCheckBox.Checked) {
+				NeatInputRegionControlsBox.Visible = true;
+				NeatInputRegionControlsBox.Enabled = true;
+				ControlsBox.Visible = false;
+				ControlsBox.Enabled = false;
+			} else {
+				NeatInputRegionControlsBox.Visible = false;
+				NeatInputRegionControlsBox.Enabled = false;
+				ControlsBox.Visible = true;
+				ControlsBox.Enabled = true;
+			}
 		}
 
 		private void LoadFileFromRecent(string path) {
@@ -1344,6 +1360,7 @@ namespace GeneticAlgorithmBot {
 		public void UseNeatCheckBox_CheckedChanged(object sender, EventArgs e) {
 			this._useNeat = UseNeatCheckBox.Checked;
 			AssessRunButtonStatus();
+			AssessNeatInputRegionStatus();
 		}
 		#endregion
 	}
