@@ -1,22 +1,27 @@
-﻿using GeneticAlgorithmBot.Neat.Calculation;
-using GeneticAlgorithmBot.Neat.Genetic;
+﻿using GeneticAlgorithmBot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneticAlgorithmBot.Neat.NeuroEvolution {
-	internal class Client : IComparable<Client> {
+namespace GeneticAlgorithmBot {
+	public class Client : IComparable<Client> {
 		public IGenome Genome { get; set; }
 		public double Score { get; set; }
-		public Species Species { get; set; }
+		public Species Species { get; set; } = default!;
 		public Calculator Calculator { get; set; }
 
-		public Client(IGenome genome) { 
+		public int ClientId { get; set; } = -1;
+
+		public Client(IGenome genome, int clientId) { 
 			this.Genome = genome;
+			this.ClientId = clientId;
 			Calculator = new Calculator(genome);
 		}
+
+		// ====================================================================================================================================
+		// NEAT functions
 
 		public void RegenerateCalculator() => Calculator = new Calculator(Genome);
 		

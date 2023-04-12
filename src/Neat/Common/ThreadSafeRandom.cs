@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GeneticAlgorithmBot.Neat.Common {
+namespace GeneticAlgorithmBot {
 	internal static class ThreadSafeRandom {
 		[ThreadStatic]
 		private static Random? LocalRandom;

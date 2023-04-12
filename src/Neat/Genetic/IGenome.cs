@@ -1,13 +1,12 @@
-﻿using GeneticAlgorithmBot.Neat.Common;
-using GeneticAlgorithmBot.Neat.NeuroEvolution;
+﻿using GeneticAlgorithmBot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneticAlgorithmBot.Neat.Genetic {
-	internal interface IGenome {
+namespace GeneticAlgorithmBot {
+	public interface IGenome {
 		RandomList<ConnectionGene> Connections { get; }
 		RandomList<NodeGene> Nodes { get; }
 		INeat Neat { get; }

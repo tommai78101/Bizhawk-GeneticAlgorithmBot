@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneticAlgorithmBot.Neat.Common {
+namespace GeneticAlgorithmBot {
 	internal sealed class Constants {
 		// Number of maximum nodes.
 		public static readonly int MAX_NODES = (int) Math.Pow(2, 10);

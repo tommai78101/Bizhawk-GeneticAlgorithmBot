@@ -178,6 +178,7 @@ namespace GeneticAlgorithmBot {
 			this.TieBreak3BestRadio = new System.Windows.Forms.RadioButton();
 			this.Tiebreak3Operator = new System.Windows.Forms.ComboBox();
 			this.ControlGroupBox = new System.Windows.Forms.GroupBox();
+			this.UseNeatCheckBox = new System.Windows.Forms.CheckBox();
 			this.InvisibleEmulationCheckBox = new System.Windows.Forms.CheckBox();
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.StatsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -813,6 +814,7 @@ namespace GeneticAlgorithmBot {
 			// 
 			this.ControlGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.ControlGroupBox.Controls.Add(this.UseNeatCheckBox);
 			this.ControlGroupBox.Controls.Add(this.InvisibleEmulationCheckBox);
 			this.ControlGroupBox.Controls.Add(this.panel2);
 			this.ControlGroupBox.Controls.Add(this.StopBtn);
@@ -825,13 +827,23 @@ namespace GeneticAlgorithmBot {
 			this.ControlGroupBox.TabIndex = 2010;
 			this.ControlGroupBox.TabStop = false;
 			this.ControlGroupBox.Text = "TAStudio Controls [?]";
-			this.BotToolTip.SetToolTip(this.ControlGroupBox, "This panel indicates which save state in the TAStudio to choose from, so the bot " +
-        "can repeatedly load that save state for training.");
+			this.BotToolTip.SetToolTip(this.ControlGroupBox, resources.GetString("ControlGroupBox.ToolTip"));
+			// 
+			// UseNeatCheckBox
+			// 
+			this.UseNeatCheckBox.AutoSize = true;
+			this.UseNeatCheckBox.Location = new System.Drawing.Point(88, 63);
+			this.UseNeatCheckBox.Name = "UseNeatCheckBox";
+			this.UseNeatCheckBox.Size = new System.Drawing.Size(77, 17);
+			this.UseNeatCheckBox.TabIndex = 2006;
+			this.UseNeatCheckBox.Text = "Use NEAT";
+			this.UseNeatCheckBox.UseVisualStyleBackColor = true;
+			this.UseNeatCheckBox.CheckedChanged += new System.EventHandler(this.UseNeatCheckBox_CheckedChanged);
 			// 
 			// InvisibleEmulationCheckBox
 			// 
 			this.InvisibleEmulationCheckBox.AutoSize = true;
-			this.InvisibleEmulationCheckBox.Location = new System.Drawing.Point(88, 60);
+			this.InvisibleEmulationCheckBox.Location = new System.Drawing.Point(88, 42);
 			this.InvisibleEmulationCheckBox.Name = "InvisibleEmulationCheckBox";
 			this.InvisibleEmulationCheckBox.Size = new System.Drawing.Size(127, 17);
 			this.InvisibleEmulationCheckBox.TabIndex = 2004;
@@ -891,7 +903,7 @@ namespace GeneticAlgorithmBot {
 			// StopBtn
 			// 
 			this.StopBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.StopBtn.Location = new System.Drawing.Point(6, 56);
+			this.StopBtn.Location = new System.Drawing.Point(6, 50);
 			this.StopBtn.Name = "StopBtn";
 			this.StopBtn.Size = new System.Drawing.Size(75, 23);
 			this.StopBtn.TabIndex = 2002;
@@ -903,7 +915,7 @@ namespace GeneticAlgorithmBot {
 			// RunBtn
 			// 
 			this.RunBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.RunBtn.Location = new System.Drawing.Point(6, 56);
+			this.RunBtn.Location = new System.Drawing.Point(6, 50);
 			this.RunBtn.Name = "RunBtn";
 			this.RunBtn.Size = new System.Drawing.Size(75, 23);
 			this.RunBtn.TabIndex = 2001;
@@ -926,14 +938,14 @@ namespace GeneticAlgorithmBot {
             "Slot 8",
             "Slot 9",
             "Slot 0"});
-			this.StartFromSlotBox.Location = new System.Drawing.Point(71, 25);
+			this.StartFromSlotBox.Location = new System.Drawing.Point(71, 17);
 			this.StartFromSlotBox.Name = "StartFromSlotBox";
 			this.StartFromSlotBox.Size = new System.Drawing.Size(75, 21);
 			this.StartFromSlotBox.TabIndex = 2000;
 			// 
 			// label8
 			// 
-			this.label8.Location = new System.Drawing.Point(7, 29);
+			this.label8.Location = new System.Drawing.Point(7, 21);
 			this.label8.Name = "label8";
 			this.label8.Text = "Start From:";
 			// 
@@ -1296,6 +1308,7 @@ namespace GeneticAlgorithmBot {
 		public BizHawk.WinForms.Controls.LocLabelEx locLabelEx3;
 		private NumericUpDown MutationRateNumeric;
 		private Label MutationRateLabel;
+		public CheckBox UseNeatCheckBox;
 
 		/// <summary>
 		///   Returns the cached ResourceManager instance used by this class.

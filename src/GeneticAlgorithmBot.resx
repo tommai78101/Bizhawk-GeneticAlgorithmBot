@@ -126,6 +126,9 @@
   <metadata name="StatsContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>594, 17</value>
   </metadata>
+  <data name="ControlGroupBox.ToolTip" xml:space="preserve">
+    <value>This panel indicates which save state in the TAStudio to choose from, so the bot can repeatedly load that save state for training. If you wished to use NEAT instead of the standard Genetic Algorithm, you will need to reset your bot attempts.</value>
+  </data>
   <metadata name="BotStatusStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>746, 17</value>
   </metadata>

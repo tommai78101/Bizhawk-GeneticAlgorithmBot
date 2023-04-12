@@ -1,13 +1,12 @@
-﻿using GeneticAlgorithmBot.Neat.Calculation;
-using GeneticAlgorithmBot.Neat.Genetic;
+﻿using GeneticAlgorithmBot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneticAlgorithmBot.Neat.NeuroEvolution {
-	internal interface INeat {
+namespace GeneticAlgorithmBot {
+	public interface INeat {
 		// Create a NodeGene and and store it for future use
 		NodeGene CreateNode();
 

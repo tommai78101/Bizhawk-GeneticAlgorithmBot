@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneticAlgorithmBot.Neat.Common {
-	internal class RandomSelector<T> {
+namespace GeneticAlgorithmBot {
+	public class RandomSelector<T> {
 		private readonly List<T> Elements = new List<T>();
 		private readonly List<double> Scores = new List<double>();
 
@@ -26,10 +26,9 @@ namespace GeneticAlgorithmBot.Neat.Common {
 					return Elements[i];
 				}
 			}
-			if (Elements.Count == 1) {
+			if (Elements.Count == 1)
 				return Elements[0];
-			}
-			return default;
+			return default!;
 		}
 	}
 }

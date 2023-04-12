@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneticAlgorithmBot.Neat.ActivationStrategy {
+namespace GeneticAlgorithmBot {
 	internal static class ActivationNames {
 		public const string Absolute = "Absolute";
 		// Exponential Linear Unit

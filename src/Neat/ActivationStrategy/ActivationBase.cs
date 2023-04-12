@@ -5,8 +5,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneticAlgorithmBot.Neat.ActivationStrategy {
-	internal abstract class ActivationBase {
+namespace GeneticAlgorithmBot {
+	public abstract class ActivationBase {
 		public IActivationFunction Activation { get; set; }
 		public string Name { get; set; }
 

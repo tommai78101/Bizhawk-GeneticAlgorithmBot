@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneticAlgorithmBot.Neat.Genetic {
+namespace GeneticAlgorithmBot {
 	internal sealed class GenomeConstants {
 		// Weight shift strength
 		public static readonly double WEIGHT_SHIFT_STRENGTH = 0.3;

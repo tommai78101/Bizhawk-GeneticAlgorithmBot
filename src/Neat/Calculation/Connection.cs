@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneticAlgorithmBot.Neat.Calculation {
-	internal class Connection {
+namespace GeneticAlgorithmBot {
+	public class Connection {
 		public Node In { get; set; }
 		public double Weight { get; set; }
 		public bool Enabled { get; set; } = true;

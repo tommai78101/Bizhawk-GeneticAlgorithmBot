@@ -1,12 +1,11 @@
-﻿using GeneticAlgorithmBot.Neat.Common;
-using GeneticAlgorithmBot.Neat.NeuroEvolution;
+﻿using GeneticAlgorithmBot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneticAlgorithmBot.Neat.Genetic {
+namespace GeneticAlgorithmBot {
 	internal static class Extensions {
 		// Clone a ConnectionGene.
 		public static ConnectionGene GetConnection(this ConnectionGene connection) {
@@ -23,10 +22,10 @@ namespace GeneticAlgorithmBot.Neat.Genetic {
 			int highestInnovationNumber1 = 0;
 			int highestInnovationNumber2 = 0;
 			if (genome1.Connections.Count > 0) {
-				highestInnovationNumber1 = genome1.Connections[genome1.Connections.Count - 1].InnovationNumber;
+				highestInnovationNumber1 = genome1.Connections[genome1.Connections.Count - 1]!.InnovationNumber;
 			}
 			if (genome2.Connections.Count > 0) {
-				highestInnovationNumber2 = genome2.Connections[genome2.Connections.Count - 1].InnovationNumber;
+				highestInnovationNumber2 = genome2.Connections[genome2.Connections.Count - 1]!.InnovationNumber;
 			}
 			if (highestInnovationNumber1 < highestInnovationNumber2) {
 				// Swap around.
@@ -41,8 +40,8 @@ namespace GeneticAlgorithmBot.Neat.Genetic {
 			int disjointCount = 0;
 			double weightDifference = 0;
 			while (i1 < genome1.Connections.Count && i2 < genome2.Connections.Count) {
-				ConnectionGene gene1 = genome1.Connections[i1];
-				ConnectionGene gene2 = genome2.Connections[i2];
+				ConnectionGene gene1 = genome1.Connections[i1]!;
+				ConnectionGene gene2 = genome2.Connections[i2]!;
 				if (gene1.InnovationNumber == gene2.InnovationNumber) {
 					matchingCount++;
 					weightDifference += Math.Abs(gene1.Weight - gene2.Weight);
@@ -76,8 +75,8 @@ namespace GeneticAlgorithmBot.Neat.Genetic {
 			int i1 = 0;
 			int i2 = 0;
 			while (i1 < parent1.Connections.Count && i2 < parent2.Connections.Count) {
-				ConnectionGene gene1 = parent1.Connections[i1];
-				ConnectionGene gene2 = parent2.Connections[i2];
+				ConnectionGene gene1 = parent1.Connections[i1]!;
+				ConnectionGene gene2 = parent2.Connections[i2]!;
 				if (gene1.InnovationNumber == gene2.InnovationNumber) {
 					if (ThreadSafeRandom.GetRandom() > 0.5) {
 						offspringGenome.Connections.Add(gene1.GetConnection());
@@ -98,7 +97,7 @@ namespace GeneticAlgorithmBot.Neat.Genetic {
 				}
 			}
 			while(i1 < parent1.Connections.Count) {
-				ConnectionGene gene1 = parent1.Connections[i1];
+				ConnectionGene gene1 = parent1.Connections[i1]!;
 				offspringGenome.Connections.Add(gene1.GetConnection());
 				i1++;
 			}

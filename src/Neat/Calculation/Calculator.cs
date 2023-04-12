@@ -1,5 +1,4 @@
-﻿using GeneticAlgorithmBot.Neat.Common;
-using GeneticAlgorithmBot.Neat.Genetic;
+﻿using GeneticAlgorithmBot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,19 +6,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GeneticAlgorithmBot.Neat.Calculation {
-	internal class Calculator {
+namespace GeneticAlgorithmBot {
+	public class Calculator {
 		readonly List<Node> InputNodes = new List<Node>();
 		readonly List<Node> HiddenNodes = new List<Node>();
 		readonly List<Node> OutputNodes = new List<Node>();
+		public IList<double> previousOutputs;
 
 		public Calculator(IGenome genome) {
+			this.previousOutputs = new List<double>();
 			RandomList<NodeGene> nodes = genome.Nodes;
 			RandomList<ConnectionGene> connections = genome.Connections;
 			Dictionary<int, Node> nodeDictionary = new Dictionary<int, Node>();
 			
 			foreach(NodeGene n in nodes) {
-				Node node = new Node(n.X, n.Activation);
+				Node node = new Node(n.X, n.Activation!);
 				nodeDictionary[n.InnovationNumber] = node;
 				if (n.X <= 0.1) {
 					InputNodes.Add(node);
@@ -63,6 +64,10 @@ namespace GeneticAlgorithmBot.Neat.Calculation {
 			}
 
 			return outputs;
+		}
+
+		public int GetInputSize() {
+			return InputNodes.Count;
 		}
 	}
 }

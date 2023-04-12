@@ -1,7 +1,4 @@
-﻿using GeneticAlgorithmBot.Neat.ActivationStrategy;
-using GeneticAlgorithmBot.Neat.Calculation;
-using GeneticAlgorithmBot.Neat.Common;
-using GeneticAlgorithmBot.Neat.NeuroEvolution;
+﻿using GeneticAlgorithmBot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +6,8 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneticAlgorithmBot.Neat.Genetic {
-	internal class Genome : IGenome {
+namespace GeneticAlgorithmBot {
+	public class Genome : IGenome {
 		public RandomList<ConnectionGene> Connections { get; }
 
 		public RandomList<NodeGene> Nodes { get; }
@@ -39,7 +36,7 @@ namespace GeneticAlgorithmBot.Neat.Genetic {
 		}
 
 		public void MutateActivationRandom() {
-			NodeGene node = Nodes.GetRandomElement();
+			NodeGene? node = Nodes.GetRandomElement();
 			if (node?.X > 0.1) {
 				ActivationEnumeration a = ActivationEnumeration.GetRandom();
 				node.Activation = a.Activation;
@@ -49,8 +46,8 @@ namespace GeneticAlgorithmBot.Neat.Genetic {
 
 		public void MutateLink() {
 			for (int i = 0; i < 100; i++) {
-				NodeGene a = Nodes.GetRandomElement();
-				NodeGene b = Nodes.GetRandomElement();
+				NodeGene a = Nodes.GetRandomElement()!;
+				NodeGene b = Nodes.GetRandomElement()!;
 				if (a == null || b == null || a.X.Equals(b.X))
 					continue;
 
@@ -68,7 +65,7 @@ namespace GeneticAlgorithmBot.Neat.Genetic {
 		}
 
 		public void MutateNode() {
-			ConnectionGene connection = Connections.GetRandomElement();
+			ConnectionGene connection = Connections.GetRandomElement()!;
 			if (connection == null)
 				return;
 
@@ -101,21 +98,21 @@ namespace GeneticAlgorithmBot.Neat.Genetic {
 		}
 
 		public void MutateToggleLink() {
-			ConnectionGene connection = Connections.GetRandomElement();
+			ConnectionGene connection = Connections.GetRandomElement()!;
 			if (connection != null) {
 				connection.Enabled = !connection.Enabled;
 			}
 		}
 
 		public void MutateWeightRandom() {
-			ConnectionGene connection = Connections.GetRandomElement();
+			ConnectionGene connection = Connections.GetRandomElement()!;
 			if (connection != null) {
 				connection.Weight = ThreadSafeRandom.GetNormalizedRandom(0, 0.2f) * GenomeConstants.WEIGHT_RANDOM_STRENGTH;
 			}
 		}
 
 		public void MutateWeightShift() {
-			ConnectionGene connection = Connections.GetRandomElement();
+			ConnectionGene connection = Connections.GetRandomElement()!;
 			if (connection != null) {
 				connection.Weight += ThreadSafeRandom.GetNormalizedRandom(0, 0.2f) * GenomeConstants.WEIGHT_SHIFT_STRENGTH;
 			}
@@ -126,7 +123,7 @@ namespace GeneticAlgorithmBot.Neat.Genetic {
 
 		private void AddSorted(ConnectionGene gene) {
 			for (int i = 0; i < Connections.Count; i++) {
-				int innovationNumber = Connections[i].InnovationNumber;
+				int innovationNumber = Connections[i]!.InnovationNumber;
 				if  (gene.InnovationNumber < innovationNumber) {
 					Connections.Insert(i, gene);
 					return;

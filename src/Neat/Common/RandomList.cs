@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneticAlgorithmBot.Neat.Common {
-	internal class RandomList<T> : IEnumerable<T> {
+namespace GeneticAlgorithmBot {
+	public class RandomList<T> : IEnumerable<T> {
 		private List<T> Data { get; }
 
 		public int Count => Data.Count;
@@ -22,7 +22,7 @@ namespace GeneticAlgorithmBot.Neat.Common {
 				int i = (int) (ThreadSafeRandom.GetRandom() * Count);
 				return Data[i];
 			}
-			return default;
+			return default!;
 		}
 
 		public void Add(T obj) {
@@ -59,7 +59,7 @@ namespace GeneticAlgorithmBot.Neat.Common {
 			get {
 				if (index >= 0 && index < Count)
 					return Data[index];
-				return default;
+				return default!;
 			}
 		}
 	}

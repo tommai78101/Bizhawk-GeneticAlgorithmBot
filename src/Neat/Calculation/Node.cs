@@ -1,12 +1,12 @@
-﻿using GeneticAlgorithmBot.Neat.ActivationStrategy;
+﻿using GeneticAlgorithmBot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneticAlgorithmBot.Neat.Calculation {
-	internal class Node : IComparable<Node> {
+namespace GeneticAlgorithmBot {
+	public class Node : IComparable<Node> {
 
 		// X coordinate
 		public double X { get; set; }

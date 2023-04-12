@@ -1,13 +1,12 @@
-﻿using GeneticAlgorithmBot.Neat.Common;
-using GeneticAlgorithmBot.Neat.Genetic;
+﻿using GeneticAlgorithmBot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneticAlgorithmBot.Neat.NeuroEvolution {
-	internal class Species {
+namespace GeneticAlgorithmBot {
+	public class Species : IComparable<Species> {
 		public RandomList<Client> Clients { get; }
 		public Client Representative { get; private set; }
 		public double Score { get; private set; }
@@ -22,7 +21,7 @@ namespace GeneticAlgorithmBot.Neat.NeuroEvolution {
 
 		// Affect a Client to a Species regarding its genetical distance
 		public bool Put(Client client) {
-			if (client.GetDistance(Representative) < Constants.CP_GENETICALLY_DISTANT) {
+			if (client.GetDistance(Representative!) < Constants.CP_GENETICALLY_DISTANT) {
 				client.Species = this;
 				Clients.Add(client);
 				return true;
@@ -37,7 +36,7 @@ namespace GeneticAlgorithmBot.Neat.NeuroEvolution {
 
 		public void Extinguish() {
 			foreach(Client c in Clients) {
-				c.Species = null;
+				c.Species = null!;
 			}
 		}
 
@@ -46,14 +45,14 @@ namespace GeneticAlgorithmBot.Neat.NeuroEvolution {
 		}
 
 		public void Reset() {
-			Representative = Clients.GetRandomElement();
+			Representative = Clients.GetRandomElement()!;
 			foreach (Client c in Clients) {
-				c.Species = null;
+				c.Species = null!;
 			}
 			Clients.Clear();
 
-			Clients.Add(Representative);
-			Representative.Species = this;
+			Clients.Add(Representative!);
+			Representative!.Species = this;
 			Score = 0;
 		}
 
@@ -61,19 +60,27 @@ namespace GeneticAlgorithmBot.Neat.NeuroEvolution {
 			Clients.Sort((Client c1, Client c2) => c1.CompareTo(c2));
 			double amount = percentage * Clients.Count;
 			for (int i = 0; i < amount; i++) {
-				Client c = Clients[Clients.Count - 1];
-				c.Species = null;
+				Client c = Clients[Clients.Count - 1]!;
+				c.Species = null!;
 				Clients.Remove(c);
 			}
 		}
 
 		public IGenome Breed() {
-			Client c1 = Clients.GetRandomElement();
-			Client c2 = Clients.GetRandomElement();
-			if (c1.Score > c2.Score) {
+			Client c1 = Clients.GetRandomElement()!;
+			Client c2 = Clients.GetRandomElement()!;
+			if (c1!.Score > c2!.Score) {
 				return c1.Genome.Crossover(c2.Genome);
 			}
 			return c2.Genome.Crossover(c1.Genome);
+		}
+
+		public int CompareTo(Species other) {
+			if (Score > other.Score)
+				return -1;
+			if (Score < other.Score) 
+				return 1;
+			return 0;
 		}
 	}
 }

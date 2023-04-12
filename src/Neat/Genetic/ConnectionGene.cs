@@ -1,12 +1,12 @@
-﻿using GeneticAlgorithmBot.Neat.Common;
+﻿using GeneticAlgorithmBot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneticAlgorithmBot.Neat.Genetic {
-	internal class ConnectionGene : Gene {
+namespace GeneticAlgorithmBot {
+	public class ConnectionGene : Gene {
 		public NodeGene In { get; set; }
 		public NodeGene Out { get; set; }
 		public double Weight { get; set; }
