@@ -20,6 +20,7 @@ using BizHawk.Bizware.BizwareGL;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
+using BizHawk.Emulation.Cores.Consoles.Nintendo.Faust;
 
 namespace GeneticAlgorithmBot {
 	[ExternalTool("Genetic Algorithm Bot")]
@@ -66,6 +67,10 @@ namespace GeneticAlgorithmBot {
 		private bool _doNotUpdateValues;
 
 		private ILogEntryGenerator _logGenerator = default!;
+
+		private Rectangle _neatInputRegion = default!;
+
+		private ExtendedColor[] _neatInputRegionData = default!;
 
 		/// <summary>
 		/// Comparison bot attempt is a bot attempt with current best bot attempt values from Population Manager, containing values where the "best" radio buttons are selected
@@ -159,6 +164,9 @@ namespace GeneticAlgorithmBot {
 
 		[RequiredService]
 		public IVideoProvider _currentVideoProvider { get; set; } = default!;
+
+		[RequiredApi]
+		public IGuiApi _guiApi { get; set; } = default!;
 
 		public int FrameLength {
 			get => (int) FrameLengthNumeric.Value;
@@ -512,6 +520,7 @@ namespace GeneticAlgorithmBot {
 
 		public void Update(bool fast) {
 			if (_useNeat) {
+				UpdateNeatInputRegion();
 				UpdateNeat(fast);
 			}
 			else {
@@ -572,30 +581,6 @@ namespace GeneticAlgorithmBot {
 				// Before this would have 2 additional hits before the frame even advanced, making the amount of inputs greater than the number of frames to test.
 				if (neat.GetCurrent().GetAttempt().Log.Count < FrameLength) //aka do not Add more inputs than there are Frames to test
 				{
-					// We need to use the display as the inputs for NEAT.
-					IDisposable disposableOutput = null!;
-					BitmapBuffer bitmapBufferIn = null!;
-					Bitmap bitmapInput = null!;
-					Bitmap bitmapOutput = null!;
-					if (_currentVideoProvider.BufferWidth > 0 && _currentVideoProvider.BufferHeight > 0) {
-						try {
-							byte[] data = GetScreenshotRegionData(0, 0, 1, 1);
-
-
-							bitmapOutput = new Bitmap(width: _currentVideoProvider.BufferWidth, height: _currentVideoProvider.BufferHeight, PixelFormat.Format32bppArgb);
-							using (var g = Graphics.FromImage(bitmapOutput)) {
-								g.InterpolationMode = InterpolationMode.NearestNeighbor;
-								g.PixelOffsetMode = PixelOffsetMode.Half;
-								g.DrawImage(bitmapInput, new Rectangle(0, 0, bitmapOutput.Width, bitmapOutput.Height));
-							}
-							IVideoProvider output = new BmpVideoProvider(bitmapOutput, _currentVideoProvider.VsyncNumerator, _currentVideoProvider.VsyncDenominator);
-							disposableOutput = (IDisposable) output;
-						}
-						finally {
-							bitmapBufferIn?.Dispose();
-							bitmapOutput?.Dispose();
-						}
-					}
 
 
 					PressButtons(false);
@@ -603,6 +588,13 @@ namespace GeneticAlgorithmBot {
 				}
 			}
 
+		}
+
+		public void UpdateNeatInputRegion() {
+			if (_currentVideoProvider.BufferWidth > 0 && _currentVideoProvider.BufferHeight > 0) {
+				this._neatInputRegion = new Rectangle(new Point((int) inputRegionX.Value, (int) inputRegionY.Value), new Size((int) inputRegionWidth.Value, (int) inputRegionHeight.Value));
+				this._neatInputRegionData = GetScreenshotRegionData(this._neatInputRegion, showRegion: true);
+			}
 		}
 
 		public void UpdateGeneticAlgorithm(bool fast) {
@@ -671,15 +663,40 @@ namespace GeneticAlgorithmBot {
 			return _lastFrameAdvanced != Emulator.Frame;
 		}
 
-		public byte[] GetScreenshotRegionData(int x, int y, int width, int height) {
-			BitmapBuffer screenshot = GetScreenshotImage();
-			Bitmap screenshotImage = screenshot.ToSysdrawingBitmap();
-			BitmapData data = screenshotImage.LockBits(new Rectangle(x, y, width, height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-			int length = data.Stride * data.Height;
-			byte[] bytes = new byte[length];
-			Marshal.Copy(data.Scan0, bytes, 0, length);
-			screenshotImage.UnlockBits(data);
-			return bytes;
+		public ExtendedColor[] GetScreenshotRegionData(Rectangle region, bool showRegion) {
+			using (BitmapBuffer screenshot = GetScreenshotImage())
+			using (Bitmap screenshotImage = screenshot.ToSysdrawingBitmap()) {
+				BitmapData data = screenshotImage.LockBits(region, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+				ExtendedColor[] result = new ExtendedColor[data.Width * data.Height];
+				byte[] bytes = new byte[data.Stride * data.Height];
+				Marshal.Copy(data.Scan0, bytes, 0, bytes.Length);
+
+				Parallel.ForEach(result.AsParallel().AsOrdered(), (pixel, state, i) => {
+					ExtendedColor color = new ExtendedColor();
+					color.B = bytes[i];
+					color.G = bytes[i + 1];
+					color.R = bytes[i + 2];
+					_ = bytes[i + 3];
+					result[i] = color;
+				});
+
+				screenshotImage.UnlockBits(data);
+				if (showRegion) {
+					this._guiApi.WithSurface(DisplaySurfaceID.Client, () => {
+						this._guiApi.DrawRectangle(region.Left, region.Top, region.Width, region.Height, null, Color.FromArgb(32, 255, 0, 255));
+					});
+				}
+
+				return result;
+			}
+		}
+
+		public void DrawRegion(Bitmap bitmap, Pen pen, Rectangle region) {
+			using (var g = Graphics.FromImage(bitmap)) {
+				g.InterpolationMode = InterpolationMode.NearestNeighbor;
+				g.PixelOffsetMode = PixelOffsetMode.Half;
+				g.DrawRectangle(pen, region);
+			}
 		}
 		#endregion
 
@@ -778,7 +795,8 @@ namespace GeneticAlgorithmBot {
 				NeatInputRegionControlsBox.Enabled = true;
 				ControlsBox.Visible = false;
 				ControlsBox.Enabled = false;
-			} else {
+			}
+			else {
 				NeatInputRegionControlsBox.Visible = false;
 				NeatInputRegionControlsBox.Enabled = false;
 				ControlsBox.Visible = true;
@@ -1032,6 +1050,23 @@ namespace GeneticAlgorithmBot {
 			BitmapBuffer result = new BitmapBuffer(_currentVideoProvider.BufferWidth, _currentVideoProvider.BufferHeight, _currentVideoProvider.GetVideoBuffer());
 			result.DiscardAlpha();
 			return result;
+		}
+
+		private int[] ConvertToInt32Array(BitmapData data, byte[] bytes) {
+			int[] pixelData = new int[data.Width * data.Height];
+			Parallel.For(0, data.Height, (y) => {
+				int rowStart = y * data.Stride;
+				for (int x = 0; x < data.Width; x++) {
+					int i = rowStart + x * 4;
+					// The color channels are called ARGB but actually ordered BGRA.
+					byte b = bytes[i];
+					byte g = bytes[i + 1];
+					byte r = bytes[i + 2];
+					byte a = bytes[i + 3];
+					pixelData[y * data.Width + x] = (int) (a << 24 | r << 16 | g << 8 | b);
+				}
+			});
+			return pixelData;
 		}
 		#endregion
 
@@ -1361,6 +1396,26 @@ namespace GeneticAlgorithmBot {
 			this._useNeat = UseNeatCheckBox.Checked;
 			AssessRunButtonStatus();
 			AssessNeatInputRegionStatus();
+		}
+
+		private void inputRegionX_ValueChanged(object sender, EventArgs e) {
+			this._neatInputRegionData = null!;
+		}
+
+		private void inputRegionY_ValueChanged(object sender, EventArgs e) {
+			this._neatInputRegionData = null!;
+		}
+
+		private void inputRegionWidth_ValueChanged(object sender, EventArgs e) {
+			this._neatInputRegionData = null!;
+		}
+
+		private void inputRegionHeight_ValueChanged(object sender, EventArgs e) {
+			this._neatInputRegionData = null!;
+		}
+
+		private void inputGridSize_ValueChanged(object sender, EventArgs e) {
+
 		}
 		#endregion
 	}
