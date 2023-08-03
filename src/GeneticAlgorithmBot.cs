@@ -3,6 +3,7 @@ using BizHawk.Client.EmuHawk;
 using BizHawk.Client.EmuHawk.ToolExtensions;
 using BizHawk.Common;
 using BizHawk.Emulation.Common;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -839,6 +840,7 @@ namespace GeneticAlgorithmBot {
 				try {
 					// Attempts to load GeneticAlgorithmBot .BOT file save data.
 					var data = ConfigService.LoadWithType(json);
+					// Deserializing a serialized object works.
 					botData = JsonConvert.DeserializeObject<BotData>(JsonConvert.SerializeObject(data));
 				}
 				catch (InvalidCastException) {
@@ -923,9 +925,11 @@ namespace GeneticAlgorithmBot {
 					.OfType<BotControlsRow>()
 					.ToList();
 
-			foreach (var (button, p) in botData.ControlProbabilities) {
-				var control = probabilityControls.Single(c => c.ButtonName == button);
-				control.Probability = p;
+			if (botData.ControlProbabilities != null) {
+				foreach (var (button, p) in botData.ControlProbabilities) {
+					var control = probabilityControls.Single(c => c.ButtonName == button);
+					control.Probability = p;
+				}
 			}
 
 			MaximizeAddress = botData.Maximize;
