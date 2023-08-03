@@ -1,5 +1,7 @@
 # Bizhawk-GeneticAlgorithmBot
-Genetic algorithm control input bot for Bizhawk for the creation of tools-assisted speedruns.
+Genetic algorithm control inputs generation bot for Bizhawk for the creation of tools-assisted speedruns.
+
+Also includes neuro-evolution augmented topology (NEAT) for control inputs generation.
 
 # Requirements
 
