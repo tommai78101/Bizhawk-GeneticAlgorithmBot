@@ -3,6 +3,7 @@ using BizHawk.Client.EmuHawk;
 using BizHawk.Client.EmuHawk.ToolExtensions;
 using BizHawk.Common;
 using BizHawk.Emulation.Common;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -636,11 +637,20 @@ namespace GeneticAlgorithmBot {
 			try {
 				try {
 					// Attempts to load GeneticAlgorithmBot .BOT file save data.
-					botData = (BotData) ConfigService.LoadWithType(json);
+					var data = ConfigService.LoadWithType(json);
+					// Deserializing a serialized object works.
+					botData = JsonConvert.DeserializeObject<BotData>(JsonConvert.SerializeObject(data));
 				}
 				catch (InvalidCastException) {
-					// If exception is thrown, attempt to load BasicBot .BOT file save data instead.
-					botData = Utils.BotDataReflectionCopy(ConfigService.LoadWithType(json));
+					// Loading the data alternatively.
+					try {
+						// Deserializing a serialized object works.
+						botData = JsonConvert.DeserializeObject<BotData>(json);
+					}
+					catch (InvalidCastException) {
+						// If exception is thrown, attempt to load BasicBot .BOT file save data instead.
+						botData = Utils.BotDataReflectionCopy(ConfigService.LoadWithType(json));
+					}
 				}
 			}
 			catch (InvalidCastException e) {
@@ -713,9 +723,11 @@ namespace GeneticAlgorithmBot {
 					.OfType<BotControlsRow>()
 					.ToList();
 
-			foreach (var (button, p) in botData.ControlProbabilities) {
-				var control = probabilityControls.Single(c => c.ButtonName == button);
-				control.Probability = p;
+			if (botData.ControlProbabilities != null) {
+				foreach (var (button, p) in botData.ControlProbabilities) {
+					var control = probabilityControls.Single(c => c.ButtonName == button);
+					control.Probability = p;
+				}
 			}
 
 			MaximizeAddress = botData.Maximize;
@@ -1249,7 +1261,7 @@ namespace GeneticAlgorithmBot {
 				object value = p.GetValue(source);
 				PropertyInfo targetInfo = typeof(BotAttempt).GetProperty(p.Name);
 				if (value.GetType() == typeof(int)) {
-					targetInfo!.SetValue(target, Convert.ToUInt32(value));
+					targetInfo!.SetValue(target, Convert.ToInt32(value));
 				}
 				else if (p.Name.Equals("Log")) {
 					List<string> logs = (List<string>) targetInfo.GetValue(target);
@@ -1558,7 +1570,7 @@ namespace GeneticAlgorithmBot {
 	public class BotAttempt {
 		public long Attempt { get; set; }
 		public long Generation { get; set; }
-		public int Fitness { get; set; }
+		public long Fitness { get; set; }
 		public int Maximize { get; set; }
 		public int TieBreak1 { get; set; }
 		public int TieBreak2 { get; set; }
