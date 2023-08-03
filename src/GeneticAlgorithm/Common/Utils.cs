@@ -88,7 +88,7 @@ namespace GeneticAlgorithmBot {
 				object value = p.GetValue(source);
 				PropertyInfo targetInfo = typeof(BotAttempt).GetProperty(p.Name);
 				if (value.GetType() == typeof(int)) {
-					targetInfo!.SetValue(target, Convert.ToUInt32(value));
+					targetInfo!.SetValue(target, Convert.ToInt32(value));
 				}
 				else if (p.Name.Equals("Log")) {
 					List<string> logs = (List<string>) targetInfo.GetValue(target);

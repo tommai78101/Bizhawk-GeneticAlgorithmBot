@@ -21,6 +21,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using BizHawk.Emulation.Cores.Consoles.Nintendo.Faust;
+using Newtonsoft.Json;
 
 namespace GeneticAlgorithmBot {
 	[ExternalTool("Genetic Algorithm Bot")]
@@ -837,11 +838,19 @@ namespace GeneticAlgorithmBot {
 			try {
 				try {
 					// Attempts to load GeneticAlgorithmBot .BOT file save data.
-					botData = (BotData) ConfigService.LoadWithType(json);
+					var data = ConfigService.LoadWithType(json);
+					botData = JsonConvert.DeserializeObject<BotData>(JsonConvert.SerializeObject(data));
 				}
 				catch (InvalidCastException) {
-					// If exception is thrown, attempt to load BasicBot .BOT file save data instead.
-					botData = Utils.BotDataReflectionCopy(ConfigService.LoadWithType(json));
+					// Loading the data alternatively.
+					try {
+						// Deserializing a serialized object works.
+						botData = JsonConvert.DeserializeObject<BotData>(json);
+					}
+					catch (InvalidCastException) {
+						// If exception is thrown, attempt to load BasicBot .BOT file save data instead.
+						botData = Utils.BotDataReflectionCopy(ConfigService.LoadWithType(json));
+					}
 				}
 			}
 			catch (InvalidCastException e) {
