@@ -11,9 +11,6 @@ dotnet build .\src\GeneticAlgorithmBot.sln -c Release
 
 @cp .\src\bin\Release\net48\GeneticAlgorithmBot.dll .\BizHawk\ExternalTools\ 2>nul
 @if errorlevel 1 copy .\src\bin\Release\net48\GeneticAlgorithmBot.dll .\BizHawk\ExternalTools\
-
-cd BizHawk
-.\EmuHawk.exe --open-ext-tool-dll=GeneticAlgorithmBot
 goto END
 
 :DOTNETBUILDFAILED
