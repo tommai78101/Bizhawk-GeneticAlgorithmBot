@@ -59,7 +59,7 @@ namespace GeneticAlgorithmBot {
 
 		private bool _doNotUpdateValues;
 
-		private ILogEntryGenerator _logGenerator = default!;
+		private Bk2LogEntryGenerator _logGenerator = default!;
 
 		/// <summary>
 		/// Comparison bot attempt is a bot attempt with current best bot attempt values from Population Manager, containing values where the "best" radio buttons are selected
