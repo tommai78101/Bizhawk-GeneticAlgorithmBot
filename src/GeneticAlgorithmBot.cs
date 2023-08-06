@@ -68,7 +68,7 @@ namespace GeneticAlgorithmBot {
 
 		private bool _doNotUpdateValues;
 
-		private ILogEntryGenerator _logGenerator = default!;
+		private Bk2LogEntryGenerator _logGenerator = default!;
 
 		private Rectangle _neatInputRegion = default!;
 
