@@ -41,6 +41,8 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public void EvaluateScore() {
+			// Default scoring method:
+			// Score = Clients.Sum(d => d.Score) / Clients.Count;
 			Score = Clients.Sum(d => d.Score) / Clients.Count;
 		}
 

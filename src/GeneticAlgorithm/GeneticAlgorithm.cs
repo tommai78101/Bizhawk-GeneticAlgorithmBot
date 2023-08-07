@@ -6,18 +6,29 @@ using System.Threading.Tasks;
 
 namespace GeneticAlgorithmBot {
 	public class GeneticAlgorithm : BotAlgorithm {
-		public GeneticAlgorithmBot bot;
 		public bool IsBestSet => this.bestRecording.IsSet;
 
-		public GeneticAlgorithm(GeneticAlgorithmBot owner) {
-			this.bot = owner;
+		public GeneticAlgorithm(GeneticAlgorithmBot owner) : base(owner) {
 			this.IsInitialized = false;
 			this.Generation = 1;
-			this.bestRecording = new InputRecording(owner, this);
-			this.population = new InputRecording[1];
+		}
+
+		public override BotAlgorithm Initialize() {
+			this.bestRecording = new InputRecording(this);
+			this.population = new InputRecording[this.bot.PopulationSize];
 			for (int i = 0; i < this.population.Length; i++) {
-				this.population[i] = new InputRecording(owner, this);
+				this.population[i] = new InputRecording(this);
+				this.population[i].Reset(0);
+				this.population[i].RandomizeInputRecording();
 			}
+
+			this.SetOrigin();
+			this.currentIndex = 0;
+			this.Generation = 1;
+			this.StartFrameNumber = this.bot._startFrame;
+			this.IsInitialized = true;
+
+			return this;
 		}
 
 		public void ClearBest() {
@@ -70,20 +81,6 @@ namespace GeneticAlgorithmBot {
 			origin.TieBreak2 = this.bot.TieBreaker2Value;
 			origin.TieBreak3 = this.bot.TieBreaker3Value;
 			origin.isReset = false;
-		}
-
-		public void Initialize() {
-			this.SetOrigin();
-			this.currentIndex = 0;
-			this.Generation = 1;
-			this.StartFrameNumber = this.bot._startFrame;
-			this.population = new InputRecording[this.bot.PopulationSize];
-			for (int i = 0; i < this.population.Length; i++) {
-				this.population[i] = new InputRecording(this.bot, this);
-				this.population[i].Reset(0);
-				this.population[i].RandomizeInputRecording();
-			}
-			this.IsInitialized = true;
 		}
 
 		public void Reproduce() {

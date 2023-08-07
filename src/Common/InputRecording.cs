@@ -13,16 +13,15 @@ namespace GeneticAlgorithmBot {
 		public double fitness { get; set; }
 		public int FrameLength { get; set; }
 		public bool IsSet { get; set; }
-		private GeneticAlgorithmBot bot;
 		private BotAlgorithm manager;
+		private GeneticAlgorithmBot Bot => this.manager.bot;
 
-		public InputRecording(GeneticAlgorithmBot owner, BotAlgorithm parent) {
-			this.bot = owner;
+		public InputRecording(BotAlgorithm parent) {
 			this.manager = parent;
 			this.IsSet = false;
-			this.FrameLength = owner.FrameLength;
-			this.recording = new FrameInput[owner.FrameLength];
-			for (int i = 0; i < owner.FrameLength; i++) {
+			this.FrameLength = this.Bot.FrameLength;
+			this.recording = new FrameInput[this.Bot.FrameLength];
+			for (int i = 0; i < this.Bot.FrameLength; i++) {
 				this.recording[i] = new FrameInput(i);
 			}
 			result = new BotAttempt();
@@ -51,9 +50,9 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public void RandomizeInputRecording() {
-			float[] probabilities = bot.GetCachedInputProbabilitiesFloat();
-			IList<int[]> a = Enumerable.Range(0, this.bot.FrameLength).Select(run => {
-				int[] times = Enumerable.Range(0, this.bot.ControllerButtons.Count)
+			float[] probabilities = Bot.GetCachedInputProbabilitiesFloat();
+			IList<int[]> a = Enumerable.Range(0, this.Bot.FrameLength).Select(run => {
+				int[] times = Enumerable.Range(0, this.Bot.ControllerButtons.Count)
 					.Where((buttonIndex, i) => Utils.RNG.NextDouble() < probabilities[buttonIndex])
 					.ToArray();
 				return times;
@@ -61,32 +60,32 @@ namespace GeneticAlgorithmBot {
 			int[][] values = a.ToArray();
 
 			int length = values.Length;
-			if (values.Length != this.bot.FrameLength) {
-				length = this.bot.FrameLength;
+			if (values.Length != this.Bot.FrameLength) {
+				length = this.Bot.FrameLength;
 			}
 
 			for (int i = 0; i < length; i++) {
 				FrameInput input = this.GetFrameInput(this.manager.StartFrameNumber + i);
 				for (int j = 0; j < values[i].Length; j++) {
-					input.Pressed(this.bot.ControllerButtons[values[i][j]]);
+					input.Pressed(this.Bot.ControllerButtons[values[i][j]]);
 				}
 			}
 			this.IsSet = true;
 		}
 
 		public void RandomizeFrameInput() {
-			int frameNumber = Utils.RNG.Next(bot._startFrame, bot._startFrame + this.recording.Length);
-			int index = frameNumber - bot._startFrame;
+			int frameNumber = Utils.RNG.Next(Bot._startFrame, Bot._startFrame + this.recording.Length);
+			int index = frameNumber - Bot._startFrame;
 			FrameInput input = this.GetFrameInput(frameNumber);
 			input.Clear();
 
-			float[] probabilities = bot.GetCachedInputProbabilitiesFloat();
-			int[] times = Enumerable.Range(0, count: this.bot.ControllerButtons.Count)
+			float[] probabilities = Bot.GetCachedInputProbabilitiesFloat();
+			int[] times = Enumerable.Range(0, count: this.Bot.ControllerButtons.Count)
 					.Where((buttonIndex, i) => Utils.RNG.NextDouble() < probabilities[buttonIndex])
 					.ToArray();
 
 			for (int i = 0; i < times.Length; i++) {
-				input.Pressed(this.bot.ControllerButtons[times[i]]);
+				input.Pressed(this.Bot.ControllerButtons[times[i]]);
 			}
 			this.IsSet = true;
 		}
@@ -94,29 +93,29 @@ namespace GeneticAlgorithmBot {
 		public FrameInput GenerateFrameInput(int frameNumber, IList<double> thresholds) {
 			FrameInput frameInput = GetFrameInput(frameNumber);
 			frameInput.Clear();
-			int[] times = Enumerable.Range(0, count: this.bot.ControllerButtons.Count)
+			int[] times = Enumerable.Range(0, count: this.Bot.ControllerButtons.Count)
 					.Where((buttonIndex, i) => Utils.RNG.NextDouble() < thresholds[buttonIndex])
 					.ToArray();
 			for (int i = 0; i < times.Length; i++) {
-				frameInput.Pressed(this.bot.ControllerButtons[times[i]]);
+				frameInput.Pressed(this.Bot.ControllerButtons[times[i]]);
 			}
 			this.IsSet = true;
 			return frameInput;
 		}
 
 		public void SetResult() {
-			this.result.Attempt = this.bot.Runs;
-			this.result.Generation = this.bot.Generations;
-			this.result.Maximize = this.bot.MaximizeValue;
-			this.result.TieBreak1 = this.bot.TieBreaker1Value;
-			this.result.TieBreak2 = this.bot.TieBreaker2Value;
-			this.result.TieBreak3 = this.bot.TieBreaker3Value;
-			this.result.ComparisonTypeMain = this.bot.MainComparisonType;
-			this.result.ComparisonTypeTie1 = this.bot.Tie1ComparisonType;
-			this.result.ComparisonTypeTie2 = this.bot.Tie2ComparisonType;
-			this.result.ComparisonTypeTie3 = this.bot.Tie3ComparisonType;
+			this.result.Attempt = this.Bot.Runs;
+			this.result.Generation = this.Bot.Generations;
+			this.result.Maximize = this.Bot.MaximizeValue;
+			this.result.TieBreak1 = this.Bot.TieBreaker1Value;
+			this.result.TieBreak2 = this.Bot.TieBreaker2Value;
+			this.result.TieBreak3 = this.Bot.TieBreaker3Value;
+			this.result.ComparisonTypeMain = this.Bot.MainComparisonType;
+			this.result.ComparisonTypeTie1 = this.Bot.Tie1ComparisonType;
+			this.result.ComparisonTypeTie2 = this.Bot.Tie2ComparisonType;
+			this.result.ComparisonTypeTie3 = this.Bot.Tie3ComparisonType;
 			this.IsSet = true;
-			this.bot.ClearBestButton.Enabled = true;
+			this.Bot.ClearBestButton.Enabled = true;
 		}
 
 		public void Reset(long attemptNumber) {
@@ -135,7 +134,6 @@ namespace GeneticAlgorithmBot {
 			this.result = new BotAttempt(other.result);
 			this.fitness = other.fitness;
 			this.FrameLength = other.FrameLength;
-			this.bot = other.bot;
 			this.manager = other.manager;
 			this.IsSet = other.IsSet;
 

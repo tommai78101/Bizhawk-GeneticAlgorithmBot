@@ -209,6 +209,10 @@ namespace GeneticAlgorithmBot {
 			this.label14 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.label13 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.NeatInputRegionControlsBox = new System.Windows.Forms.GroupBox();
+			this.DisplayRegionFlag = new System.Windows.Forms.CheckBox();
+			this.outputMappingPanel = new System.Windows.Forms.Panel();
+			this.removeNeatOutputMapping = new System.Windows.Forms.Button();
+			this.addNeatOutputMapping = new System.Windows.Forms.Button();
 			this.locLabelEx7 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.inputGridSize = new System.Windows.Forms.NumericUpDown();
 			this.locLabelEx6 = new BizHawk.WinForms.Controls.LocLabelEx();
@@ -707,7 +711,7 @@ namespace GeneticAlgorithmBot {
             0,
             0});
 			this.PopulationSizeNumeric.Minimum = new decimal(new int[] {
-            1,
+            2,
             0,
             0,
             0});
@@ -1136,6 +1140,10 @@ namespace GeneticAlgorithmBot {
 			// NeatInputRegionControlsBox
 			// 
 			this.NeatInputRegionControlsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+			this.NeatInputRegionControlsBox.Controls.Add(this.DisplayRegionFlag);
+			this.NeatInputRegionControlsBox.Controls.Add(this.outputMappingPanel);
+			this.NeatInputRegionControlsBox.Controls.Add(this.removeNeatOutputMapping);
+			this.NeatInputRegionControlsBox.Controls.Add(this.addNeatOutputMapping);
 			this.NeatInputRegionControlsBox.Controls.Add(this.locLabelEx7);
 			this.NeatInputRegionControlsBox.Controls.Add(this.inputGridSize);
 			this.NeatInputRegionControlsBox.Controls.Add(this.locLabelEx6);
@@ -1153,6 +1161,43 @@ namespace GeneticAlgorithmBot {
 			this.NeatInputRegionControlsBox.TabStop = false;
 			this.NeatInputRegionControlsBox.Text = "Input Region Controls [?]";
 			this.BotToolTip.SetToolTip(this.NeatInputRegionControlsBox, resources.GetString("NeatInputRegionControlsBox.ToolTip"));
+			// 
+			// DisplayRegionFlag
+			// 
+			this.DisplayRegionFlag.AutoSize = true;
+			this.DisplayRegionFlag.Location = new System.Drawing.Point(13, 216);
+			this.DisplayRegionFlag.Name = "DisplayRegionFlag";
+			this.DisplayRegionFlag.Size = new System.Drawing.Size(97, 17);
+			this.DisplayRegionFlag.TabIndex = 2007;
+			this.DisplayRegionFlag.Text = "Display Region";
+			this.DisplayRegionFlag.UseVisualStyleBackColor = true;
+			// 
+			// outputMappingPanel
+			// 
+			this.outputMappingPanel.Location = new System.Drawing.Point(217, 13);
+			this.outputMappingPanel.Name = "outputMappingPanel";
+			this.outputMappingPanel.Size = new System.Drawing.Size(219, 347);
+			this.outputMappingPanel.TabIndex = 1034;
+			// 
+			// removeNeatOutputMapping
+			// 
+			this.removeNeatOutputMapping.Location = new System.Drawing.Point(12, 187);
+			this.removeNeatOutputMapping.Name = "removeNeatOutputMapping";
+			this.removeNeatOutputMapping.Size = new System.Drawing.Size(101, 23);
+			this.removeNeatOutputMapping.TabIndex = 1033;
+			this.removeNeatOutputMapping.Text = "Remove Mapping";
+			this.removeNeatOutputMapping.UseVisualStyleBackColor = true;
+			this.removeNeatOutputMapping.Click += new System.EventHandler(this.removeNeatOutputMapping_Click);
+			// 
+			// addNeatOutputMapping
+			// 
+			this.addNeatOutputMapping.Location = new System.Drawing.Point(12, 158);
+			this.addNeatOutputMapping.Name = "addNeatOutputMapping";
+			this.addNeatOutputMapping.Size = new System.Drawing.Size(101, 23);
+			this.addNeatOutputMapping.TabIndex = 1032;
+			this.addNeatOutputMapping.Text = "Add Mapping";
+			this.addNeatOutputMapping.UseVisualStyleBackColor = true;
+			this.addNeatOutputMapping.Click += new System.EventHandler(this.addNeatOutputMapping_Click);
 			// 
 			// locLabelEx7
 			// 
@@ -1492,6 +1537,10 @@ namespace GeneticAlgorithmBot {
 		public NumericUpDown inputRegionX;
 		public BizHawk.WinForms.Controls.LocLabelEx locLabelEx7;
 		public NumericUpDown inputGridSize;
+		private Button addNeatOutputMapping;
+		private Panel outputMappingPanel;
+		private Button removeNeatOutputMapping;
+		public CheckBox DisplayRegionFlag;
 
 		/// <summary>
 		///   Returns the cached ResourceManager instance used by this class.

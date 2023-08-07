@@ -7,5 +7,7 @@ using System.Threading.Tasks;
 namespace GeneticAlgorithmBot {
 	public interface IActivationFunction {
 		double Activate(double z);
+
+		string Name { get; }
 	}
 }

@@ -23,6 +23,9 @@ using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using BizHawk.Emulation.Cores.Consoles.Nintendo.Faust;
 using Newtonsoft.Json;
+using GeneticAlgorithmBot.Common;
+using System.Runtime.CompilerServices;
+using BizHawk.Common.CollectionExtensions;
 
 namespace GeneticAlgorithmBot {
 	[ExternalTool("Genetic Algorithm Bot")]
@@ -67,6 +70,8 @@ namespace GeneticAlgorithmBot {
 		private bool _oldCountingSetting;
 
 		private bool _doNotUpdateValues;
+
+		private NeatInputMappings neatMappings;
 
 		private Bk2LogEntryGenerator _logGenerator = default!;
 
@@ -265,9 +270,11 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public int SelectedSlot => 1 + StartFromSlotBox.SelectedIndex;
+
+		public Panel NeatMappingPanel => this.outputMappingPanel;
 		#endregion
 
-		#region Class Methods
+		#region Constructor
 		public GeneticAlgorithmBot() {
 			InitializeComponent();
 			NewMenuItem.Image = GetResourceIcons<Image>("NewFile");
@@ -290,11 +297,14 @@ namespace GeneticAlgorithmBot {
 			this.neat = new NeatAlgorithm(this);
 			this.MainOperator.SelectedItem = ">=";
 			this.comparisonAttempt = new BotAttempt();
+			this.neatMappings = new NeatInputMappings(this);
 
 			RunBtn.Enabled = false;
 			AssessNeatInputRegionStatus();
 		}
+		#endregion
 
+		#region Class Methods
 		public static T GetResourceIcons<T>(string iconName) {
 			FieldInfo fi = Resources.GetField(iconName, BindingFlags.NonPublic | BindingFlags.Static);
 			return (T) fi.GetValue(Resources);
@@ -340,9 +350,6 @@ namespace GeneticAlgorithmBot {
 
 			this.algorithm = _useNeat ? this.neat : this.genetics;
 			if (_useNeat && !this.neat.IsInitialized) {
-				NeatConstants.InputSize = ControllerButtons.Count;
-				NeatConstants.OutputSize = ControllerButtons.Count;
-				NeatConstants.MaxClients = PopulationSize;
 				neat.Reset();
 				neat.Initialize();
 			}
@@ -427,9 +434,19 @@ namespace GeneticAlgorithmBot {
 		public void PressButtons(bool clear_log) {
 			if (_useNeat) {
 				Client client = neat.GetCurrentClient();
-				FrameInput inputs = this.neat.GetCurrent().GenerateFrameInput(Emulator.Frame, client.Calculate(GetCachedInputProbabilitiesDouble()));
+				FrameInput inputs = this.neat.GetCurrent().GenerateFrameInput(Emulator.Frame, client.Calculate(GetNeatOutputNodesProbabilitiesDouble()));
 				foreach (var button in inputs.Buttons) {
-					InputManager.ClickyVirtualPadController.SetBool(button, false);
+					// If there are no NEAT mappings, we do the default where NEAT uses all control inputs and feeds them to produce the outputs.
+					// Otherwise, it will attempt to use the NEAT mappings and set them based on the outputs.
+					// Some games will support multiple control inputs tied to the same action on the controller.
+					if (this.neatMappings.Controls.Count <= 0) {
+						InputManager.ClickyVirtualPadController.SetBool(button, false);
+					} else if (this.neatMappings.Controls.ContainsKey(button)) {
+						string? output = ((NeatMappingRow) this.neatMappings.Controls[button]).GetOutput();
+						if (output != null) {
+							InputManager.ClickyVirtualPadController.SetBool(output, false);
+						}
+					}
 				}
 				InputManager.SyncControls(Emulator, MovieSession, Config);
 
@@ -503,6 +520,20 @@ namespace GeneticAlgorithmBot {
 			return target;
 		}
 
+		public double[] GetNeatOutputNodesProbabilitiesDouble() {
+			double[] target = new double[Emulator.ControllerDefinition.BoolButtons.Count];
+			NodeGene[] outputs = this.neat.AllNodes
+					.GroupBy(gene => gene.NodeName)
+					.Select(gene => gene.First())
+					.Where((gene, index) => gene.X >= 0.9 && gene.NodeName != null)
+					.OrderBy(gene => gene.Y)
+					.ToArray();
+			for (int i = 0; i < Emulator.ControllerDefinition.BoolButtons.Count; i++) {
+				target[i] = outputs[i].Activation!.Activate(Utils.RNG.NextDouble());
+			}
+			return target;
+		}
+
 		public double[] GetNonZeroCachedInputProbabilitiesDouble() {
 			List<double> target = new List<double>();
 			for (int i = 0; i < Emulator.ControllerDefinition.BoolButtons.Count; i++) {
@@ -522,11 +553,15 @@ namespace GeneticAlgorithmBot {
 
 		public void Update(bool fast) {
 			if (_useNeat) {
-				UpdateNeatInputRegion();
-				UpdateNeat(fast);
+				if (this.neat.IsInitialized) {
+					UpdateNeatInputRegion();
+					UpdateNeat(fast);
+				}
 			}
 			else {
-				UpdateGeneticAlgorithm(fast);
+				if (this.genetics.IsInitialized) {
+					UpdateGeneticAlgorithm(fast);
+				}
 			}
 		}
 
@@ -583,8 +618,6 @@ namespace GeneticAlgorithmBot {
 				// Before this would have 2 additional hits before the frame even advanced, making the amount of inputs greater than the number of frames to test.
 				if (neat.GetCurrent().GetAttempt().Log.Count < FrameLength) //aka do not Add more inputs than there are Frames to test
 				{
-
-
 					PressButtons(false);
 					_lastFrameAdvanced = Emulator.Frame;
 				}
@@ -694,11 +727,52 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public void DrawRegion(Bitmap bitmap, Pen pen, Rectangle region) {
+			if (!DisplayRegionFlag.Enabled) {
+				return;
+			}
 			using (var g = Graphics.FromImage(bitmap)) {
 				g.InterpolationMode = InterpolationMode.NearestNeighbor;
 				g.PixelOffsetMode = PixelOffsetMode.Half;
 				g.DrawRectangle(pen, region);
 			}
+		}
+
+		// OnPaint() is only getting called once when the external tool's window form gets rendered onto the screen.
+		protected override void OnPaint(PaintEventArgs e) {
+			if (!DisplayRegionFlag.Enabled) {
+				return;
+			}
+			using (var g = e.Graphics) {
+				g.InterpolationMode = InterpolationMode.NearestNeighbor;
+				g.PixelOffsetMode = PixelOffsetMode.Half;
+				g.DrawRectangle(new Pen(Color.Pink), new Rectangle(20, 50, 30, 40));
+			}
+			base.OnPaint(e);
+		}
+
+		public override void UpdateValues(ToolFormUpdateType type) {
+			switch (type) {
+				case ToolFormUpdateType.PreFrame:
+					UpdateBefore();
+					break;
+				case ToolFormUpdateType.PostFrame:
+					UpdateAfter();
+					break;
+				case ToolFormUpdateType.FastPreFrame:
+					FastUpdateBefore();
+					break;
+				case ToolFormUpdateType.FastPostFrame:
+					FastUpdateAfter();
+					break;
+			}
+			GeneralUpdate();
+		}
+
+
+		protected override void GeneralUpdate() {
+			base.GeneralUpdate();
+			Bitmap bitmap = GetScreenshotImage().ToSysdrawingBitmap();
+			DrawRegion(bitmap, new Pen(Color.Pink), new Rectangle(20, 40, 50, 60));
 		}
 		#endregion
 
@@ -1301,7 +1375,7 @@ namespace GeneticAlgorithmBot {
 
 		public void ClearBestButton_Click(object sender, EventArgs e) {
 			this.genetics.IsInitialized = false;
-			this.genetics.GetBest().Reset(0);
+			this.genetics.GetBest()?.Reset(0);
 			Runs = 0;
 			Frames = 0;
 			Generations = 1;
@@ -1429,6 +1503,18 @@ namespace GeneticAlgorithmBot {
 
 		private void inputGridSize_ValueChanged(object sender, EventArgs e) {
 
+		}
+
+		private void addNeatOutputMapping_Click(object sender, EventArgs e) {
+			if (this.neatMappings.Controls.Count < ControllerButtons.Count) { 
+				this.neatMappings.Push(new NeatMappingRow(NeatMappingPanel, ControllerButtons));
+			}
+		}
+
+		private void removeNeatOutputMapping_Click(object sender, EventArgs e) {
+			if (this.neatMappings.Controls.Count > 0) {
+				this.neatMappings.Pop();
+			}
 		}
 		#endregion
 	}

@@ -14,6 +14,14 @@ namespace GeneticAlgorithmBot {
 		public InputRecording[] population { get; set; } = default!;
 		public InputRecording bestRecording = default!;
 
+		public GeneticAlgorithmBot bot;
+
+		public BotAlgorithm(GeneticAlgorithmBot owner) {
+			this.bot = owner;
+		}
+
+		public abstract BotAlgorithm Initialize();
+
 		public InputRecording GetCurrent() {
 			return this.population[this.currentIndex];
 		}

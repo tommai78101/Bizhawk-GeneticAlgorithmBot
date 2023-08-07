@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace GeneticAlgorithmBot {
 	public class AbsoluteFunction : IActivationFunction {
+		public string Name => ActivationNames.Absolute;
+
 		public double Activate(double z) => Math.Abs(z);
 	}
 }

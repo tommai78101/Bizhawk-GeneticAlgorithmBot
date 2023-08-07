@@ -12,7 +12,7 @@ namespace GeneticAlgorithmBot {
 		// Y coordinate of a NodeGene when displaying
 		public double Y { get; set; }
 		public IActivationFunction? Activation { get; set; }
-		public string? ActivationName { get; set; }
+		public string? NodeName { get; set; }
 
 		public NodeGene(int innovationNumber) : base(innovationNumber) { }
 

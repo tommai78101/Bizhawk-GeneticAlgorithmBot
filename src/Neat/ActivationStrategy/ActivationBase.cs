@@ -8,11 +8,9 @@ using System.Threading.Tasks;
 namespace GeneticAlgorithmBot {
 	public abstract class ActivationBase {
 		public IActivationFunction Activation { get; set; }
-		public string Name { get; set; }
 
 		public ActivationBase(IActivationFunction activation, string name) {
 			this.Activation = activation;
-			this.Name = name;
 		}
 
 		public static IEnumerable<T> GetAll<T>() where T : ActivationBase {

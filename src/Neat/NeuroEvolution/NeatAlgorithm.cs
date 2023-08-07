@@ -16,28 +16,37 @@ namespace GeneticAlgorithmBot {
 		public RandomList<Client> AllClients { get; set; }
 		public RandomList<Species> AllSpecies { get; set; }
 
-		public GeneticAlgorithmBot bot;
-
 		public bool isFirstCalculation = false;
 
-		public NeatAlgorithm(GeneticAlgorithmBot owner) {
-			this.bot = owner;
+		public NeatAlgorithm(GeneticAlgorithmBot owner) : base(owner) {
 			this.IsInitialized = false;
-			this.bestRecording = new InputRecording(this.bot, this);
-			this.population = new InputRecording[NeatConstants.MaxClients];
-			for (int i = 0; i < this.population.Length; i++) {
-				this.population[i] = new InputRecording(owner, this);
-			}
-
 			AllConnections = new Dictionary<ConnectionGene, ConnectionGene>();
 			AllNodes = new RandomList<NodeGene>();
 			AllClients = new RandomList<Client>();
 			AllSpecies = new RandomList<Species>();
+		}
+
+		// =======================================================================================================================
+		// BizHawk specific functions
+
+		public override BotAlgorithm Initialize() {
+			// Must set this up first.
+			NeatConstants.InputSize = this.bot.ControllerButtons.Count;
+			NeatConstants.OutputSize = this.bot.ControllerButtons.Count;
+			NeatConstants.MaxClients = this.bot.PopulationSize;
+
+			this.bestRecording = new InputRecording(this)!;
+			this.population = new InputRecording[this.bot.PopulationSize]!;
+			for (int i = 0; i < this.population.Length; i++) {
+				this.population[i] = new InputRecording(this)!;
+				this.population[i].Reset(0);
+			}
 
 			for (int i = 0; i < NeatConstants.InputSize; i++) {
 				NodeGene node = CreateNode();
 				node.X = 0.1;
 				node.Y = (i + 1) / (double) (NeatConstants.InputSize + 1);
+				node.NodeName = null;
 			}
 
 			for (int i = 0; i < NeatConstants.OutputSize; i++) {
@@ -47,17 +56,22 @@ namespace GeneticAlgorithmBot {
 
 				ActivationEnumeration a = ActivationEnumeration.GetRandom();
 				node.Activation = a.Activation;
-				node.ActivationName = a.Name;
+				node.NodeName = this.bot.ControllerButtons[i];
 			}
 
 			for (int i = 0; i < NeatConstants.MaxClients; i++) {
 				Client c = new Client(EmptyGenome(), i);
 				AllClients.Add(c);
 			}
-		}
 
-		// =======================================================================================================================
-		// BizHawk specific functions
+			this.SetOrigin();
+			this.currentIndex = 0;
+			this.Generation = 1;
+			this.StartFrameNumber = this.bot._startFrame;
+			this.IsInitialized = true;
+
+			return this;
+		}
 
 		public void ClearBest() {
 			this.bestRecording.Reset(0);
@@ -97,19 +111,6 @@ namespace GeneticAlgorithmBot {
 
 		public Client GetCurrentClient() {
 			return this.AllClients.First((c) => c.ClientId == this.currentIndex);
-		}
-
-		public void Initialize() {
-			this.SetOrigin();
-			this.currentIndex = 0;
-			this.Generation = 1;
-			this.StartFrameNumber = this.bot._startFrame;
-			this.population = new InputRecording[this.bot.PopulationSize];
-			for (int i = 0; i < this.population.Length; i++) {
-				this.population[i] = new InputRecording(this.bot, this);
-				this.population[i].Reset(0);
-			}
-			this.IsInitialized = true;
 		}
 
 		// =======================================================================================================================
@@ -191,10 +192,16 @@ namespace GeneticAlgorithmBot {
 			AllNodes.Clear();
 			AllClients.Clear();
 
+			// Must set this up first.
+			NeatConstants.InputSize = this.bot.ControllerButtons.Count;
+			NeatConstants.OutputSize = this.bot.ControllerButtons.Count;
+			NeatConstants.MaxClients = this.bot.PopulationSize;
+
 			for (int i = 0; i < NeatConstants.InputSize; i++) {
 				NodeGene node = CreateNode();
 				node.X = 0.1;
 				node.Y = (i + 1) / (double) (NeatConstants.InputSize + 1);
+				node.NodeName = null;
 			}
 
 			for (int i = 0; i < NeatConstants.OutputSize; i++) {
@@ -204,7 +211,7 @@ namespace GeneticAlgorithmBot {
 
 				ActivationEnumeration a = ActivationEnumeration.GetRandom();
 				node.Activation = a.Activation;
-				node.ActivationName = a.Name;
+				node.NodeName = this.bot.ControllerButtons[i];
 			}
 
 			for (int i = 0; i < NeatConstants.MaxClients; i++) {
@@ -212,7 +219,7 @@ namespace GeneticAlgorithmBot {
 				AllClients.Add(c);
 			}
 
-			this.bestRecording = new InputRecording(this.bot, this);
+			this.bestRecording = new InputRecording(this);
 			this.isFirstCalculation = true;
 		}
 
@@ -247,7 +254,7 @@ namespace GeneticAlgorithmBot {
 			}
 			foreach (Client c in AllClients) {
 				if (c.Species == null) {
-					Species s = selector.GetRandom();
+					Species s = selector.GetRandom()!;
 					c.Genome = s!.Breed();
 					s!.ForcePut(c);
 				}

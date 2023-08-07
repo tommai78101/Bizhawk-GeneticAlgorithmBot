@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace GeneticAlgorithmBot {
 	public class Client : IComparable<Client> {
 		public IGenome Genome { get; set; }
-		public double Score { get; set; }
+		public double Score => ((NeatAlgorithm) Genome.Neat).GetCurrent().GetAttempt().Fitness;
 		public Species Species { get; set; } = default!;
 		public Calculator Calculator { get; set; }
 

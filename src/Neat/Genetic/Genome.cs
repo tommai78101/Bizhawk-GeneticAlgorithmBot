@@ -40,7 +40,6 @@ namespace GeneticAlgorithmBot {
 			if (node?.X > 0.1) {
 				ActivationEnumeration a = ActivationEnumeration.GetRandom();
 				node.Activation = a.Activation;
-				node.ActivationName = a.Name;
 			}
 		}
 
@@ -79,7 +78,6 @@ namespace GeneticAlgorithmBot {
 				middle.X = (from.X + to.X) / 2;
 				middle.Y = ((from.Y + to.Y) / 2) + (ThreadSafeRandom.GetNormalizedRandom(0, 0.02f) / 2);
 				middle.Activation = a.Activation;
-				middle.ActivationName = a.Name;
 				Neat.SetReplaceIndex(from, to, middle.InnovationNumber);
 			}
 			else {
