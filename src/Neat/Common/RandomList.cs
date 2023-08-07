@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace GeneticAlgorithmBot {
 	public class RandomList<T> : IEnumerable<T> {
 		private List<T> Data { get; }
+		private static readonly Random random = new Random();
 
 		public int Count => Data.Count;
 
@@ -19,8 +20,7 @@ namespace GeneticAlgorithmBot {
 
 		public T GetRandomElement() {
 			if (Data.Any()) {
-				int i = (int) (ThreadSafeRandom.GetRandom() * Count);
-				return Data[i];
+				return Data[ThreadSafeRandom.GetNext(Data.Count)];
 			}
 			return default!;
 		}

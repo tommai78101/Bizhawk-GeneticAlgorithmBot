@@ -91,8 +91,6 @@ namespace GeneticAlgorithmBot {
 		public GeneticAlgorithm genetics;
 
 		public NeatAlgorithm neat;
-
-		public BotAlgorithm algorithm { get; set; } = default!;
 		#endregion
 
 		#region Settings
@@ -118,6 +116,8 @@ namespace GeneticAlgorithmBot {
 		#endregion
 
 		#region Variable Getters and Setters
+		public BotAlgorithm algorithm => this._useNeat ? this.neat : this.genetics;
+
 		private IMovie CurrentMovie => MovieSession.Movie;
 
 		private Dictionary<string, double> ControlProbabilities => ControlProbabilityPanel!.Controls.OfType<BotControlsRow>().ToDictionary(tkey => tkey.ButtonName, tvalue => tvalue.Probability);
@@ -348,7 +348,6 @@ namespace GeneticAlgorithmBot {
 				return;
 			}
 
-			this.algorithm = _useNeat ? this.neat : this.genetics;
 			if (_useNeat && !this.neat.IsInitialized) {
 				neat.Reset();
 				neat.Initialize();
@@ -471,7 +470,7 @@ namespace GeneticAlgorithmBot {
 
 		public void UpdateBestAttemptUI() {
 			ClearBestButton.Enabled = true;
-			if (this.algorithm.GetBest().IsSet) {
+			if (this.algorithm.IsInitialized && this.algorithm.GetBest().IsSet) {
 				btnCopyBestInput.Enabled = true;
 				BotAttempt best = this.algorithm.GetBest().GetAttempt();
 				BestAttemptNumberLabel.Text = best.Attempt.ToString();
@@ -978,22 +977,44 @@ namespace GeneticAlgorithmBot {
 		}
 
 		private void LoadBotFileInner(BotData botData, string path) {
-			// At this point, BotData is guaranteed to be valid.
-			this.genetics.GetBest().GetAttempt().Attempt = botData.Best?.Attempt ?? 0;
-			this.genetics.GetBest().GetAttempt().Maximize = botData.Best?.Maximize ?? 0;
-			this.genetics.GetBest().GetAttempt().TieBreak1 = botData.Best?.TieBreak1 ?? 0;
-			this.genetics.GetBest().GetAttempt().TieBreak2 = botData.Best?.TieBreak2 ?? 0;
-			this.genetics.GetBest().GetAttempt().TieBreak3 = botData.Best?.TieBreak3 ?? 0;
+			if (botData.UsingNeat) {
+				this.neat.Initialize();
+				// At this point, BotData is guaranteed to be valid.
+				this.neat.GetBest().GetAttempt().Attempt = botData.Best?.Attempt ?? 0;
+				this.neat.GetBest().GetAttempt().Maximize = botData.Best?.Maximize ?? 0;
+				this.neat.GetBest().GetAttempt().TieBreak1 = botData.Best?.TieBreak1 ?? 0;
+				this.neat.GetBest().GetAttempt().TieBreak2 = botData.Best?.TieBreak2 ?? 0;
+				this.neat.GetBest().GetAttempt().TieBreak3 = botData.Best?.TieBreak3 ?? 0;
 
-			// no references to ComparisonType parameters
+				// no references to ComparisonType parameters
 
-			this.genetics.GetBest().GetAttempt().Log.Clear();
+				this.neat.GetBest().GetAttempt().Log.Clear();
 
-			for (int i = 0; i < botData.Best?.Log?.Count; i++) {
-				this.genetics.GetBest().GetAttempt().Log.Add(botData.Best.Log[i]);
+				for (int i = 0; i < botData.Best?.Log?.Count; i++) {
+					this.neat.GetBest().GetAttempt().Log.Add(botData.Best.Log[i]);
+				}
+
+				this.neat.GetBest().GetAttempt().isReset = false;
 			}
+			else {
+				this.genetics.Initialize();
+				// At this point, BotData is guaranteed to be valid.
+				this.genetics.GetBest().GetAttempt().Attempt = botData.Best?.Attempt ?? 0;
+				this.genetics.GetBest().GetAttempt().Maximize = botData.Best?.Maximize ?? 0;
+				this.genetics.GetBest().GetAttempt().TieBreak1 = botData.Best?.TieBreak1 ?? 0;
+				this.genetics.GetBest().GetAttempt().TieBreak2 = botData.Best?.TieBreak2 ?? 0;
+				this.genetics.GetBest().GetAttempt().TieBreak3 = botData.Best?.TieBreak3 ?? 0;
 
-			this.genetics.GetBest().GetAttempt().isReset = false;
+				// no references to ComparisonType parameters
+
+				this.genetics.GetBest().GetAttempt().Log.Clear();
+
+				for (int i = 0; i < botData.Best?.Log?.Count; i++) {
+					this.genetics.GetBest().GetAttempt().Log.Add(botData.Best.Log[i]);
+				}
+
+				this.genetics.GetBest().GetAttempt().isReset = false;
+			}
 
 			var probabilityControls = ControlProbabilityPanel.Controls
 					.OfType<BotControlsRow>()
@@ -1061,10 +1082,11 @@ namespace GeneticAlgorithmBot {
 			_bigEndian = botData.BigEndian;
 			_dataSize = botData.DataSize > 0 ? botData.DataSize : 1;
 
-			UpdateBestAttemptUI();
-
-			if (this.genetics.GetBest().IsSet) {
-				PlayBestButton.Enabled = true;
+			if (this.algorithm.IsInitialized) {
+				UpdateBestAttemptUI();
+				if (this.algorithm.GetBest().IsSet) {
+					PlayBestButton.Enabled = true;
+				}
 			}
 
 			CurrentFilename = path;
@@ -1076,7 +1098,8 @@ namespace GeneticAlgorithmBot {
 
 		private void SaveBotFile(string path) {
 			BotData data = new BotData {
-				Best = this.genetics.GetBest().GetAttempt(),
+				UsingNeat = this._useNeat,
+				Best = (this._useNeat ? this.neat.GetBest() : this.genetics.GetBest())?.GetAttempt() ?? null!,
 				ControlProbabilities = ControlProbabilities,
 				Maximize = MaximizeAddress,
 				TieBreaker1 = TieBreaker1Address,

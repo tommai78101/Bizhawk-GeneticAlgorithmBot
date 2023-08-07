@@ -11,8 +11,8 @@ namespace GeneticAlgorithmBot {
 		public int currentIndex { get; set; } = 0;
 		public bool IsInitialized { get; set; } = false;
 
-		public InputRecording[] population { get; set; } = default!;
-		public InputRecording bestRecording = default!;
+		public virtual InputRecording[] population { get; set; } = default!;
+		public virtual InputRecording bestRecording { get; set; } = default!;
 
 		public GeneticAlgorithmBot bot;
 

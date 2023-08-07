@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace GeneticAlgorithmBot {
 	public struct BotData {
+		public bool UsingNeat { get; set; }
 		public BotAttempt Best { get; set; }
 		public Dictionary<string, double> ControlProbabilities { get; set; }
 		public ulong? Maximize { get; set; }

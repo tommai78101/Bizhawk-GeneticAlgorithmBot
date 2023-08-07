@@ -20,6 +20,10 @@ namespace GeneticAlgorithmBot {
 			return LocalThreadRandom.NextDouble();
 		}
 
+		public static int GetNext(int max) {
+			return LocalThreadRandom.Next(max);
+		}
+
 		// Creates a random double under the normal distribution probability law (Laplace-Gauss distribution)
 		public static double GetNormalizedRandom(double mean = 0, double scale = 1) {
 			double random1 = 1.0 - LocalThreadRandom.NextDouble();
