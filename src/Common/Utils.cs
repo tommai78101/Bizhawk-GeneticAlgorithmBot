@@ -123,7 +123,7 @@ namespace GeneticAlgorithmBot {
 			double delta = max - min;
 
 			double hue = color.GetHue(), saturation, value = max;
-			if (delta < Double.Epsilon) {
+			if (Math.Abs(delta) < Double.Epsilon) {
 				hue = 0.0;
 				saturation = 0.0;
 			}
@@ -131,13 +131,13 @@ namespace GeneticAlgorithmBot {
 				double deltaR = (((max - R) / 6) + (max / 2)) / max;
 				double deltaG = (((max - G) / 6) + (max / 2)) / max;
 				double deltaB = (((max - B) / 6) + (max / 2)) / max;
-				if (R - max < Double.Epsilon) {
+				if (Math.Abs(R - max) < Double.Epsilon) {
 					hue = deltaB - deltaG;
 				}
-				else if (G - max < Double.Epsilon) {
+				else if (Math.Abs(G - max) < Double.Epsilon) {
 					hue = (1.0 / 3.0) + deltaR - deltaB;
 				}
-				else if (B - max < Double.Epsilon) {
+				else if (Math.Abs(B - max) < Double.Epsilon) {
 					hue = (2.0 / 3.0) + deltaG - deltaR;
 				}
 				if (hue < 0.0) {
@@ -168,7 +168,7 @@ namespace GeneticAlgorithmBot {
 			}
 			else {
 				hue *= 6.0;
-				if (hue - 6 < Double.Epsilon) {
+				if (Math.Abs(hue - 6) < Double.Epsilon) {
 					// Hue must be less than 1.0.
 					hue = 0.0;
 				}

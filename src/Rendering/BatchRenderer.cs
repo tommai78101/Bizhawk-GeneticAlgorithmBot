@@ -1,4 +1,5 @@
 ﻿using BizHawk.Client.Common;
+using BizHawk.Emulation.Cores.Computers.MSX;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -51,8 +52,10 @@ namespace GeneticAlgorithmBot.Rendering {
 		private Color GetColorByWeight(ConnectionGene c) {
 			double[] green = Utils.RgbToHsv(Color.Green);
 			double[] red = Utils.RgbToHsv(Color.DarkRed);
-			double hue = (green[0] * c.Weight) + (red[0] * (1.0 - c.Weight));
-			return (Color) Utils.HsvToRgb(hue, 1.0, 0.5)!;
+			double distance = green[0] - red[0];
+			double hue = (((c.Weight + 1.0) / 2.0) * (green[0] - red[0])) + red[0];
+			double value = (((c.Weight + 1.0) / 2.0) * (red[2] - green[2])) + green[2];
+			return (Color) Utils.HsvToRgb(hue, 1.0, value)!;
 		}
 	}
 }
