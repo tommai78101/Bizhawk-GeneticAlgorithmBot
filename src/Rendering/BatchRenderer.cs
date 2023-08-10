@@ -41,7 +41,7 @@ namespace GeneticAlgorithmBot.Rendering {
 				int x = (int) Math.Floor(n.X * region.Width) + region.X;
 				int y = (int) Math.Floor(n.Y * region.Height) + region.Y;
 				// 3x3 box
-				this.gui.DrawBox(x-1, y-1, x+1, y+1, outline, fill, DisplaySurfaceID.EmuCore);
+				this.gui.DrawBox(x - 1, y - 1, x + 1, y + 1, outline, fill, DisplaySurfaceID.EmuCore);
 			}
 		}
 
@@ -49,9 +49,10 @@ namespace GeneticAlgorithmBot.Rendering {
 		// Private methods
 
 		private Color GetColorByWeight(ConnectionGene c) {
-			double[] hsv = Utils.RgbToHsv(Color.Green);
-			hsv[0] = (hsv[0] * c.Weight) % 1.0;
-			return (Color) Utils.HsvToRgb(hsv)!;
+			double[] green = Utils.RgbToHsv(Color.Green);
+			double[] red = Utils.RgbToHsv(Color.DarkRed);
+			double hue = (green[0] * c.Weight) + (red[0] * (1.0 - c.Weight));
+			return (Color) Utils.HsvToRgb(hue, 1.0, 0.5)!;
 		}
 	}
 }

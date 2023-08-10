@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,38 +31,12 @@ namespace GeneticAlgorithmBot {
 		// BizHawk specific functions
 
 		public override BotAlgorithm Initialize() {
-			// Must set this up first.
-			NeatConstants.InputSize = this.bot.ControllerButtons.Count;
-			NeatConstants.OutputSize = this.bot.ControllerButtons.Count;
-			NeatConstants.MaxClients = this.bot.PopulationSize;
+			this.Reset();
 
-			this.bestRecording = new InputRecording(this)!;
 			this.population = new InputRecording[this.bot.PopulationSize]!;
 			for (int i = 0; i < this.population.Length; i++) {
 				this.population[i] = new InputRecording(this)!;
 				this.population[i].Reset(0);
-			}
-
-			for (int i = 0; i < NeatConstants.InputSize; i++) {
-				NodeGene node = CreateNode();
-				node.X = 0.1;
-				node.Y = (i + 1) / (double) (NeatConstants.InputSize + 1);
-				node.NodeName = null;
-			}
-
-			for (int i = 0; i < NeatConstants.OutputSize; i++) {
-				NodeGene node = CreateNode();
-				node.X = 0.9;
-				node.Y = (i + 1) / (double) (NeatConstants.OutputSize + 1);
-
-				ActivationEnumeration a = ActivationEnumeration.GetRandom();
-				node.Activation = a.Activation;
-				node.NodeName = this.bot.ControllerButtons[i];
-			}
-
-			for (int i = 0; i < NeatConstants.MaxClients; i++) {
-				Client c = new Client(EmptyGenome(), i);
-				AllClients.Add(c);
 			}
 
 			this.SetOrigin();
@@ -118,6 +93,8 @@ namespace GeneticAlgorithmBot {
 
 		public NodeGene CreateNode() {
 			NodeGene node = new NodeGene(AllNodes.Count + 1);
+			node.X = Utils.RNG.NextDouble();
+			node.Y = Utils.RNG.NextDouble();
 			AllNodes.Add(node);
 			return node;
 		}
@@ -170,6 +147,7 @@ namespace GeneticAlgorithmBot {
 			foreach (Client c in AllClients) {
 				c.RegenerateCalculator();
 			}
+			this.bot.Generations = ++Generation;
 		}
 
 		public void Kill() {
@@ -248,6 +226,10 @@ namespace GeneticAlgorithmBot {
 		}
 
 		private void Reproduce() {
+			if (AllSpecies.Count < 2) {
+				// They can't reproduce if there's less than 2 species.
+				return;
+			}
 			RandomSelector<Species> selector = new RandomSelector<Species>();
 			foreach (Species s in AllSpecies) {
 				selector.Add(s, s.Score);
