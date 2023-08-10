@@ -10,6 +10,6 @@ namespace GeneticAlgorithmBot {
 	public class GeneticAlgorithmBotSettings {
 		public RecentFiles RecentBotFiles { get; set; } = new RecentFiles();
 		public bool TurboWhenBotting { get; set; } = true;
-		public bool InvisibleEmulation { get; set; } = true;
+		public bool InvisibleEmulation { get; set; } = false;
 	}
 }

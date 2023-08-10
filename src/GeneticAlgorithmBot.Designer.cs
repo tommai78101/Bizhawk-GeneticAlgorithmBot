@@ -1171,6 +1171,7 @@ namespace GeneticAlgorithmBot {
 			this.DisplayRegionFlag.TabIndex = 2007;
 			this.DisplayRegionFlag.Text = "Display Region";
 			this.DisplayRegionFlag.UseVisualStyleBackColor = true;
+			this.DisplayRegionFlag.Enabled = true;
 			// 
 			// outputMappingPanel
 			// 

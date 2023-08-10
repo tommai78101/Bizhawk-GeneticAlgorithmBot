@@ -300,6 +300,7 @@ namespace GeneticAlgorithmBot {
 			this.neatMappings = new NeatInputMappings(this);
 
 			RunBtn.Enabled = false;
+			DisplayRegionFlag.Enabled = true;
 			AssessNeatInputRegionStatus();
 		}
 		#endregion
@@ -725,30 +726,6 @@ namespace GeneticAlgorithmBot {
 			}
 		}
 
-		public void DrawRegion(Bitmap bitmap, Pen pen, Rectangle region) {
-			if (!DisplayRegionFlag.Enabled) {
-				return;
-			}
-			using (var g = Graphics.FromImage(bitmap)) {
-				g.InterpolationMode = InterpolationMode.NearestNeighbor;
-				g.PixelOffsetMode = PixelOffsetMode.Half;
-				g.DrawRectangle(pen, region);
-			}
-		}
-
-		// OnPaint() is only getting called once when the external tool's window form gets rendered onto the screen.
-		protected override void OnPaint(PaintEventArgs e) {
-			if (!DisplayRegionFlag.Enabled) {
-				return;
-			}
-			using (var g = e.Graphics) {
-				g.InterpolationMode = InterpolationMode.NearestNeighbor;
-				g.PixelOffsetMode = PixelOffsetMode.Half;
-				g.DrawRectangle(new Pen(Color.Pink), new Rectangle(20, 50, 30, 40));
-			}
-			base.OnPaint(e);
-		}
-
 		public override void UpdateValues(ToolFormUpdateType type) {
 			switch (type) {
 				case ToolFormUpdateType.PreFrame:
@@ -767,11 +744,19 @@ namespace GeneticAlgorithmBot {
 			GeneralUpdate();
 		}
 
-
 		protected override void GeneralUpdate() {
+			if (!DisplayRegionFlag.Checked) {
+				base.GeneralUpdate();
+				return;
+			}
+			/*
+			 * YoshiRulz: BTW you can't make multiple WithSurface calls to stack graphics, you
+			 * have to do batching yourself. I don't think that's documented, and it surprised me
+			 * yesterday. It implicitly clears what was drawn before.
+			 */
+			this._guiApi.WithSurface(DisplaySurfaceID.EmuCore, () => {
+			});
 			base.GeneralUpdate();
-			Bitmap bitmap = GetScreenshotImage().ToSysdrawingBitmap();
-			DrawRegion(bitmap, new Pen(Color.Pink), new Rectangle(20, 40, 50, 60));
 		}
 		#endregion
 
@@ -1222,6 +1207,7 @@ namespace GeneticAlgorithmBot {
 			}
 
 			_previousInvisibleEmulation = InvisibleEmulationCheckBox.Checked = Settings.InvisibleEmulation;
+			InvisibleEmulationCheckBox.CheckState = InvisibleEmulationCheckBox.Checked ? CheckState.Checked : CheckState.Unchecked;
 			_previousDisplayMessage = Config.DisplayMessages;
 		}
 
