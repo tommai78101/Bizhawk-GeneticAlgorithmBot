@@ -762,7 +762,7 @@ namespace GeneticAlgorithmBot {
 			 * yesterday. It implicitly clears what was drawn before.
 			 */
 			this._guiApi.WithSurface(DisplaySurfaceID.EmuCore, () => {
-				Rectangle region = new Rectangle(20, 20, 60, 60);
+				Rectangle region = new Rectangle(10, 10, 100, 100);
 				this._guiApi.DrawBox(region.Left, region.Top, region.Right, region.Bottom);
 				this.batchRenderer.Render(region);
 			});
