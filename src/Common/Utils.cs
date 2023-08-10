@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -103,6 +106,101 @@ namespace GeneticAlgorithmBot {
 				}
 			}
 			return target;
+		}
+
+		/// <summary>
+		/// <para>Takes in a color and converts it into HSV values. </para>
+		/// <a href="http://www.easyrgb.com/en/math.php">Source</a>.
+		/// </summary>
+		/// <param name="color" />
+		/// <returns>An array of doubles containing the hue, saturation, and value, respectively.</returns>
+		public static double[] RgbToHsv(Color color) {
+			double R = color.R / 255.0;
+			double G = color.G / 255.0;
+			double B = color.B / 255.0;
+			double max = Math.Max(R, Math.Max(G, B));
+			double min = Math.Min(R, Math.Min(G, B));
+			double delta = max - min;
+
+			double hue = color.GetHue(), saturation, value = max;
+			if (delta < Double.Epsilon) {
+				hue = 0.0;
+				saturation = 0.0;
+			}
+			else {
+				double deltaR = (((max - R) / 6) + (max / 2)) / max;
+				double deltaG = (((max - G) / 6) + (max / 2)) / max;
+				double deltaB = (((max - B) / 6) + (max / 2)) / max;
+				if (R - max < Double.Epsilon) {
+					hue = deltaB - deltaG;
+				}
+				else if (G - max < Double.Epsilon) {
+					hue = (1.0 / 3.0) + deltaR - deltaB;
+				}
+				else if (B - max < Double.Epsilon) {
+					hue = (2.0 / 3.0) + deltaG - deltaR;
+				}
+				if (hue < 0.0) {
+					hue += 1.0;
+				}
+				if (hue > 1.0) {
+					hue -= 1.0;
+				}
+				saturation = delta / max;
+			}
+			return new double[3] { hue, saturation, value };
+		}
+
+		/// <summary>
+		/// <para>Takes in the HSV values and converts it into a color. </para>
+		/// <a href="http://www.easyrgb.com/en/math.php">Source</a>.
+		/// </summary>
+		/// <param name="hue" />
+		/// <param name="saturation" />
+		/// <param name="value" />
+		/// <returns>A color of type System.Drawing.Color.</returns>
+		public static Color HsvToRgb(double hue, double saturation, double value) {
+			int R, G, B;
+			if (saturation < Double.Epsilon) {
+				R = (int) (value * 255.0);
+				G = (int) (value * 255.0);
+				B = (int) (value * 255.0);
+			}
+			else {
+				hue *= 6.0;
+				if (hue - 6 < Double.Epsilon) {
+					// Hue must be less than 1.0.
+					hue = 0.0;
+				}
+				double hueInt = (int) hue;
+				double x = value * (1.0 - saturation);
+				double y = value * (1.0 - saturation * (hue - hueInt));
+				double z = value * (1.0 - saturation * (1.0 - (hue - hueInt)));
+
+				// HSV matrix
+#pragma warning disable format // @formatter:off
+				double r, g, b;
+				if			(hueInt == 0)	{ r = value	; g = z		; b = x		; }
+				else if		(hueInt == 1)	{ r = y		; g = value	; b = x		; }
+				else if		(hueInt == 2)	{ r = x		; g = value	; b = z		; }
+				else if		(hueInt == 3)	{ r = x		; g = y		; b = value	; }
+				else if		(hueInt == 4)	{ r = z		; g = x		; b = value	; }
+				else						{ r = value	; g = x		; b = y		; }
+#pragma warning restore format // @formatter:on
+
+				R = (int) (r * 255.0);
+				G = (int) (g * 255.0);
+				B = (int) (b * 255.0);
+			}
+			return Color.FromArgb(R, G, B);
+		}
+
+		public static Color? HsvToRgb(double[] hsv) {
+			if (hsv == null || hsv.Length != 3) {
+				// Programming error color.
+				return null;
+			}
+			return HsvToRgb(hsv[0], hsv[1], hsv[2]);
 		}
 	}
 }

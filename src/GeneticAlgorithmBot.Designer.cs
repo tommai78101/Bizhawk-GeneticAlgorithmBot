@@ -870,6 +870,7 @@ namespace GeneticAlgorithmBot {
 			this.InvisibleEmulationCheckBox.TabIndex = 2004;
 			this.InvisibleEmulationCheckBox.Text = "Turn Off Audio/Video";
 			this.InvisibleEmulationCheckBox.UseVisualStyleBackColor = true;
+			this.InvisibleEmulationCheckBox.Checked = false;
 			// 
 			// panel2
 			// 

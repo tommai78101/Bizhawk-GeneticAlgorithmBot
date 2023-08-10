@@ -26,6 +26,7 @@ using Newtonsoft.Json;
 using GeneticAlgorithmBot.Common;
 using System.Runtime.CompilerServices;
 using BizHawk.Common.CollectionExtensions;
+using GeneticAlgorithmBot.Rendering;
 
 namespace GeneticAlgorithmBot {
 	[ExternalTool("Genetic Algorithm Bot")]
@@ -91,6 +92,8 @@ namespace GeneticAlgorithmBot {
 		public GeneticAlgorithm genetics;
 
 		public NeatAlgorithm neat;
+
+		public BatchRenderer batchRenderer;
 		#endregion
 
 		#region Settings
@@ -272,6 +275,8 @@ namespace GeneticAlgorithmBot {
 		public int SelectedSlot => 1 + StartFromSlotBox.SelectedIndex;
 
 		public Panel NeatMappingPanel => this.outputMappingPanel;
+
+		public bool UseNeat => this._useNeat;
 		#endregion
 
 		#region Constructor
@@ -298,6 +303,7 @@ namespace GeneticAlgorithmBot {
 			this.MainOperator.SelectedItem = ">=";
 			this.comparisonAttempt = new BotAttempt();
 			this.neatMappings = new NeatInputMappings(this);
+			this.batchRenderer = new BatchRenderer(this);
 
 			RunBtn.Enabled = false;
 			DisplayRegionFlag.Enabled = true;
@@ -356,6 +362,7 @@ namespace GeneticAlgorithmBot {
 			else if (!this.genetics.IsInitialized) {
 				this.genetics.Initialize();
 			}
+			this.batchRenderer.Initialize();
 
 			_isBotting = true;
 			ControlsBox.Enabled = false;
@@ -755,6 +762,9 @@ namespace GeneticAlgorithmBot {
 			 * yesterday. It implicitly clears what was drawn before.
 			 */
 			this._guiApi.WithSurface(DisplaySurfaceID.EmuCore, () => {
+				Rectangle region = new Rectangle(20, 20, 60, 60);
+				this._guiApi.DrawBox(region.Left, region.Top, region.Right, region.Bottom);
+				this.batchRenderer.Render(region);
 			});
 			base.GeneralUpdate();
 		}

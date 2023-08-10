@@ -18,6 +18,10 @@ namespace GeneticAlgorithmBot {
 			Data = new List<T>();
 		}
 
+		public List<T> GetData() {
+			return this.Data;
+		}
+
 		public T GetRandomElement() {
 			if (Data.Any()) {
 				return Data[ThreadSafeRandom.GetNext(Data.Count)];
