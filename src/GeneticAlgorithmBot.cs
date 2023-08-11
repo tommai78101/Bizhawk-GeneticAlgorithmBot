@@ -1382,7 +1382,7 @@ namespace GeneticAlgorithmBot {
 			_doNotUpdateValues = true;
 
 			// here we need to apply the initial frame's input from the best attempt
-			BotAttempt bestAttempt = this.genetics.GetBest().GetAttempt();
+			BotAttempt bestAttempt = this.algorithm.GetBest().GetAttempt();
 			var logEntry = bestAttempt.Log[0];
 			var controller = MovieSession.GenerateMovieController();
 			controller.SetFromMnemonic(logEntry);
@@ -1404,10 +1404,8 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public void ClearBestButton_Click(object sender, EventArgs e) {
-			this.neat.IsInitialized = false;
-			this.neat.GetBest()?.Reset(0);
-			this.genetics.IsInitialized = false;
-			this.genetics.GetBest()?.Reset(0);
+			this.algorithm.IsInitialized = false;
+			this.algorithm.GetBest()?.Reset(0);
 			Runs = 0;
 			Frames = 0;
 			Generations = 1;

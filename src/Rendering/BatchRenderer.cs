@@ -30,6 +30,9 @@ namespace GeneticAlgorithmBot.Rendering {
 				return;
 			}
 			foreach (ConnectionGene c in this.Connections) {
+				if (!c.Enabled) {
+					continue;
+				}
 				// Connections X and Y positions are already normalized.
 				int xIn = (int) Math.Floor(c.In.X * region.Width) + region.X;
 				int yIn = (int) Math.Floor(c.In.Y * region.Height) + region.Y;
@@ -52,9 +55,8 @@ namespace GeneticAlgorithmBot.Rendering {
 		private Color GetColorByWeight(ConnectionGene c) {
 			double[] green = Utils.RgbToHsv(Color.Green);
 			double[] red = Utils.RgbToHsv(Color.DarkRed);
-			double distance = green[0] - red[0];
-			double hue = (((c.Weight + 1.0) / 2.0) * (green[0] - red[0])) + red[0];
-			double value = (((c.Weight + 1.0) / 2.0) * (red[2] - green[2])) + green[2];
+			double hue = Utils.Normalize(c.Weight, -1.0, 1.0, red[0], green[0]);
+			double value = Utils.Normalize(c.Weight, -1.0, 1.0, red[2], green[2]);
 			return (Color) Utils.HsvToRgb(hue, 1.0, value)!;
 		}
 	}
