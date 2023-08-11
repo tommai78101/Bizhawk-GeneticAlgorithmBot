@@ -618,7 +618,7 @@ namespace GeneticAlgorithmBot {
 						// Evolve the NEAT when all clients have attempted their input recordings.
 						neat.Evolve();
 						Runs++;
-
+						Generations = this.neat.EvaluateGeneration();
 						// Replace these methods with the NEAT equivalent.
 						UpdateBestAttemptUI();
 						UpdateComparisonBotAttempt();

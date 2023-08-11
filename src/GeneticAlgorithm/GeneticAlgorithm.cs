@@ -41,10 +41,10 @@ namespace GeneticAlgorithmBot {
 			return this.currentIndex == 0;
 		}
 
-		public long EvaluateGeneration() {
+		public override long EvaluateGeneration() {
 			int chosenIndex = -1;
 			for (int i = 0; i < this.population.Length; i++) {
-				if (Utils.IsGeneticBetter(this.bot, this.GetBest().result, this.bot.comparisonAttempt, this.population[i].result)) {
+				if (IsCurrentAttemptBetter()) {
 					chosenIndex = i;
 				}
 				// After evaluation, we can discard the input recording in the population pool.
@@ -59,7 +59,7 @@ namespace GeneticAlgorithmBot {
 		public bool IsCurrentAttemptBetter() {
 			BotAttempt current = this.population[this.currentIndex].GetAttempt();
 			BotAttempt best = this.bestRecording.GetAttempt();
-			return Utils.IsGeneticBetter(this.bot, best, this.bot.comparisonAttempt, current);
+			return Utils.IsAttemptBetter(this.bot, best, this.bot.comparisonAttempt, current);
 		}
 
 		public void CopyCurrentToBest(int index) {

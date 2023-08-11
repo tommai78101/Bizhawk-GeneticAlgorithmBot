@@ -14,7 +14,7 @@ namespace GeneticAlgorithmBot {
 
 		public static readonly double CROSSOVER_RATE = 50.0;
 
-		public static bool IsGeneticBetter(GeneticAlgorithmBot bot, BotAttempt best, BotAttempt comparison, BotAttempt current) {
+		public static bool IsAttemptBetter(GeneticAlgorithmBot bot, BotAttempt best, BotAttempt comparison, BotAttempt current) {
 			int max = bot.MainValueRadio.Checked ? comparison.Maximize : best.Maximize;
 			if (!TestValue(bot.MainComparisonType, current.Maximize, max)) return false;
 			if (current.Maximize != comparison.Maximize) return true;

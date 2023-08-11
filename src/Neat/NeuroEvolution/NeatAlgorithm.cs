@@ -60,7 +60,7 @@ namespace GeneticAlgorithmBot {
 		public bool IsCurrentAttemptBetter() {
 			BotAttempt current = this.population[this.currentIndex].GetAttempt();
 			BotAttempt best = this.bestRecording.GetAttempt();
-			return Utils.IsGeneticBetter(this.bot, best, this.bot.comparisonAttempt, current);
+			return Utils.IsAttemptBetter(this.bot, best, this.bot.comparisonAttempt, current);
 		}
 
 		public void CopyCurrentToBest(int index) {
@@ -86,6 +86,21 @@ namespace GeneticAlgorithmBot {
 
 		public Client GetCurrentClient() {
 			return this.AllClients.First((c) => c.ClientId == this.currentIndex);
+		}
+
+		public override long EvaluateGeneration() {
+			int chosenIndex = -1;
+			for (int i = 0; i < this.population.Length; i++) {
+				if (Utils.IsAttemptBetter(this.bot, this.GetBest().result, this.bot.comparisonAttempt, this.population[i].result)) {
+					chosenIndex = i;
+				}
+				// After evaluation, we can discard the input recording in the population pool.
+				this.population[i].IsSet = false;
+			}
+			if (chosenIndex > -1) {
+				CopyCurrentToBest(chosenIndex);
+			}
+			return ++this.Generation;
 		}
 
 		// =======================================================================================================================
@@ -161,7 +176,6 @@ namespace GeneticAlgorithmBot {
 			foreach (Client c in AllClients) {
 				c.RegenerateCalculator();
 			}
-			this.bot.Generations = ++Generation;
 		}
 
 		public void Kill() {
@@ -197,17 +211,17 @@ namespace GeneticAlgorithmBot {
 			}
 
 			int actualOutputSize = this.bot.neatMappings.HasControls ? this.bot.neatMappings.GetEnabledMappings().Count : NeatConstants.OutputSize;
-			for (int i = 0; i < this.bot.ControllerButtons.Count; i++) {
+			double min = 1.0 / (double) (actualOutputSize + 1);
+			double max = (double) actualOutputSize / (double) (actualOutputSize + 1);
+			for (int i = 0, yPos = 0; i < this.bot.ControllerButtons.Count; i++) {
 				string button = this.bot.ControllerButtons[i];
 				NeatMappingRow? row = this.bot.neatMappings.GetRow(button);
 				if (this.bot.neatMappings.HasControls && row == null) {
 					continue;
 				}
-				double min = 1.0 / (double) (actualOutputSize + 1);
-				double max = (double) actualOutputSize / (double) (actualOutputSize + 1);
 				NodeGene node = CreateNode();
 				node.X = 0.9;
-				node.Y = Utils.Normalize((i + 1), 1, 12, min, max);
+				node.Y = Utils.Normalize(((yPos++) + 1), 1, actualOutputSize, min, max);
 
 				ActivationEnumeration a = ActivationEnumeration.GetRandom();
 				node.Activation = a.Activation;

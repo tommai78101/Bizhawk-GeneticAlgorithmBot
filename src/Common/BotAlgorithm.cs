@@ -22,6 +22,8 @@ namespace GeneticAlgorithmBot {
 
 		public abstract BotAlgorithm Initialize();
 
+		public abstract long EvaluateGeneration();
+
 		public InputRecording GetCurrent() {
 			return this.population[this.currentIndex];
 		}
