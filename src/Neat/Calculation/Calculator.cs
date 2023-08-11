@@ -45,8 +45,8 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public IList<double> Calculate(IList<double> inputs) {
-			if (inputs.Count != InputNodes.Count) {
-				throw new System.Exception("Data doesn't fit.");
+			if (InputNodes.Count != inputs.Count) {
+				throw new Exception("Data cannot fit.");
 			}
 
 			for (int i = 0; i < InputNodes.Count; i++) {

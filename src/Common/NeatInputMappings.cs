@@ -17,6 +17,7 @@ namespace GeneticAlgorithmBot.Common {
 
 		public Panel Parent => this.owner.NeatMappingPanel;
 		public Control.ControlCollection Controls => Parent.Controls;
+		public bool HasControls => Controls.Count > 0;
 
 		public NeatInputMappings(GeneticAlgorithmBot owner) {
 			this.owner = owner;
@@ -46,6 +47,41 @@ namespace GeneticAlgorithmBot.Common {
 			}
 			NeatMappingRow row = (NeatMappingRow) Controls[Controls.Count - 1];
 			Controls.Remove(row.Pop());
+		}
+
+		public List<NeatMappingRow> GetDisabledMappings() {
+			List<NeatMappingRow> rows = new List<NeatMappingRow>();
+			for (int i = 0; i < Controls.Count; i++) {
+				NeatMappingRow row = (NeatMappingRow) Controls[i];
+				if (!row.Exists) {
+					rows.Add(row);
+				}
+			}
+			return rows;
+		}
+
+		public List<NeatMappingRow> GetEnabledMappings() {
+			List<NeatMappingRow> rows = new List<NeatMappingRow>();
+			if (Controls.Count > 0) {
+				for (int i = 0; i < Controls.Count; i++) {
+					NeatMappingRow row = (NeatMappingRow) Controls[i];
+					if (row.Exists) {
+						rows.Add(row);
+					}
+				}
+			} else {
+
+			}
+			return rows;
+		}
+
+		public NeatMappingRow? GetRow(string button) {
+			for (int i = 0; i < Controls.Count; i++) {
+				NeatMappingRow row = (NeatMappingRow) Controls[i];
+				if (row.Exists && row.GetOutput()!.Equals(button))
+					return row;
+			}
+			return null;
 		}
 	}
 }

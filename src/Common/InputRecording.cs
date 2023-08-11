@@ -50,9 +50,9 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public void RandomizeInputRecording() {
-			float[] probabilities = Bot.GetCachedInputProbabilitiesFloat();
+			double[] probabilities = Bot.GetNeatOutputNodesProbabilitiesDouble();
 			IList<int[]> a = Enumerable.Range(0, this.Bot.FrameLength).Select(run => {
-				int[] times = Enumerable.Range(0, this.Bot.ControllerButtons.Count)
+				int[] times = Enumerable.Range(0, probabilities.Length)
 					.Where((buttonIndex, i) => Utils.RNG.NextDouble() < probabilities[buttonIndex])
 					.ToArray();
 				return times;

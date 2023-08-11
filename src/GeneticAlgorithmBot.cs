@@ -72,8 +72,6 @@ namespace GeneticAlgorithmBot {
 
 		private bool _doNotUpdateValues;
 
-		private NeatInputMappings neatMappings;
-
 		private Bk2LogEntryGenerator _logGenerator = default!;
 
 		private Rectangle _neatInputRegion = default!;
@@ -88,6 +86,8 @@ namespace GeneticAlgorithmBot {
 		public int _startFrame;
 
 		public int _targetFrame;
+
+		public NeatInputMappings neatMappings;
 
 		public GeneticAlgorithm genetics;
 
@@ -535,8 +535,18 @@ namespace GeneticAlgorithmBot {
 					.Where((gene, index) => gene.X >= 0.9 && gene.NodeName != null)
 					.OrderBy(gene => gene.Y)
 					.ToArray();
+			List<NeatMappingRow> mappings = this.neatMappings.GetEnabledMappings();
 			for (int i = 0; i < Emulator.ControllerDefinition.BoolButtons.Count; i++) {
-				target[i] = outputs[i].Activation!.Activate(Utils.RNG.NextDouble());
+				string button = Emulator.ControllerDefinition.BoolButtons[i];
+				if (!(mappings.Any((mapping) => mapping.Exists && mapping.GetOutput()!.Equals(button)))) { 
+					continue;
+				}
+				NodeGene node = outputs.FirstOrDefault((gene) => { 
+					return gene.NodeName!.Equals(button); 
+				});
+				if (node != null) {
+					target[i] = node.Activation!.Activate(Utils.RNG.NextDouble());
+				}
 			}
 			return target;
 		}
@@ -753,6 +763,7 @@ namespace GeneticAlgorithmBot {
 
 		protected override void GeneralUpdate() {
 			if (!DisplayRegionFlag.Checked) {
+				this._guiApi.WithSurface(DisplaySurfaceID.EmuCore, () => { });
 				base.GeneralUpdate();
 				return;
 			}
@@ -1525,13 +1536,13 @@ namespace GeneticAlgorithmBot {
 		}
 
 		private void addNeatOutputMapping_Click(object sender, EventArgs e) {
-			if (this.neatMappings.Controls.Count < ControllerButtons.Count) { 
+			while (this.neatMappings.Controls.Count < ControllerButtons.Count) { 
 				this.neatMappings.Push(new NeatMappingRow(NeatMappingPanel, ControllerButtons));
 			}
 		}
 
 		private void removeNeatOutputMapping_Click(object sender, EventArgs e) {
-			if (this.neatMappings.Controls.Count > 0) {
+			while (this.neatMappings.Controls.Count > 0) {
 				this.neatMappings.Pop();
 			}
 		}

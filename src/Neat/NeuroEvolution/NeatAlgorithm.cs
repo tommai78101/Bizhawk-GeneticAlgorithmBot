@@ -99,9 +99,23 @@ namespace GeneticAlgorithmBot {
 			return node;
 		}
 
+		public void RemoveNode(string nodeName) {
+			for (int i = 0; i < AllNodes.Count; i++) {
+				NodeGene node = AllNodes[i];
+				if (node.NodeName != null && node.NodeName.Equals(nodeName)) {
+					AllNodes.RemoveAt(i);
+					break;
+				}
+			}
+		}
+
 		public IGenome EmptyGenome() {
 			IGenome g = new Genome(this);
-			for (int i = 0; i < NeatConstants.InputSize + NeatConstants.OutputSize; i++) {
+			int actualOutputSize = NeatConstants.OutputSize;
+			if (this.bot.neatMappings.HasControls) {
+				actualOutputSize = this.bot.neatMappings.GetEnabledMappings().Count;
+			}
+			for (int i = 0; i < NeatConstants.InputSize + actualOutputSize; i++) {
 				g.Nodes.Add(GetNode(i + 1));
 			}
 			return g;
@@ -182,14 +196,20 @@ namespace GeneticAlgorithmBot {
 				node.NodeName = null;
 			}
 
+			int actualOutputSize = this.bot.neatMappings.Controls.Count != 0 ? this.bot.neatMappings.Controls.Count : NeatConstants.OutputSize;
 			for (int i = 0; i < NeatConstants.OutputSize; i++) {
+				string button = this.bot.ControllerButtons[i];
+				NeatMappingRow? row = this.bot.neatMappings.GetRow(button);
+				if (this.bot.neatMappings.HasControls && row == null) {
+					continue;
+				}
 				NodeGene node = CreateNode();
 				node.X = 0.9;
-				node.Y = (i + 1) / (double) (NeatConstants.OutputSize + 1);
+				node.Y = (i + 1) / (double) (actualOutputSize + 1);
 
 				ActivationEnumeration a = ActivationEnumeration.GetRandom();
 				node.Activation = a.Activation;
-				node.NodeName = this.bot.ControllerButtons[i];
+				node.NodeName = button;
 			}
 
 			for (int i = 0; i < NeatConstants.MaxClients; i++) {

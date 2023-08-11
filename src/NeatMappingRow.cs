@@ -19,6 +19,8 @@ namespace GeneticAlgorithmBot {
 		private int id;
 		private Panel parent;
 
+		public bool Exists => this.GetOutput() != null;
+
 		public NeatMappingRow(Panel parent, IEnumerable<string> buttonOutputs) {
 			InitializeComponent();
 			this.Name = buttonOutputs.Except(usedMappings).FirstOrDefault();
