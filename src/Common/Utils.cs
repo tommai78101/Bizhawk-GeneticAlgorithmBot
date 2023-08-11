@@ -202,5 +202,9 @@ namespace GeneticAlgorithmBot {
 			}
 			return HsvToRgb(hsv[0], hsv[1], hsv[2]);
 		}
+
+		public static double Normalize(double value, double minValue, double maxValue, double min, double max) {
+			return (((value - minValue) / (maxValue - minValue)) * (max - min)) + min;
+		}
 	}
 }

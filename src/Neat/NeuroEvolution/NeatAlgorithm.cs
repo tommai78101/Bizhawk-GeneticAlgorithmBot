@@ -196,16 +196,18 @@ namespace GeneticAlgorithmBot {
 				node.NodeName = null;
 			}
 
-			int actualOutputSize = this.bot.neatMappings.Controls.Count != 0 ? this.bot.neatMappings.Controls.Count : NeatConstants.OutputSize;
-			for (int i = 0; i < NeatConstants.OutputSize; i++) {
+			int actualOutputSize = this.bot.neatMappings.HasControls ? this.bot.neatMappings.GetEnabledMappings().Count : NeatConstants.OutputSize;
+			for (int i = 0; i < this.bot.ControllerButtons.Count; i++) {
 				string button = this.bot.ControllerButtons[i];
 				NeatMappingRow? row = this.bot.neatMappings.GetRow(button);
 				if (this.bot.neatMappings.HasControls && row == null) {
 					continue;
 				}
+				double min = 1.0 / (double) (actualOutputSize + 1);
+				double max = (double) actualOutputSize / (double) (actualOutputSize + 1);
 				NodeGene node = CreateNode();
 				node.X = 0.9;
-				node.Y = (i + 1) / (double) (actualOutputSize + 1);
+				node.Y = Utils.Normalize((i + 1), 1, 12, min, max);
 
 				ActivationEnumeration a = ActivationEnumeration.GetRandom();
 				node.Activation = a.Activation;

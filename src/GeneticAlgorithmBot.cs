@@ -1404,6 +1404,8 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public void ClearBestButton_Click(object sender, EventArgs e) {
+			this.neat.IsInitialized = false;
+			this.neat.GetBest()?.Reset(0);
 			this.genetics.IsInitialized = false;
 			this.genetics.GetBest()?.Reset(0);
 			Runs = 0;
