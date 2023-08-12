@@ -27,6 +27,7 @@ using GeneticAlgorithmBot.Common;
 using System.Runtime.CompilerServices;
 using BizHawk.Common.CollectionExtensions;
 using GeneticAlgorithmBot.Rendering;
+using System.Diagnostics;
 
 namespace GeneticAlgorithmBot {
 	[ExternalTool("Genetic Algorithm Bot")]
@@ -592,7 +593,9 @@ namespace GeneticAlgorithmBot {
 					}
 				}
 			}
-			catch (Exception e) { 
+			catch (Exception e) {
+				// If TRACE constant is defined, the output will be shown.
+				Debug.WriteLine(e.StackTrace);
 			}
 		}
 
