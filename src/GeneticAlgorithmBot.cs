@@ -306,7 +306,7 @@ namespace GeneticAlgorithmBot {
 			this.batchRenderer = new BatchRenderer(this);
 
 			RunBtn.Enabled = false;
-			DisplayRegionFlag.Enabled = true;
+			DisplayGraphFlag.Enabled = true;
 			AssessNeatInputRegionStatus();
 		}
 		#endregion
@@ -762,7 +762,7 @@ namespace GeneticAlgorithmBot {
 		}
 
 		protected override void GeneralUpdate() {
-			if (!DisplayRegionFlag.Checked) {
+			if (!DisplayGraphFlag.Checked) {
 				this._guiApi.WithSurface(DisplaySurfaceID.EmuCore, () => { });
 				base.GeneralUpdate();
 				return;

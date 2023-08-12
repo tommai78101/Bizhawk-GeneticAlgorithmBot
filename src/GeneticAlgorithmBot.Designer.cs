@@ -209,7 +209,7 @@ namespace GeneticAlgorithmBot {
 			this.label14 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.label13 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.NeatInputRegionControlsBox = new System.Windows.Forms.GroupBox();
-			this.DisplayRegionFlag = new System.Windows.Forms.CheckBox();
+			this.DisplayGraphFlag = new System.Windows.Forms.CheckBox();
 			this.outputMappingPanel = new System.Windows.Forms.Panel();
 			this.removeNeatOutputMapping = new System.Windows.Forms.Button();
 			this.addNeatOutputMapping = new System.Windows.Forms.Button();
@@ -870,7 +870,6 @@ namespace GeneticAlgorithmBot {
 			this.InvisibleEmulationCheckBox.TabIndex = 2004;
 			this.InvisibleEmulationCheckBox.Text = "Turn Off Audio/Video";
 			this.InvisibleEmulationCheckBox.UseVisualStyleBackColor = true;
-			this.InvisibleEmulationCheckBox.Checked = false;
 			// 
 			// panel2
 			// 
@@ -1141,7 +1140,7 @@ namespace GeneticAlgorithmBot {
 			// NeatInputRegionControlsBox
 			// 
 			this.NeatInputRegionControlsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-			this.NeatInputRegionControlsBox.Controls.Add(this.DisplayRegionFlag);
+			this.NeatInputRegionControlsBox.Controls.Add(this.DisplayGraphFlag);
 			this.NeatInputRegionControlsBox.Controls.Add(this.outputMappingPanel);
 			this.NeatInputRegionControlsBox.Controls.Add(this.removeNeatOutputMapping);
 			this.NeatInputRegionControlsBox.Controls.Add(this.addNeatOutputMapping);
@@ -1163,16 +1162,16 @@ namespace GeneticAlgorithmBot {
 			this.NeatInputRegionControlsBox.Text = "Input Region Controls [?]";
 			this.BotToolTip.SetToolTip(this.NeatInputRegionControlsBox, resources.GetString("NeatInputRegionControlsBox.ToolTip"));
 			// 
-			// DisplayRegionFlag
+			// DisplayGraphFlag
 			// 
-			this.DisplayRegionFlag.AutoSize = true;
-			this.DisplayRegionFlag.Location = new System.Drawing.Point(13, 216);
-			this.DisplayRegionFlag.Name = "DisplayRegionFlag";
-			this.DisplayRegionFlag.Size = new System.Drawing.Size(97, 17);
-			this.DisplayRegionFlag.TabIndex = 2007;
-			this.DisplayRegionFlag.Text = "Display Region";
-			this.DisplayRegionFlag.UseVisualStyleBackColor = true;
-			this.DisplayRegionFlag.Enabled = true;
+			this.DisplayGraphFlag.AutoSize = true;
+			this.DisplayGraphFlag.Location = new System.Drawing.Point(13, 216);
+			this.DisplayGraphFlag.Name = "DisplayGraphFlag";
+			this.DisplayGraphFlag.Size = new System.Drawing.Size(92, 17);
+			this.DisplayGraphFlag.TabIndex = 2007;
+			this.DisplayGraphFlag.Text = "Display Graph";
+			this.DisplayGraphFlag.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.DisplayGraphFlag.UseVisualStyleBackColor = true;
 			// 
 			// outputMappingPanel
 			// 
@@ -1542,7 +1541,7 @@ namespace GeneticAlgorithmBot {
 		private Button addNeatOutputMapping;
 		private Panel outputMappingPanel;
 		private Button removeNeatOutputMapping;
-		public CheckBox DisplayRegionFlag;
+		public CheckBox DisplayGraphFlag;
 
 		/// <summary>
 		///   Returns the cached ResourceManager instance used by this class.
