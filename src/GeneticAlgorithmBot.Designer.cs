@@ -209,6 +209,7 @@ namespace GeneticAlgorithmBot {
 			this.label14 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.label13 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.NeatInputRegionControlsBox = new System.Windows.Forms.GroupBox();
+			this.DisplayInputGrid = new System.Windows.Forms.CheckBox();
 			this.DisplayGraphFlag = new System.Windows.Forms.CheckBox();
 			this.outputMappingPanel = new System.Windows.Forms.Panel();
 			this.removeNeatOutputMapping = new System.Windows.Forms.Button();
@@ -246,7 +247,6 @@ namespace GeneticAlgorithmBot {
 			this.NewMenuItem = new BizHawk.WinForms.Controls.ToolStripMenuItemEx();
 			this.FileSubMenu = new BizHawk.WinForms.Controls.ToolStripMenuItemEx();
 			this.BotMenu = new BizHawk.WinForms.Controls.MenuStripEx();
-			this.DisplayInputGrid = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.FrameLengthNumeric)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.MainValueNumeric)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.TieBreak1Numeric)).BeginInit();
@@ -1164,6 +1164,19 @@ namespace GeneticAlgorithmBot {
 			this.NeatInputRegionControlsBox.Text = "Input Region Controls [?]";
 			this.BotToolTip.SetToolTip(this.NeatInputRegionControlsBox, resources.GetString("NeatInputRegionControlsBox.ToolTip"));
 			// 
+			// DisplayInputGrid
+			// 
+			this.DisplayInputGrid.AutoSize = true;
+			this.DisplayInputGrid.Checked = true;
+			this.DisplayInputGrid.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.DisplayInputGrid.Location = new System.Drawing.Point(13, 239);
+			this.DisplayInputGrid.Name = "DisplayInputGrid";
+			this.DisplayInputGrid.Size = new System.Drawing.Size(109, 17);
+			this.DisplayInputGrid.TabIndex = 2013;
+			this.DisplayInputGrid.Text = "Display Input Grid";
+			this.DisplayInputGrid.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.DisplayInputGrid.UseVisualStyleBackColor = true;
+			// 
 			// DisplayGraphFlag
 			// 
 			this.DisplayGraphFlag.AutoSize = true;
@@ -1228,7 +1241,7 @@ namespace GeneticAlgorithmBot {
 			this.InputSampleSize.Size = new System.Drawing.Size(61, 20);
 			this.InputSampleSize.TabIndex = 1027;
 			this.InputSampleSize.Value = new decimal(new int[] {
-            1,
+            4,
             0,
             0,
             0});
@@ -1468,19 +1481,6 @@ namespace GeneticAlgorithmBot {
             this.SettingsSubMenu,
             this.HelpSubMenu});
 			this.BotMenu.TabIndex = 0;
-			// 
-			// DisplayInputGrid
-			// 
-			this.DisplayInputGrid.AutoSize = true;
-			this.DisplayInputGrid.Checked = true;
-			this.DisplayInputGrid.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.DisplayInputGrid.Location = new System.Drawing.Point(13, 239);
-			this.DisplayInputGrid.Name = "DisplayInputGrid";
-			this.DisplayInputGrid.Size = new System.Drawing.Size(109, 17);
-			this.DisplayInputGrid.TabIndex = 2013;
-			this.DisplayInputGrid.Text = "Display Input Grid";
-			this.DisplayInputGrid.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.DisplayInputGrid.UseVisualStyleBackColor = true;
 			// 
 			// GeneticAlgorithmBot
 			// 

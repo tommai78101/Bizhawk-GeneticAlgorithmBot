@@ -123,12 +123,12 @@
   <data name="ControlsBox.ToolTip" xml:space="preserve">
     <value>This panel here indicates the likelihood the specified controls are chosen when the bot mutates its training model. The weighted values determine the how likely it is for the mutation to enter this button.</value>
   </data>
-  <data name="ControlGroupBox.ToolTip" xml:space="preserve">
-    <value>This panel indicates which save state in the TAStudio to choose from, so the bot can repeatedly load that save state for training. If you wished to use NEAT instead of the standard Genetic Algorithm, you will need to reset your bot attempts.</value>
-  </data>
   <metadata name="StatsContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>594, 17</value>
   </metadata>
+  <data name="ControlGroupBox.ToolTip" xml:space="preserve">
+    <value>This panel indicates which save state in the TAStudio to choose from, so the bot can repeatedly load that save state for training. If you wished to use NEAT instead of the standard Genetic Algorithm, you will need to reset your bot attempts.</value>
+  </data>
   <data name="locLabelEx7.ToolTip" xml:space="preserve">
     <value>This determines the size of a single input grid that samples the colors on the screen by the pixel color average. The larger the input size on the screen, the more colors it will sample to fit in the 0.0 ~ 1.0 range, which can affect the sensitivity of NEAT.</value>
   </data>
