@@ -93,8 +93,20 @@ namespace GeneticAlgorithmBot {
 		public FrameInput GenerateFrameInput(int frameNumber, IList<double> thresholds) {
 			FrameInput frameInput = GetFrameInput(frameNumber);
 			frameInput.Clear();
+			int outputIndex = 0;
+			List<NeatMappingRow> rows = this.Bot.neatMappings.GetEnabledMappings();
 			int[] times = Enumerable.Range(0, count: this.Bot.ControllerButtons.Count)
-					.Where((buttonIndex, i) => Utils.RNG.NextDouble() < thresholds[buttonIndex])
+					.Where((buttonIndex, i) => {
+						if (this.Bot.neatMappings.HasControls) {
+							if (rows.FirstOrDefault(r => r.GetOutput() != null && r.GetOutput()!.Equals(this.Bot.ControllerButtons[buttonIndex])) != null) {
+								return Utils.RNG.NextDouble() < thresholds[outputIndex++];
+							}
+							return false;
+						}
+						else {
+							return Utils.RNG.NextDouble() < thresholds[buttonIndex];
+						}
+					})
 					.ToArray();
 			for (int i = 0; i < times.Length; i++) {
 				frameInput.Pressed(this.Bot.ControllerButtons[times[i]]);

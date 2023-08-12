@@ -34,6 +34,13 @@ namespace GeneticAlgorithmBot {
 			}
 		}
 
+		public ExtendedColor(Color color) {
+			this.R = color.R;
+			this.G = color.G;
+			this.B = color.B;
+			this._Double = 0.0;
+		}
+
 		public ExtendedColor FromInt32Argb(int value) {
 			return FromColor(Color.FromArgb(value));
 		}
@@ -45,6 +52,14 @@ namespace GeneticAlgorithmBot {
 			extendedColor.G = (byte) ((pixelColor << 16) >> 24);
 			extendedColor.B = (byte) ((pixelColor << 24) >> 24);
 			return extendedColor;
+		}
+
+		public Color ToColor() {
+			return Color.FromArgb(R, G, B);
+		}
+
+		public int ToPixel() {
+			return (0xFF << 24) | (R << 16) | (G << 8) | B;
 		}
 	}
 }

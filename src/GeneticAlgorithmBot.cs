@@ -58,8 +58,6 @@ namespace GeneticAlgorithmBot {
 
 		private bool _replayMode;
 
-		private bool _isBotting;
-
 		private int _lastFrameAdvanced;
 
 		private long _frames;
@@ -74,18 +72,28 @@ namespace GeneticAlgorithmBot {
 
 		private Bk2LogEntryGenerator _logGenerator = default!;
 
-		private Rectangle _neatInputRegion = default!;
-
-		private ExtendedColor[] _neatInputRegionData = default!;
+		public ExtendedColor[] _neatInputRegionData = default!;
 
 		/// <summary>
 		/// Comparison bot attempt is a bot attempt with current best bot attempt values from Population Manager, containing values where the "best" radio buttons are selected
 		/// </summary>
 		public BotAttempt comparisonAttempt;
 
+		public bool _isBotting;
+
 		public int _startFrame;
 
 		public int _targetFrame;
+
+		public int _inputX = 0;
+
+		public int _inputY = 0;
+
+		public int _inputWidth = 10;
+
+		public int _inputHeight = 10;
+
+		public int _inputSampleSize = 1;
 
 		public NeatInputMappings neatMappings;
 
@@ -326,6 +334,9 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public override void Restart() {
+			// This has to do with the renderer.
+			this.batchRenderer.Initialize();
+
 			// This has to do with loading and saving save states, which is something the bot needs to function.
 			_ = StatableCore!;
 
@@ -356,13 +367,11 @@ namespace GeneticAlgorithmBot {
 			}
 
 			if (_useNeat && !this.neat.IsInitialized) {
-				neat.Reset();
 				neat.Initialize();
 			}
 			else if (!this.genetics.IsInitialized) {
 				this.genetics.Initialize();
 			}
-			this.batchRenderer.Initialize();
 
 			_isBotting = true;
 			ControlsBox.Enabled = false;
@@ -441,14 +450,15 @@ namespace GeneticAlgorithmBot {
 		public void PressButtons(bool clear_log) {
 			if (_useNeat) {
 				Client client = neat.GetCurrentClient();
-				FrameInput inputs = this.neat.GetCurrent().GenerateFrameInput(Emulator.Frame, client.Calculate(GetNeatOutputNodesProbabilitiesDouble()));
+				FrameInput inputs = this.neat.GetCurrent().GenerateFrameInput(Emulator.Frame, client.Calculate(this._neatInputRegionData));
 				foreach (var button in inputs.Buttons) {
 					// If there are no NEAT mappings, we do the default where NEAT uses all control inputs and feeds them to produce the outputs.
 					// Otherwise, it will attempt to use the NEAT mappings and set them based on the outputs.
 					// Some games will support multiple control inputs tied to the same action on the controller.
 					if (this.neatMappings.Controls.Count <= 0) {
 						InputManager.ClickyVirtualPadController.SetBool(button, false);
-					} else if (this.neatMappings.Controls.ContainsKey(button)) {
+					}
+					else if (this.neatMappings.Controls.ContainsKey(button)) {
 						string? output = ((NeatMappingRow) this.neatMappings.Controls[button]).GetOutput();
 						if (output != null) {
 							InputManager.ClickyVirtualPadController.SetBool(output, false);
@@ -538,11 +548,11 @@ namespace GeneticAlgorithmBot {
 			List<NeatMappingRow> mappings = this.neatMappings.GetEnabledMappings();
 			for (int i = 0; i < Emulator.ControllerDefinition.BoolButtons.Count; i++) {
 				string button = Emulator.ControllerDefinition.BoolButtons[i];
-				if (!(mappings.Any((mapping) => mapping.Exists && mapping.GetOutput()!.Equals(button)))) { 
+				if (!(mappings.Any((mapping) => mapping.Exists && mapping.GetOutput()!.Equals(button)))) {
 					continue;
 				}
-				NodeGene node = outputs.FirstOrDefault((gene) => { 
-					return gene.NodeName!.Equals(button); 
+				NodeGene node = outputs.FirstOrDefault((gene) => {
+					return gene.NodeName!.Equals(button);
 				});
 				if (node != null) {
 					target[i] = node.Activation!.Activate(Utils.RNG.NextDouble());
@@ -569,16 +579,20 @@ namespace GeneticAlgorithmBot {
 		protected override void FastUpdateAfter() => Update(fast: true);
 
 		public void Update(bool fast) {
-			if (_useNeat) {
-				if (this.neat.IsInitialized) {
-					UpdateNeatInputRegion();
-					UpdateNeat(fast);
+			try {
+				if (_useNeat) {
+					if (this.neat.IsInitialized) {
+						UpdateNeatInputRegion();
+						UpdateNeat(fast);
+					}
+				}
+				else {
+					if (this.genetics.IsInitialized) {
+						UpdateGeneticAlgorithm(fast);
+					}
 				}
 			}
-			else {
-				if (this.genetics.IsInitialized) {
-					UpdateGeneticAlgorithm(fast);
-				}
+			catch (Exception e) { 
 			}
 		}
 
@@ -643,9 +657,9 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public void UpdateNeatInputRegion() {
-			if (_currentVideoProvider.BufferWidth > 0 && _currentVideoProvider.BufferHeight > 0) {
-				this._neatInputRegion = new Rectangle(new Point((int) inputRegionX.Value, (int) inputRegionY.Value), new Size((int) inputRegionWidth.Value, (int) inputRegionHeight.Value));
-				this._neatInputRegionData = GetScreenshotRegionData(this._neatInputRegion, showRegion: true);
+			if (_currentVideoProvider.BufferWidth > 0 && _currentVideoProvider.BufferHeight > 0 && this._isBotting) {
+				Rectangle neatInputRegion = new Rectangle(new Point(this._inputX, this._inputY), new Size(this._inputWidth, this._inputHeight));
+				this._neatInputRegionData = GetScreenshotRegionData(neatInputRegion, showRegion: true);
 			}
 		}
 
@@ -720,25 +734,23 @@ namespace GeneticAlgorithmBot {
 			using (Bitmap screenshotImage = screenshot.ToSysdrawingBitmap()) {
 				BitmapData data = screenshotImage.LockBits(region, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
 				ExtendedColor[] result = new ExtendedColor[data.Width * data.Height];
-				byte[] bytes = new byte[data.Stride * data.Height];
-				Marshal.Copy(data.Scan0, bytes, 0, bytes.Length);
-
-				Parallel.ForEach(result.AsParallel().AsOrdered(), (pixel, state, i) => {
-					ExtendedColor color = new ExtendedColor();
-					color.B = bytes[i];
-					color.G = bytes[i + 1];
-					color.R = bytes[i + 2];
-					_ = bytes[i + 3];
-					result[i] = color;
-				});
-
-				screenshotImage.UnlockBits(data);
-				if (showRegion) {
-					this._guiApi.WithSurface(DisplaySurfaceID.Client, () => {
-						this._guiApi.DrawRectangle(region.Left, region.Top, region.Width, region.Height, null, Color.FromArgb(32, 255, 0, 255));
+				{
+					byte[] bytes = new byte[data.Stride * data.Height];
+					Marshal.Copy(data.Scan0, bytes, 0, bytes.Length);
+					Parallel.ForEach(result.AsParallel().AsOrdered(), (pixel, state, i) => {
+						ExtendedColor color = new ExtendedColor();
+						color.B = bytes[i];
+						color.G = bytes[i + 1];
+						color.R = bytes[i + 2];
+						_ = bytes[i + 3];
+						result[i] = color;
 					});
 				}
+				screenshotImage.UnlockBits(data);
 
+				if (this._inputSampleSize > 1) {
+					result = BoxFilter(region, result);
+				}
 				return result;
 			}
 		}
@@ -762,20 +774,20 @@ namespace GeneticAlgorithmBot {
 		}
 
 		protected override void GeneralUpdate() {
-			if (!DisplayGraphFlag.Checked) {
-				this._guiApi.WithSurface(DisplaySurfaceID.EmuCore, () => { });
-				base.GeneralUpdate();
-				return;
-			}
 			/*
 			 * YoshiRulz: BTW you can't make multiple WithSurface calls to stack graphics, you
 			 * have to do batching yourself. I don't think that's documented, and it surprised me
 			 * yesterday. It implicitly clears what was drawn before.
 			 */
 			this._guiApi.WithSurface(DisplaySurfaceID.EmuCore, () => {
-				Rectangle region = new Rectangle(10, 10, 100, 100);
-				this._guiApi.DrawBox(region.Left, region.Top, region.Right, region.Bottom);
-				this.batchRenderer.Render(region);
+				if (DisplayGraphFlag.Checked) {
+					Rectangle region = new Rectangle(10, 10, 100, 100);
+					this._guiApi.DrawBox(region.Left, region.Top, region.Right, region.Bottom);
+					this.batchRenderer.RenderGraph(region);
+				}
+				if (DisplayInputGrid.Checked) {
+					this.batchRenderer.RenderInputRegion();
+				}
 			});
 			base.GeneralUpdate();
 		}
@@ -1184,6 +1196,51 @@ namespace GeneticAlgorithmBot {
 			});
 			return pixelData;
 		}
+
+		private ExtendedColor[] BoxFilter(Rectangle region, ExtendedColor[] result) {
+			int factor = this._inputSampleSize;
+			int newWidth = region.Width / factor;
+			int newHeight = region.Height / factor;
+			int radius = factor / 2;
+			ExtendedColor[] newData = new ExtendedColor[newWidth * newHeight];
+			Parallel.ForEach(newData.AsParallel().AsOrdered(), (pixel, state, i) => {
+				int x = (int) (i % region.Width);
+				int y = (int) (i / region.Width);
+				newData[i] = new ExtendedColor(GetAverageRgbCircle(region, result, x * factor, y * factor, radius));
+			});
+			return newData;
+		}
+
+		private Color GetAverageRgbCircle(Rectangle region, ExtendedColor[] result, int x, int y, int radius) {
+			float r = 0;
+			float g = 0;
+			float b = 0;
+			float num = 1;
+
+			for (int j = y - radius; j < y + radius; j++) {
+				for (int i = x - radius; i < x + radius; i++) {
+					if (i < 0 || i >= region.Width || j < 0 || j >= region.Height || (Distance2(x, y, i, j) > radius * radius)) {
+						continue;
+					}
+					Color color = result[j * region.Width + i].ToColor();
+					r += color.R * color.R;
+					g += color.G * color.G;
+					b += color.B * color.B;
+					num++;
+				}
+			}
+			return Color.FromArgb(
+				(int) Math.Floor(Math.Sqrt(r / num)),
+				(int) Math.Floor(Math.Sqrt(g / num)),
+				(int) Math.Floor(Math.Sqrt(b / num))
+			);
+		}
+
+		private double Distance2(int x1, int y1, int x2, int y2) {
+			int dx = x2 - x1;
+			int dy = y2 - y1;
+			return dx * dx + dy * dy;
+		}
 		#endregion
 
 		#region UI Event Handlers
@@ -1536,7 +1593,7 @@ namespace GeneticAlgorithmBot {
 		}
 
 		private void addNeatOutputMapping_Click(object sender, EventArgs e) {
-			while (this.neatMappings.Controls.Count < ControllerButtons.Count) { 
+			while (this.neatMappings.Controls.Count < ControllerButtons.Count) {
 				this.neatMappings.Push(new NeatMappingRow(NeatMappingPanel, ControllerButtons));
 			}
 		}

@@ -197,12 +197,14 @@ namespace GeneticAlgorithmBot {
 			AllConnections.Clear();
 			AllNodes.Clear();
 			AllClients.Clear();
+			this.bot._inputX = (int) this.bot.InputRegionX.Value;
+			this.bot._inputY = (int) this.bot.InputRegionY.Value;
+			this.bot._inputWidth = (int) this.bot.InputRegionWidth.Value;
+			this.bot._inputHeight = (int) this.bot.InputRegionHeight.Value;
+			this.bot._inputSampleSize = (int) this.bot.InputSampleSize.Value;
 
 			// Must set this up first.
-			NeatConstants.InputSize = this.bot.ControllerButtons.Count;
-			NeatConstants.OutputSize = this.bot.ControllerButtons.Count;
-			NeatConstants.MaxClients = this.bot.PopulationSize;
-
+			NeatConstants.InputSize = (this.bot._inputWidth * this.bot._inputHeight) / (this.bot._inputSampleSize * this.bot._inputSampleSize);
 			for (int i = 0; i < NeatConstants.InputSize; i++) {
 				NodeGene node = CreateNode();
 				node.X = 0.1;
@@ -210,6 +212,7 @@ namespace GeneticAlgorithmBot {
 				node.NodeName = null;
 			}
 
+			NeatConstants.OutputSize = this.bot.ControllerButtons.Count;
 			int actualOutputSize = this.bot.neatMappings.HasControls ? this.bot.neatMappings.GetEnabledMappings().Count : NeatConstants.OutputSize;
 			double min = 1.0 / (double) (actualOutputSize + 1);
 			double max = (double) actualOutputSize / (double) (actualOutputSize + 1);
@@ -228,6 +231,7 @@ namespace GeneticAlgorithmBot {
 				node.NodeName = button;
 			}
 
+			NeatConstants.MaxClients = this.bot.PopulationSize;
 			for (int i = 0; i < NeatConstants.MaxClients; i++) {
 				Client c = new Client(EmptyGenome(), i);
 				AllClients.Add(c);

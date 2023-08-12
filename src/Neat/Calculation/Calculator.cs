@@ -12,8 +12,10 @@ namespace GeneticAlgorithmBot {
 		readonly List<Node> HiddenNodes = new List<Node>();
 		readonly List<Node> OutputNodes = new List<Node>();
 		public IList<double> previousOutputs;
+		private IGenome _genome;
 
 		public Calculator(IGenome genome) {
+			this._genome = genome;
 			this.previousOutputs = new List<double>();
 			RandomList<NodeGene> nodes = genome.Nodes;
 			RandomList<ConnectionGene> connections = genome.Connections;
@@ -44,20 +46,20 @@ namespace GeneticAlgorithmBot {
 			}
 		}
 
-		public IList<double> Calculate(IList<double> inputs) {
-			if (InputNodes.Count != inputs.Count) {
-				throw new Exception("Data cannot fit.");
+		public IList<double> Calculate(ExtendedColor[] inputs) {
+			if (InputNodes.Count != inputs.Length) {
+				throw new Exception("Data doesn't fit.");
 			}
 
 			for (int i = 0; i < InputNodes.Count; i++) {
-				InputNodes[i].Output = inputs[i];
+				InputNodes[i].Output = inputs[i].R / 255.0;
 			}
 
 			foreach (Node n in HiddenNodes) {
 				n.Calculate();
 			}
 
-			double[] outputs = new double[InputNodes.Count];
+			double[] outputs = new double[OutputNodes.Count];
 			for (int i =0; i < OutputNodes.Count; i++) {
 				OutputNodes[i].Calculate();
 				outputs[i] = OutputNodes[i].Output;
