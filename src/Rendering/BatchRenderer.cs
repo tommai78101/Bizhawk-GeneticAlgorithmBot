@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using static BizHawk.Common.XlibImports;
 
 namespace GeneticAlgorithmBot.Rendering {
@@ -17,6 +18,8 @@ namespace GeneticAlgorithmBot.Rendering {
 		private readonly Color fill = Color.White;
 
 		public List<NodeGene> Nodes => this.owner.neat.AllNodes.GetData();
+		public List<NodeGene> InputNodes => this.owner.neat.InputNodes;
+		public List<NodeGene> OutputNodes => this.owner.neat.OutputNodes;
 		public List<ConnectionGene> Connections => this.owner.neat.AllConnections.Keys.ToList();
 		public bool IsBotting => this.owner._isBotting;
 
@@ -30,17 +33,44 @@ namespace GeneticAlgorithmBot.Rendering {
 			this.owner._inputY = (int) this.owner.InputRegionY.Value;
 			this.owner._inputWidth = (int) this.owner.InputRegionWidth.Value;
 			this.owner._inputHeight = (int) this.owner.InputRegionHeight.Value;
-			if (this.owner._neatInputRegionData == null) {
-				this.owner._neatInputRegionData = ExtendedColorWrapper.Initialize(this.owner._inputX, this.owner._inputY, this.owner._inputWidth, this.owner._inputHeight);
-			}
 		}
 
 		public void RenderGraph() {
 			if (!this.owner.UseNeat || this.gui == null) {
 				return;
 			}
-			Rectangle drawRegion = new Rectangle(10, 10, 100, 100);
-			this.gui.DrawBox(drawRegion.Left, drawRegion.Top, drawRegion.Right, drawRegion.Bottom);
+
+			// Input region border
+			int screenWidth = this.owner._clientApi.BufferWidth();
+			int screenHeight = this.owner._clientApi.BufferHeight();
+			const int sideSize = 128;
+			const int paddingRightX = 10;
+			const int paddingTopY = 10;
+			Color inputBorderColor = Color.FromArgb(32, Color.Yellow);
+			Color inputRegionColor = Color.FromArgb(32, Color.DarkGray);
+			Color inputColor = Color.FromArgb(32, Color.AliceBlue);
+			int radius = this.owner._inputSampleSize / 2;
+			int zoom = screenWidth / this.owner._inputWidth;
+
+			// Get the draw regions
+			Rectangle drawRegion = new Rectangle(screenWidth - paddingRightX - sideSize, paddingTopY, sideSize, sideSize);
+			this.gui.DrawBox(drawRegion.Left, drawRegion.Top, drawRegion.Right, drawRegion.Bottom, inputBorderColor, null, DisplaySurfaceID.EmuCore);
+
+			// Input region to input nodes lines
+			for (int i = 0; i < this.owner._neatInputRegionData.Length; i++) {
+				// From
+				ExtendedColorWrapper w = this.owner._neatInputRegionData[i];
+				int x1 = (w.X * this.owner._inputSampleSize) + radius + this.owner._inputX;
+				int y1 = (w.Y * this.owner._inputSampleSize) + radius + this.owner._inputY;
+				this.gui.DrawBox(x1 - radius, y1 - radius, x1 + radius, y1 + radius, null, inputRegionColor, DisplaySurfaceID.EmuCore);
+				// To
+				NodeGene n = InputNodes[i];
+				int x2 = (int) Math.Floor(n.X * drawRegion.Width) + drawRegion.X;
+				int y2 = (int) Math.Floor(n.Y * drawRegion.Height) + drawRegion.Y;
+				this.gui.DrawLine(x1, y1, x2, y2, inputColor, DisplaySurfaceID.EmuCore);
+			}
+
+			// Connection lines
 			foreach (ConnectionGene c in this.Connections) {
 				if (!c.Enabled) {
 					continue;
@@ -52,6 +82,8 @@ namespace GeneticAlgorithmBot.Rendering {
 				int yOut = (int) Math.Floor(c.Out.Y * drawRegion.Height) + drawRegion.Y;
 				this.gui.DrawLine(xIn, yIn, xOut, yOut, GetColorByWeight(c), DisplaySurfaceID.EmuCore);
 			}
+
+			// Nodes in the graph
 			foreach (NodeGene n in this.Nodes) {
 				// Node X and Y positions are already normalized.
 				int x = (int) Math.Floor(n.X * drawRegion.Width) + drawRegion.X;
@@ -69,7 +101,8 @@ namespace GeneticAlgorithmBot.Rendering {
 			int y = IsBotting ? this.owner._inputY : (int) this.owner.InputRegionY.Value;
 			int width = IsBotting ? this.owner._inputWidth : (int) this.owner.InputRegionWidth.Value;
 			int height = IsBotting ? this.owner._inputHeight : (int) this.owner.InputRegionHeight.Value;
-			this.gui.DrawBox(x, y, x + width, y + height, null, Color.FromArgb(72, Color.Gray), DisplaySurfaceID.EmuCore);
+			Color inputRegionColor = Color.FromArgb(32, Color.DarkGray);
+			this.gui.DrawBox(x, y, x + width, y + height, null, inputRegionColor, DisplaySurfaceID.EmuCore);
 			if (this.IsBotting) {
 				foreach (ExtendedColorWrapper block in this.owner._neatInputRegionData) {
 					this.gui.DrawBox(block.X - block.Radius, block.Y - block.Radius, block.X + block.Radius, block.Y + block.Radius, null, block.ExtendedColor.ToColor(), DisplaySurfaceID.EmuCore);

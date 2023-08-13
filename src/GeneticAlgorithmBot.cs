@@ -28,6 +28,7 @@ using System.Runtime.CompilerServices;
 using BizHawk.Common.CollectionExtensions;
 using GeneticAlgorithmBot.Rendering;
 using System.Diagnostics;
+using static BizHawk.Client.EmuHawk.BatchRunner;
 
 namespace GeneticAlgorithmBot {
 	[ExternalTool("Genetic Algorithm Bot")]
@@ -73,7 +74,7 @@ namespace GeneticAlgorithmBot {
 
 		private Bk2LogEntryGenerator _logGenerator = default!;
 
-		public ExtendedColorWrapper[] _neatInputRegionData = default!;
+		public ExtendedColorWrapper[] _neatInputRegionData = new ExtendedColorWrapper[0];
 
 		/// <summary>
 		/// Comparison bot attempt is a bot attempt with current best bot attempt values from Population Manager, containing values where the "best" radio buttons are selected
@@ -186,6 +187,9 @@ namespace GeneticAlgorithmBot {
 
 		[RequiredApi]
 		public IGuiApi _guiApi { get; set; } = default!;
+
+		[RequiredApi]
+		public IEmuClientApi _clientApi { get; set; } = default!;
 
 		public int FrameLength {
 			get => (int) FrameLengthNumeric.Value;
@@ -662,7 +666,8 @@ namespace GeneticAlgorithmBot {
 		public void UpdateNeatInputRegion() {
 			if (_currentVideoProvider.BufferWidth > 0 && _currentVideoProvider.BufferHeight > 0 && this._isBotting) {
 				Rectangle neatInputRegion = new Rectangle(new Point(this._inputX, this._inputY), new Size(this._inputWidth, this._inputHeight));
-				this._neatInputRegionData = GetScreenshotRegionData(neatInputRegion, showRegion: true);
+				ExtendedColorWrapper[] rawScreenshot = GetScreenshotRegionData(neatInputRegion, showRegion: true);
+				this._neatInputRegionData = BoxFilter(neatInputRegion, rawScreenshot);
 			}
 		}
 
@@ -752,10 +757,6 @@ namespace GeneticAlgorithmBot {
 					});
 				}
 				screenshotImage.UnlockBits(data);
-
-				if (this._inputSampleSize > 1) {
-					result = BoxFilter(region, result);
-				}
 				return result;
 			}
 		}
@@ -1209,21 +1210,23 @@ namespace GeneticAlgorithmBot {
 			int radius = factor / 2;
 			ExtendedColorWrapper[] newData = new ExtendedColorWrapper[newWidth * newHeight];
 			Parallel.ForEach(newData.AsParallel().AsOrdered(), (pixel, state, i) => {
-				int x = (int) (i % region.Width);
-				int y = (int) (i / region.Width);
-				newData[i] = new ExtendedColorWrapper(GetAverageRgbCircle(region, result, x * factor, y * factor, radius));
+				int x = (int) (i % newWidth);
+				int y = (int) (i / newWidth);
+				newData[i] = new ExtendedColorWrapper(GetAverageRgbCircle(region, result, x, y, factor, radius));
 				newData[i].X = x;
 				newData[i].Y = y;
 			});
 			return newData;
 		}
 
-		private Color GetAverageRgbCircle(Rectangle region, ExtendedColorWrapper[] result, int x, int y, int radius) {
+		private Color GetAverageRgbCircle(Rectangle region, ExtendedColorWrapper[] result, int newX, int newY, int factor, int radius) {
 			float r = 0;
 			float g = 0;
 			float b = 0;
 			float num = 1;
 
+			int x = newX * factor;
+			int y = newY * factor;
 			for (int j = y - radius; j < y + radius; j++) {
 				for (int i = x - radius; i < x + radius; i++) {
 					if (i < 0 || i >= region.Width || j < 0 || j >= region.Height || (Distance2(x, y, i, j) > radius * radius)) {

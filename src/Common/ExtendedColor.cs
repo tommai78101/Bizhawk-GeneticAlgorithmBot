@@ -35,38 +35,21 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public ExtendedColor(Color color) {
+			this._Double = 0.0;
 			this.R = color.R;
 			this.G = color.G;
 			this.B = color.B;
-			this._Double = 0.0;
 		}
 
 		public void SetColor(Color color) {
-			this.R = color.R;
-			this.G = color.G;
-			this.B = color.B;
 			this._Double = 0.0;
-		}
-
-		public ExtendedColor FromInt32Argb(int value) {
-			return FromColor(Color.FromArgb(value));
-		}
-
-		public ExtendedColor FromColor(Color color) {
-			int pixelColor = color.ToArgb();
-			ExtendedColor extendedColor = new ExtendedColor();
-			extendedColor.R = (byte) ((pixelColor << 8) >> 24);
-			extendedColor.G = (byte) ((pixelColor << 16) >> 24);
-			extendedColor.B = (byte) ((pixelColor << 24) >> 24);
-			return extendedColor;
+			this.B = color.B;
+			this.G = color.G;
+			this.R = color.R;
 		}
 
 		public Color ToColor() {
 			return Color.FromArgb(R, G, B);
-		}
-
-		public int ToPixel() {
-			return (0xFF << 24) | (R << 16) | (G << 8) | B;
 		}
 	}
 
@@ -84,7 +67,7 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public ExtendedColorWrapper(Color color) {
-			this._color.FromColor(color);
+			this._color.SetColor(color);
 			this.Radius = 0;
 		}
 

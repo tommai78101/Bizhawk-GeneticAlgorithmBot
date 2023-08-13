@@ -1233,7 +1233,7 @@ namespace GeneticAlgorithmBot {
             0,
             0});
 			this.InputSampleSize.Minimum = new decimal(new int[] {
-            1,
+            2,
             0,
             0,
             0});

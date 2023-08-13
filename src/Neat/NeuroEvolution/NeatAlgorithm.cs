@@ -4,6 +4,7 @@ using GeneticAlgorithmBot;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -17,6 +18,9 @@ namespace GeneticAlgorithmBot {
 		public RandomList<Client> AllClients { get; set; }
 		public RandomList<Species> AllSpecies { get; set; }
 
+		public List<NodeGene> InputNodes { get; set; }
+		public List<NodeGene> OutputNodes { get; set; }
+
 		public bool isFirstCalculation = false;
 
 		public NeatAlgorithm(GeneticAlgorithmBot owner) : base(owner) {
@@ -25,6 +29,8 @@ namespace GeneticAlgorithmBot {
 			AllNodes = new RandomList<NodeGene>();
 			AllClients = new RandomList<Client>();
 			AllSpecies = new RandomList<Species>();
+			InputNodes = new List<NodeGene>();
+			OutputNodes = new List<NodeGene>();
 		}
 
 		// =======================================================================================================================
@@ -118,7 +124,13 @@ namespace GeneticAlgorithmBot {
 			for (int i = 0; i < AllNodes.Count; i++) {
 				NodeGene node = AllNodes[i];
 				if (node.NodeName != null && node.NodeName.Equals(nodeName)) {
-					AllNodes.RemoveAt(i);
+					AllNodes.Remove(node);
+					if (InputNodes.Contains(node)) {
+						InputNodes.Remove(node);
+					}
+					if (OutputNodes.Contains(node)) {
+						OutputNodes.Remove(node);
+					}
 					break;
 				}
 			}
@@ -152,7 +164,14 @@ namespace GeneticAlgorithmBot {
 			if (id <= AllNodes.Count) {
 				return AllNodes[id - 1]!;
 			}
-			return CreateNode();
+			NodeGene newNode = CreateNode();
+			if (newNode.X <= 0.1) {
+				InputNodes.Add(newNode);
+			}
+			else if (newNode.X >= 0.9) {
+				OutputNodes.Add(newNode);
+			}
+			return newNode;
 		}
 
 		public int GetReplaceIndex(NodeGene node1, NodeGene node2) {
@@ -197,11 +216,13 @@ namespace GeneticAlgorithmBot {
 			AllConnections.Clear();
 			AllNodes.Clear();
 			AllClients.Clear();
-			this.bot._inputX = (int) this.bot.InputRegionX.Value;
-			this.bot._inputY = (int) this.bot.InputRegionY.Value;
-			this.bot._inputWidth = (int) this.bot.InputRegionWidth.Value;
-			this.bot._inputHeight = (int) this.bot.InputRegionHeight.Value;
+			InputNodes.Clear();
+			OutputNodes.Clear();
 			this.bot._inputSampleSize = (int) this.bot.InputSampleSize.Value;
+			this.bot._inputX = GetClosest((int) this.bot.InputRegionX.Value, this.bot._inputSampleSize);
+			this.bot._inputY = GetClosest((int) this.bot.InputRegionY.Value, this.bot._inputSampleSize);
+			this.bot._inputWidth = GetClosest((int) this.bot.InputRegionWidth.Value, this.bot._inputSampleSize);
+			this.bot._inputHeight = GetClosest((int) this.bot.InputRegionHeight.Value, this.bot._inputSampleSize);
 
 			// Must set this up first.
 			NeatConstants.InputSize = (this.bot._inputWidth * this.bot._inputHeight) / (this.bot._inputSampleSize * this.bot._inputSampleSize);
@@ -210,6 +231,11 @@ namespace GeneticAlgorithmBot {
 				node.X = 0.1;
 				node.Y = (i + 1) / (double) (NeatConstants.InputSize + 1);
 				node.NodeName = null;
+				InputNodes.Add(node);
+			}
+			this.bot._neatInputRegionData = new ExtendedColorWrapper[NeatConstants.InputSize];
+			for (int i = 0; i < NeatConstants.InputSize; i++) {
+				this.bot._neatInputRegionData[i] = new ExtendedColorWrapper(Color.Transparent); 
 			}
 
 			NeatConstants.OutputSize = this.bot.ControllerButtons.Count;
@@ -229,6 +255,8 @@ namespace GeneticAlgorithmBot {
 				ActivationEnumeration a = ActivationEnumeration.GetRandom();
 				node.Activation = a.Activation;
 				node.NodeName = button;
+
+				OutputNodes.Add(node);
 			}
 
 			NeatConstants.MaxClients = this.bot.PopulationSize;
@@ -287,6 +315,12 @@ namespace GeneticAlgorithmBot {
 			foreach (Client c in AllClients) {
 				c.Mutate();
 			}
+		}
+
+		private int GetClosest(int n, int x) {
+			n += x / 2;
+			n -= (n % x);
+			return n;
 		}
 	}
 }
