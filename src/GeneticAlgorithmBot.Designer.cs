@@ -1245,7 +1245,7 @@ namespace GeneticAlgorithmBot {
             0,
             0,
             0});
-			this.InputSampleSize.ValueChanged += new System.EventHandler(this.inputGridSize_ValueChanged);
+			this.InputSampleSize.ValueChanged += new System.EventHandler(this.inputSampleSize_ValueChanged);
 			// 
 			// locLabelEx6
 			// 

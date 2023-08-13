@@ -41,6 +41,13 @@ namespace GeneticAlgorithmBot {
 			this._Double = 0.0;
 		}
 
+		public void SetColor(Color color) {
+			this.R = color.R;
+			this.G = color.G;
+			this.B = color.B;
+			this._Double = 0.0;
+		}
+
 		public ExtendedColor FromInt32Argb(int value) {
 			return FromColor(Color.FromArgb(value));
 		}
@@ -60,6 +67,38 @@ namespace GeneticAlgorithmBot {
 
 		public int ToPixel() {
 			return (0xFF << 24) | (R << 16) | (G << 8) | B;
+		}
+	}
+
+	public class ExtendedColorWrapper {
+		private ExtendedColor _color = new ExtendedColor(Color.Transparent);
+		public int X { get; set; } = 0;
+		public int Y { get; set; } = 0;
+		public int Radius { get; set; } = 1;
+
+		public ExtendedColor ExtendedColor => this._color;
+
+		public ExtendedColorWrapper(ExtendedColor color) {
+			this._color = color;
+			this.Radius = 0;
+		}
+
+		public ExtendedColorWrapper(Color color) {
+			this._color.FromColor(color);
+			this.Radius = 0;
+		}
+
+		public static ExtendedColorWrapper[] Initialize(int xOffset, int yOffset, int desiredWidth, int desiredHeight) {
+			ExtendedColorWrapper[] output = new ExtendedColorWrapper[desiredWidth * desiredHeight];
+			for (int i = 0; i < output.Length; i++) {
+				int x = (i + xOffset) % desiredWidth;
+				int y = (i + yOffset) / desiredWidth;
+				output[i] = new ExtendedColorWrapper(Color.Transparent);
+				output[i].X = x;
+				output[i].Y = y;
+				output[i].Radius = 0;
+			}
+			return output;
 		}
 	}
 }

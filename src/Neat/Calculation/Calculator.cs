@@ -46,13 +46,13 @@ namespace GeneticAlgorithmBot {
 			}
 		}
 
-		public IList<double> Calculate(ExtendedColor[] inputs) {
+		public IList<double> Calculate(ExtendedColorWrapper[] inputs) {
 			if (InputNodes.Count != inputs.Length) {
 				throw new Exception("Data doesn't fit.");
 			}
 
 			for (int i = 0; i < InputNodes.Count; i++) {
-				InputNodes[i].Output = inputs[i].R / 255.0;
+				InputNodes[i].Output = inputs[i].ExtendedColor.R / 255.0;
 			}
 
 			foreach (Node n in HiddenNodes) {

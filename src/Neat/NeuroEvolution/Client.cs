@@ -25,7 +25,7 @@ namespace GeneticAlgorithmBot {
 
 		public void RegenerateCalculator() => Calculator = new Calculator(Genome);
 		
-		public IList<double> Calculate(ExtendedColor[] inputs) => Calculator.Calculate(inputs);
+		public IList<double> Calculate(ExtendedColorWrapper[] inputs) => Calculator.Calculate(inputs);
 
 		public double GetDistance(Client other) => Genome.GetDistance(other.Genome);
 

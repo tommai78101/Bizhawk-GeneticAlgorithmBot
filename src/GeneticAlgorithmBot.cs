@@ -73,7 +73,7 @@ namespace GeneticAlgorithmBot {
 
 		private Bk2LogEntryGenerator _logGenerator = default!;
 
-		public ExtendedColor[] _neatInputRegionData = default!;
+		public ExtendedColorWrapper[] _neatInputRegionData = default!;
 
 		/// <summary>
 		/// Comparison bot attempt is a bot attempt with current best bot attempt values from Population Manager, containing values where the "best" radio buttons are selected
@@ -732,11 +732,11 @@ namespace GeneticAlgorithmBot {
 			return _lastFrameAdvanced != Emulator.Frame;
 		}
 
-		public ExtendedColor[] GetScreenshotRegionData(Rectangle region, bool showRegion) {
+		public ExtendedColorWrapper[] GetScreenshotRegionData(Rectangle region, bool showRegion) {
 			using (BitmapBuffer screenshot = GetScreenshotImage())
 			using (Bitmap screenshotImage = screenshot.ToSysdrawingBitmap()) {
 				BitmapData data = screenshotImage.LockBits(region, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
-				ExtendedColor[] result = new ExtendedColor[data.Width * data.Height];
+				ExtendedColorWrapper[] result = new ExtendedColorWrapper[data.Width * data.Height];
 				{
 					byte[] bytes = new byte[data.Stride * data.Height];
 					Marshal.Copy(data.Scan0, bytes, 0, bytes.Length);
@@ -746,7 +746,9 @@ namespace GeneticAlgorithmBot {
 						color.G = bytes[i + 1];
 						color.R = bytes[i + 2];
 						_ = bytes[i + 3];
-						result[i] = color;
+						result[i] = new ExtendedColorWrapper(color);
+						result[i].X = (int) (i % data.Width);
+						result[i].Y = (int) (i / data.Width);
 					});
 				}
 				screenshotImage.UnlockBits(data);
@@ -782,16 +784,16 @@ namespace GeneticAlgorithmBot {
 			 * have to do batching yourself. I don't think that's documented, and it surprised me
 			 * yesterday. It implicitly clears what was drawn before.
 			 */
-			this._guiApi.WithSurface(DisplaySurfaceID.EmuCore, () => {
-				if (DisplayGraphFlag.Checked) {
-					Rectangle region = new Rectangle(10, 10, 100, 100);
-					this._guiApi.DrawBox(region.Left, region.Top, region.Right, region.Bottom);
-					this.batchRenderer.RenderGraph(region);
-				}
-				if (DisplayInputGrid.Checked) {
-					this.batchRenderer.RenderInputRegion();
-				}
-			});
+			if (this._useNeat) {
+				this._guiApi.WithSurface(DisplaySurfaceID.EmuCore, () => {
+					if (DisplayGraphFlag.Checked) {
+						this.batchRenderer.RenderGraph();
+					}
+					if (DisplayInputGrid.Checked) {
+						this.batchRenderer.RenderInputRegion();
+					}
+				});
+			}
 			base.GeneralUpdate();
 		}
 		#endregion
@@ -1200,21 +1202,23 @@ namespace GeneticAlgorithmBot {
 			return pixelData;
 		}
 
-		private ExtendedColor[] BoxFilter(Rectangle region, ExtendedColor[] result) {
+		private ExtendedColorWrapper[] BoxFilter(Rectangle region, ExtendedColorWrapper[] result) {
 			int factor = this._inputSampleSize;
 			int newWidth = region.Width / factor;
 			int newHeight = region.Height / factor;
 			int radius = factor / 2;
-			ExtendedColor[] newData = new ExtendedColor[newWidth * newHeight];
+			ExtendedColorWrapper[] newData = new ExtendedColorWrapper[newWidth * newHeight];
 			Parallel.ForEach(newData.AsParallel().AsOrdered(), (pixel, state, i) => {
 				int x = (int) (i % region.Width);
 				int y = (int) (i / region.Width);
-				newData[i] = new ExtendedColor(GetAverageRgbCircle(region, result, x * factor, y * factor, radius));
+				newData[i] = new ExtendedColorWrapper(GetAverageRgbCircle(region, result, x * factor, y * factor, radius));
+				newData[i].X = x;
+				newData[i].Y = y;
 			});
 			return newData;
 		}
 
-		private Color GetAverageRgbCircle(Rectangle region, ExtendedColor[] result, int x, int y, int radius) {
+		private Color GetAverageRgbCircle(Rectangle region, ExtendedColorWrapper[] result, int x, int y, int radius) {
 			float r = 0;
 			float g = 0;
 			float b = 0;
@@ -1225,7 +1229,7 @@ namespace GeneticAlgorithmBot {
 					if (i < 0 || i >= region.Width || j < 0 || j >= region.Height || (Distance2(x, y, i, j) > radius * radius)) {
 						continue;
 					}
-					Color color = result[j * region.Width + i].ToColor();
+					Color color = result[j * region.Width + i].ExtendedColor.ToColor();
 					r += color.R * color.R;
 					g += color.G * color.G;
 					b += color.B * color.B;
@@ -1576,23 +1580,18 @@ namespace GeneticAlgorithmBot {
 		}
 
 		private void inputRegionX_ValueChanged(object sender, EventArgs e) {
-			this._neatInputRegionData = null!;
 		}
 
 		private void inputRegionY_ValueChanged(object sender, EventArgs e) {
-			this._neatInputRegionData = null!;
 		}
 
 		private void inputRegionWidth_ValueChanged(object sender, EventArgs e) {
-			this._neatInputRegionData = null!;
 		}
 
 		private void inputRegionHeight_ValueChanged(object sender, EventArgs e) {
-			this._neatInputRegionData = null!;
 		}
 
-		private void inputGridSize_ValueChanged(object sender, EventArgs e) {
-
+		private void inputSampleSize_ValueChanged(object sender, EventArgs e) {
 		}
 
 		private void addNeatOutputMapping_Click(object sender, EventArgs e) {
