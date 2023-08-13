@@ -97,15 +97,22 @@ namespace GeneticAlgorithmBot.Rendering {
 			if (!this.owner.UseNeat || this.gui == null) {
 				return;
 			}
-			int x = IsBotting ? this.owner._inputX : (int) this.owner.InputRegionX.Value;
-			int y = IsBotting ? this.owner._inputY : (int) this.owner.InputRegionY.Value;
-			int width = IsBotting ? this.owner._inputWidth : (int) this.owner.InputRegionWidth.Value;
-			int height = IsBotting ? this.owner._inputHeight : (int) this.owner.InputRegionHeight.Value;
-			Color inputRegionColor = Color.FromArgb(32, Color.DarkGray);
-			this.gui.DrawBox(x, y, x + width, y + height, null, inputRegionColor, DisplaySurfaceID.EmuCore);
+			Color inputOutlineColor = Color.FromArgb(72, Color.Yellow);
+			Color inputRegionColor = Color.FromArgb(32, Color.Yellow);
+			int x = (int) this.owner.InputRegionX.Value;
+			int y = (int) this.owner.InputRegionY.Value;
+			int width = (int) this.owner.InputRegionWidth.Value;
+			int height = (int) this.owner.InputRegionHeight.Value;
+			this.gui.DrawBox(x, y, x + width, y + height, inputOutlineColor, inputRegionColor, DisplaySurfaceID.EmuCore);
+
 			if (this.IsBotting) {
+				Color blockOutlineColor = Color.FromArgb(48, Color.AliceBlue);
+				int radius = this.owner._inputSampleSize / 2;
 				foreach (ExtendedColorWrapper block in this.owner._neatInputRegionData) {
-					this.gui.DrawBox(block.X - block.Radius, block.Y - block.Radius, block.X + block.Radius, block.Y + block.Radius, null, block.ExtendedColor.ToColor(), DisplaySurfaceID.EmuCore);
+					Color blockColor = block.ExtendedColor.ToColor();
+					int x1 = (block.X * this.owner._inputSampleSize) + radius + this.owner._inputX;
+					int y1 = (block.Y * this.owner._inputSampleSize) + radius + this.owner._inputY;
+					this.gui.DrawBox(x1 - radius, y1 - radius, x1 + radius, y1 + radius, blockOutlineColor, blockColor, DisplaySurfaceID.EmuCore);
 				}
 			}
 		}

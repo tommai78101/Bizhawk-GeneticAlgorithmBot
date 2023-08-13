@@ -36,8 +36,20 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public void MutateActivationRandom() {
-			NodeGene? node = Nodes.GetRandomElement();
-			if (node?.X > 0.1) {
+			if (!Nodes.Any()) {
+				return;
+			}
+			int retry = 0;
+			NodeGene node;
+			do {
+				retry++;
+				node = Nodes.GetRandomElement();
+			} while (node == null && retry < 5);
+			if (node == null) {
+				// Give up.
+				return;
+			}
+			if (node.X > 0.1) {
 				ActivationEnumeration a = ActivationEnumeration.GetRandom();
 				node.Activation = a.Activation;
 			}
@@ -64,9 +76,19 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public void MutateNode() {
-			ConnectionGene connection = Connections.GetRandomElement()!;
-			if (connection == null)
+			if (!Connections.Any()) {
 				return;
+			}
+			int retry = 0;
+			ConnectionGene connection;
+			do {
+				retry++;
+				connection = Connections.GetRandomElement()!;
+			} while (connection == null && retry < 5);
+			if (connection == null) {
+				// Give up.
+				return;
+			}
 
 			NodeGene from = connection.In;
 			NodeGene to = connection.Out;
@@ -96,14 +118,30 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public void MutateToggleLink() {
-			ConnectionGene connection = Connections.GetRandomElement()!;
+			if (!Connections.Any()) {
+				return;
+			}
+			ConnectionGene connection;
+			int retry = 0;
+			do {
+				retry++;
+				connection = Connections.GetRandomElement()!;
+			} while (connection == null && retry < 5);
 			if (connection != null) {
 				connection.Enabled = !connection.Enabled;
 			}
 		}
 
 		public void MutateWeightRandom() {
-			ConnectionGene connection = Connections.GetRandomElement()!;
+			if (!Connections.Any()) {
+				return;
+			}
+			ConnectionGene connection;
+			int retry = 0;
+			do {
+				retry++;
+				connection = Connections.GetRandomElement()!;
+			} while (connection == null && retry < 5);
 			if (connection != null) {
 				connection.Weight = ThreadSafeRandom.GetNormalizedRandom(0, 0.2f) * GenomeConstants.WEIGHT_RANDOM_STRENGTH;
 			}

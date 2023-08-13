@@ -49,7 +49,7 @@ namespace GeneticAlgorithmBot {
 		}
 
 		public Color ToColor() {
-			return Color.FromArgb(R, G, B);
+			return Color.FromArgb(32, Color.FromArgb(R, G, B));
 		}
 	}
 

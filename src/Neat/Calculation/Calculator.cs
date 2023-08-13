@@ -62,8 +62,7 @@ namespace GeneticAlgorithmBot {
 
 			// Insert the input values to the Calculator's input nodes.
 			for (int i = 0; i < InputNodes.Count; i++) {
-				Color inputColor = inputs[i].ExtendedColor.ToColor();
-				InputNodes[i].Output = inputColor.GetBrightness();
+				InputNodes[i].Output = inputs[i].ExtendedColor.Double;
 			}
 
 			// Begin calculations.
