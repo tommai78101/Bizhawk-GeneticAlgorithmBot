@@ -373,6 +373,7 @@ namespace GeneticAlgorithmBot {
 
 			if (_useNeat && !this.neat.IsInitialized) {
 				neat.Initialize();
+				neat.Evolve();
 			}
 			else if (!this.genetics.IsInitialized) {
 				this.genetics.Initialize();

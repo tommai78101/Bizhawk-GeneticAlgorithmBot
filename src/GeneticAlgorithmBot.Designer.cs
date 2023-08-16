@@ -667,8 +667,8 @@ namespace GeneticAlgorithmBot {
 			this.GoalGroupBox.TabIndex = 2009;
 			this.GoalGroupBox.TabStop = false;
 			this.GoalGroupBox.Text = "Memory Value Information [?]";
-			this.BotToolTip.SetToolTip(this.GoalGroupBox, "This panel indicates what RAM values in the memory you want to use for the bot to" +
-        " determine its fitness level as it undergoes training.");
+			this.BotToolTip.SetToolTip(this.GoalGroupBox, "This panel indicates what RAM values in the \r\nmemory you want to use for the bot " +
+        "to \r\ndetermine its fitness level as it undergoes \r\ntraining.");
 			// 
 			// MutationRateNumeric
 			// 
@@ -998,9 +998,9 @@ namespace GeneticAlgorithmBot {
 			this.BestGroupBox.TabIndex = 2008;
 			this.BestGroupBox.TabStop = false;
 			this.BestGroupBox.Text = "Best Fitness Information [?]";
-			this.BotToolTip.SetToolTip(this.BestGroupBox, "This panel records the best fitness the bot has achieved during its training mode" +
-        "l. It will persist the input controls to achieve the best fitness, until a bette" +
-        "r attempt is given.");
+			this.BotToolTip.SetToolTip(this.BestGroupBox, "This panel records the best fitness the bot \r\nhas achieved during its training mo" +
+        "del. It \r\nwill persist the input controls to achieve \r\nthe best fitness, until a" +
+        " better attempt is given.");
 			// 
 			// BestGenerationNumberLabel
 			// 

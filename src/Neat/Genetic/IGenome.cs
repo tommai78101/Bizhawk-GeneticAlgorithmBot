@@ -14,6 +14,9 @@ namespace GeneticAlgorithmBot {
 		// Manage mutation regarding their probabilities
 		void Mutate();
 
+		// Guaranteed mutation while regarding their probabilities
+		void Mutate2();
+
 		// Add a ConnectionGene between two existing NodeGenes.
 		void MutateLink();
 

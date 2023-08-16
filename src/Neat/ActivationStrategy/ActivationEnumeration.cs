@@ -23,7 +23,7 @@ namespace GeneticAlgorithmBot {
 
 		public static ActivationEnumeration GetRandom() {
 			int count = GetAll<ActivationEnumeration>().Count();
-			int i = (int) (ThreadSafeRandom.GetRandom() * count);
+			int i = (int) (Math.Floor(ThreadSafeRandom.GetRandom() * 128359123L) % count);
 			return GetAll<ActivationEnumeration>().ToList()[i];
 		}
 	}

@@ -35,6 +35,37 @@ namespace GeneticAlgorithmBot {
 				MutateActivationRandom();
 		}
 
+		public void Mutate2() {
+			// Guaranteed mutation. Only 1 mutation is allowed.
+			bool mutateCheck = false;
+			while (!mutateCheck) {
+				if (!mutateCheck && GenomeConstants.PROBABILITY_MUTATE_LINK > ThreadSafeRandom.GetRandom()) {
+					MutateLink();
+					mutateCheck = true;
+				}
+				if (!mutateCheck && GenomeConstants.PROBABILITY_MUTATE_NODE > ThreadSafeRandom.GetRandom()) {
+					MutateNode();
+					mutateCheck = true;
+				}
+				if (!mutateCheck && GenomeConstants.PROBABILITY_MUTATE_WEIGHT_RANDOM > ThreadSafeRandom.GetRandom()) {
+					MutateWeightRandom();
+					mutateCheck = true;
+				}
+				if (!mutateCheck && GenomeConstants.PROBABILITY_MUTATE_WEIGHT_SHIFT > ThreadSafeRandom.GetRandom()) {
+					MutateWeightShift();
+					mutateCheck = true;
+				}
+				if (!mutateCheck && GenomeConstants.PROBABILITY_MUTATE_TOGGLE_LINK > ThreadSafeRandom.GetRandom()) {
+					MutateToggleLink();
+					mutateCheck = true;
+				}
+				if (!mutateCheck && GenomeConstants.PROBABILITY_MUTATE_ACTIVATION_RANDOM > ThreadSafeRandom.GetRandom()) {
+					MutateActivationRandom();
+					mutateCheck = true;
+				}
+			}
+		}
+
 		public void MutateActivationRandom() {
 			if (!Nodes.Any()) {
 				return;

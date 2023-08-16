@@ -60,9 +60,10 @@ namespace GeneticAlgorithmBot.Rendering {
 			for (int i = 0; i < this.owner._neatInputRegionData.Length; i++) {
 				// From
 				ExtendedColorWrapper w = this.owner._neatInputRegionData[i];
+				Color translucentFill = Color.FromArgb(196, w.ExtendedColor.ToColor());
 				int x1 = (w.X * this.owner._inputSampleSize) + radius + this.owner._inputX;
 				int y1 = (w.Y * this.owner._inputSampleSize) + radius + this.owner._inputY;
-				this.gui.DrawBox(x1 - radius, y1 - radius, x1 + radius, y1 + radius, null, inputRegionColor, DisplaySurfaceID.EmuCore);
+				this.gui.DrawBox(x1 - radius, y1 - radius, x1 + radius, y1 + radius, inputRegionColor, translucentFill, DisplaySurfaceID.EmuCore);
 				// To
 				NodeGene n = InputNodes[i];
 				int x2 = (int) Math.Floor(n.X * drawRegion.Width) + drawRegion.X;
@@ -103,7 +104,13 @@ namespace GeneticAlgorithmBot.Rendering {
 			int y = (int) this.owner.InputRegionY.Value;
 			int width = (int) this.owner.InputRegionWidth.Value;
 			int height = (int) this.owner.InputRegionHeight.Value;
-			this.gui.DrawBox(x, y, x + width, y + height, inputOutlineColor, inputRegionColor, DisplaySurfaceID.EmuCore);
+			if (this.IsBotting) {
+				Color outlineColor = Color.FromArgb(8, inputOutlineColor);
+				Color fillColor = Color.FromArgb(8, inputRegionColor);
+				this.gui.DrawBox(x, y, x + width, y + height, outlineColor, fillColor, DisplaySurfaceID.EmuCore);
+			} else {
+				this.gui.DrawBox(x, y, x + width, y + height, inputOutlineColor, inputRegionColor, DisplaySurfaceID.EmuCore);
+			}
 
 			if (this.IsBotting) {
 				Color blockOutlineColor = Color.FromArgb(48, Color.AliceBlue);

@@ -29,7 +29,7 @@ namespace GeneticAlgorithmBot {
 
 		public double GetDistance(Client other) => Genome.GetDistance(other.Genome);
 
-		public void Mutate() => Genome.Mutate();
+		public void Mutate() => Genome.Mutate2();
 
 		public int CompareTo(Client other) {
 			if (Score > other.Score)
