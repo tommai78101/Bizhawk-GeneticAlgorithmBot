@@ -370,12 +370,8 @@ namespace GeneticAlgorithmBot {
 				return;
 			}
 
-			if (_useNeat && !this.neat.IsInitialized) {
-				neat.Initialize();
-				neat.Evolve();
-			}
-			else if (!this.genetics.IsInitialized) {
-				this.genetics.Initialize();
+			if (!this.algorithm.IsInitialized) {
+				this.algorithm.Initialize();
 			}
 
 			_isBotting = true;
@@ -585,16 +581,8 @@ namespace GeneticAlgorithmBot {
 
 		public void Update(bool fast) {
 			try {
-				if (_useNeat) {
-					if (this.neat.IsInitialized) {
-						UpdateNeatInputRegion();
-						UpdateNeat(fast);
-					}
-				}
-				else {
-					if (this.genetics.IsInitialized) {
-						UpdateGeneticAlgorithm(fast);
-					}
+				if (this.algorithm.IsInitialized) {
+					this.algorithm.Update(fast);
 				}
 			}
 			catch (Exception e) {
@@ -603,7 +591,7 @@ namespace GeneticAlgorithmBot {
 			}
 		}
 
-		public void UpdateNeat(bool fast) {
+		public void UpdateNeatGUI(bool fast) {
 			if (_doNotUpdateValues) {
 				return;
 			}
@@ -671,7 +659,7 @@ namespace GeneticAlgorithmBot {
 			}
 		}
 
-		public void UpdateGeneticAlgorithm(bool fast) {
+		public void UpdateGeneticAlgorithmGUI(bool fast) {
 			if (_doNotUpdateValues) {
 				return;
 			}

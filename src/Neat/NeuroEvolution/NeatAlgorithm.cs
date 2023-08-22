@@ -51,6 +51,8 @@ namespace GeneticAlgorithmBot {
 			this.StartFrameNumber = this.bot._startFrame;
 			this.IsInitialized = true;
 
+			Evolve();
+
 			return this;
 		}
 
@@ -107,6 +109,11 @@ namespace GeneticAlgorithmBot {
 				CopyCurrentToBest(chosenIndex);
 			}
 			return ++this.Generation;
+		}
+
+		public override void Update(bool fast) {
+			this.bot.UpdateNeatInputRegion();
+			this.bot.UpdateNeatGUI(fast);
 		}
 
 		// =======================================================================================================================

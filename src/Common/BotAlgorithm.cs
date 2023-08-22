@@ -20,9 +20,13 @@ namespace GeneticAlgorithmBot {
 			this.bot = owner;
 		}
 
+		#region Abstract Methods
 		public abstract BotAlgorithm Initialize();
 
 		public abstract long EvaluateGeneration();
+
+		public abstract void Update(bool isFastUpdate);
+		#endregion
 
 		public InputRecording GetCurrent() {
 			return this.population[this.currentIndex];

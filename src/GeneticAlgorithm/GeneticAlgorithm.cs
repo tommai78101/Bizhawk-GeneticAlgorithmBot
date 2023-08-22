@@ -13,6 +13,7 @@ namespace GeneticAlgorithmBot {
 			this.Generation = 1;
 		}
 
+		#region Overrides
 		public override BotAlgorithm Initialize() {
 			this.bestRecording = new InputRecording(this);
 			this.population = new InputRecording[this.bot.PopulationSize];
@@ -31,16 +32,6 @@ namespace GeneticAlgorithmBot {
 			return this;
 		}
 
-		public void ClearBest() {
-			this.bestRecording.Reset(0);
-		}
-
-		// Returns true if the current index wraps back to zero.
-		public bool NextRecording() {
-			this.currentIndex = ++this.currentIndex % this.population.Length;
-			return this.currentIndex == 0;
-		}
-
 		public override long EvaluateGeneration() {
 			int chosenIndex = -1;
 			for (int i = 0; i < this.population.Length; i++) {
@@ -56,31 +47,16 @@ namespace GeneticAlgorithmBot {
 			return ++this.Generation;
 		}
 
-		public bool IsCurrentAttemptBetter() {
-			BotAttempt current = this.population[this.currentIndex].GetAttempt();
-			BotAttempt best = this.bestRecording.GetAttempt();
-			return Utils.IsAttemptBetter(this.bot, best, this.bot.comparisonAttempt, current);
+		public override void Update(bool fast) {
+			this.bot.UpdateGeneticAlgorithmGUI(fast);
 		}
+		#endregion
 
-		public void CopyCurrentToBest(int index) {
-			this.bestRecording.DeepCopy(this.population[index]);
-			this.bestRecording.IsSet = true;
-		}
-
-		public void SetOrigin() {
-			BotAttempt origin = this.GetBest().GetAttempt();
-			origin.Fitness = 0;
-			origin.Attempt = 0;
-			origin.Generation = 1;
-			origin.ComparisonTypeMain = this.bot.MainComparisonType;
-			origin.ComparisonTypeTie1 = this.bot.Tie1ComparisonType;
-			origin.ComparisonTypeTie2 = this.bot.Tie2ComparisonType;
-			origin.ComparisonTypeTie3 = this.bot.Tie3ComparisonType;
-			origin.Maximize = this.bot.MaximizeValue;
-			origin.TieBreak1 = this.bot.TieBreaker1Value;
-			origin.TieBreak2 = this.bot.TieBreaker2Value;
-			origin.TieBreak3 = this.bot.TieBreaker3Value;
-			origin.isReset = false;
+		// Returns true if the current index wraps back to zero.
+		#region Public Methods
+		public bool NextRecording() {
+			this.currentIndex = ++this.currentIndex % this.population.Length;
+			return this.currentIndex == 0;
 		}
 
 		public void Reproduce() {
@@ -103,6 +79,39 @@ namespace GeneticAlgorithmBot {
 				}
 			}
 		}
-	}
 
+		public void ClearBest() {
+			this.bestRecording.Reset(0);
+		}
+		#endregion
+
+		#region Private Methods
+		private void CopyCurrentToBest(int index) {
+			this.bestRecording.DeepCopy(this.population[index]);
+			this.bestRecording.IsSet = true;
+		}
+
+		private bool IsCurrentAttemptBetter() {
+			BotAttempt current = this.population[this.currentIndex].GetAttempt();
+			BotAttempt best = this.bestRecording.GetAttempt();
+			return Utils.IsAttemptBetter(this.bot, best, this.bot.comparisonAttempt, current);
+		}
+
+		private void SetOrigin() {
+			BotAttempt origin = this.GetBest().GetAttempt();
+			origin.Fitness = 0;
+			origin.Attempt = 0;
+			origin.Generation = 1;
+			origin.ComparisonTypeMain = this.bot.MainComparisonType;
+			origin.ComparisonTypeTie1 = this.bot.Tie1ComparisonType;
+			origin.ComparisonTypeTie2 = this.bot.Tie2ComparisonType;
+			origin.ComparisonTypeTie3 = this.bot.Tie3ComparisonType;
+			origin.Maximize = this.bot.MaximizeValue;
+			origin.TieBreak1 = this.bot.TieBreaker1Value;
+			origin.TieBreak2 = this.bot.TieBreaker2Value;
+			origin.TieBreak3 = this.bot.TieBreaker3Value;
+			origin.isReset = false;
+		}
+		#endregion
+	}
 }
