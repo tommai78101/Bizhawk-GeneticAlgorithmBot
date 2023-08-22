@@ -39,24 +39,24 @@
 		</EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Update="BotControlsRow.cs">
+		<Compile Update="UI\BotControlsRow.cs">
 			<SubType>UserControl</SubType>
 		</Compile>
-		<Compile Update="BotControlsRow.Designer.cs">
+		<Compile Update="UI\BotControlsRow.Designer.cs">
 			<DependentUpon>BotControlsRow.cs</DependentUpon>
 		</Compile>
-		<EmbeddedResource Update="BotControlsRow.resx">
+		<EmbeddedResource Update="UI\BotControlsRow.resx">
 			<DependentUpon>BotControlsRow.cs</DependentUpon>
 		</EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Update="NeatMappingRow.cs">
+		<Compile Update="UI\NeatMappingRow.cs">
 			<SubType>UserControl</SubType>
 		</Compile>
-		<Compile Update="NeatMappingRow.Designer.cs">
+		<Compile Update="UI\NeatMappingRow.Designer.cs">
 			<DependentUpon>NeatMappingRow.cs</DependentUpon>
 		</Compile>
-		<EmbeddedResource Update="NeatMappingRow.resx">
+		<EmbeddedResource Update="UI\NeatMappingRow.resx">
 			<DependentUpon>NeatMappingRow.cs</DependentUpon>
 		</EmbeddedResource>
 	</ItemGroup>
