@@ -29,6 +29,8 @@ namespace GeneticAlgorithmBot {
 			this.StartFrameNumber = this.bot._startFrame;
 			this.IsInitialized = true;
 
+			Reproduce();
+
 			return this;
 		}
 
