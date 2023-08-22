@@ -28,7 +28,7 @@ GeneticAlgorithmBot
  └ .gitignore
 ```
 
-2a. Run the `run_build.cmd` batch file.
+2a. Run the `run_build.cmd` batch file.    
 2b. Or for distribution only, run the `build_only.cmd` batch file.
 
 Click the video below to see the installation process using Windows Sandbox:
