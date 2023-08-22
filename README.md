@@ -20,7 +20,7 @@ Also includes an experimental neuro-evolution augmented topology (NEAT) for cont
 
 ```
 GeneticAlgorithmBot
- ├ BizHawk/         <-----    This is where you put the stable release, full, [BizHawk](https://github.com/TASEmulators/BizHawk) folder at.
+ ├ BizHawk/         <-----    This is where you put the stable release, full, BizHawk folder at.
  ├ src/
  ├ run_build.cmd
  ├ LICENSE
