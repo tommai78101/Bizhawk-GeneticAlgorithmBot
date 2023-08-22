@@ -13,7 +13,6 @@ namespace GeneticAlgorithmBot.Common {
 	public class NeatInputMappings {
 		private const int MAX_MAPPINGS_SIZE = 64;
 		private GeneticAlgorithmBot owner;
-		private bool isScrollingEnabled = false;
 
 		public Panel Parent => this.owner.NeatMappingPanel;
 		public Control.ControlCollection Controls => Parent.Controls;
@@ -21,7 +20,6 @@ namespace GeneticAlgorithmBot.Common {
 
 		public NeatInputMappings(GeneticAlgorithmBot owner) {
 			this.owner = owner;
-			this.isScrollingEnabled = false;
 
 			Parent.AutoScroll = false;
 			Parent.HorizontalScroll.Enabled = false;

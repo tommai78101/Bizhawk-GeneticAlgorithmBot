@@ -16,7 +16,6 @@ namespace GeneticAlgorithmBot {
 		internal static int uniqueId = 0;
 		internal static HashSet<string> usedMappings = new HashSet<string>();
 
-		private int id;
 		private Panel parent;
 
 		public bool Exists => this.GetOutput() != null;

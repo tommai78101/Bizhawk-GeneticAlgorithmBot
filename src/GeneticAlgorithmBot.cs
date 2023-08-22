@@ -22,7 +22,6 @@ using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using BizHawk.Emulation.Cores.Consoles.Nintendo.Faust;
-using Newtonsoft.Json;
 using GeneticAlgorithmBot.Common;
 using System.Runtime.CompilerServices;
 using BizHawk.Common.CollectionExtensions;
@@ -391,7 +390,7 @@ namespace GeneticAlgorithmBot {
 				MovieSession.Movie.IsCountingRerecords = false;
 			}
 
-			_logGenerator = MovieSession.Movie.LogGeneratorInstance(InputManager.ClickyVirtualPadController);
+			_logGenerator = new Bk2LogEntryGenerator(MovieSession.Movie.SystemID, InputManager.ClickyVirtualPadController);
 
 			_doNotUpdateValues = true;
 			if (!_useNeat)
