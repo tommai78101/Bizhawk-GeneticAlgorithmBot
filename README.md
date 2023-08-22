@@ -1,7 +1,8 @@
-# Bizhawk-GeneticAlgorithmBot
-Genetic algorithm control inputs generation bot for Bizhawk for the creation of tools-assisted speedruns.
+# Bizhawk - Genetic Algorithm Bot
 
-Also includes neuro-evolution augmented topology (NEAT) for control inputs generation.
+Control inputs generation bot using genetic algorithm for [Bizhawk](https://github.com/TASEmulators/BizHawk) for the creation and assistance of tools-assisted speedruns.
+
+Also includes an experimental neuro-evolution augmented topology (NEAT) for control inputs generation as an alternative generation feature.
 
 # Requirements
 
@@ -19,7 +20,7 @@ Also includes neuro-evolution augmented topology (NEAT) for control inputs gener
 
 ```
 GeneticAlgorithmBot
- ├ BizHawk/         <-----    This is where you put the full Bizhawk folder at.
+ ├ BizHawk/         <-----    This is where you put the stable release, full, [BizHawk](https://github.com/TASEmulators/BizHawk) folder at.
  ├ src/
  ├ run_build.cmd
  ├ LICENSE
@@ -27,7 +28,8 @@ GeneticAlgorithmBot
  └ .gitignore
 ```
 
-2. Run the run_build.cmd batch file.
+2a. Run the `run_build.cmd` batch file.
+2b. Or for distribution only, run the `build_only.cmd` batch file.
 
 Click the video below to see the installation process using Windows Sandbox:
 
@@ -40,9 +42,11 @@ Click the video below to see the installation process using Windows Sandbox:
 3. Run EmuHawk.
 4. Make sure you have U+D/L+R controller buttons set to **Allow**.
 5. Open TAStudio. (Required)
-6. In the toolbar menu: Tools -> External Tools -> Genetic Algorithm Bot.
+6. In the toolbar menu: `Tools` -> `External Tools` -> `Genetic Algorithm Bot`.
 
 # Credits
 
 * Genetic Algorithm Bot - tom_mai78101
+* [BizHawk](https://github.com/TASEmulators/BizHawk)
+* [BizHawk API](https://github.com/TASEmulators/BizHawk-ExternalTools/wiki)
 * [NEAT C# Implementation](https://github.com/dnazirso/NeatSharp) - [dnazirso](https://github.com/dnazirso)
