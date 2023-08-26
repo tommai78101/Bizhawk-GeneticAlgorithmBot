@@ -1,8 +1,8 @@
 # Bizhawk - Genetic Algorithm Bot
 
-Control inputs generation bot using genetic algorithm for [Bizhawk](https://github.com/TASEmulators/BizHawk) for the creation and assistance of tools-assisted speedruns.
+Control inputs generation bot using genetic algorithm for [BizHawk](https://github.com/TASEmulators/BizHawk) for the creation and assistance of tools-assisted speedruns.
 
-Also includes an experimental neuro-evolution augmented topology (NEAT) for control inputs generation as an alternative generation feature. (Pre-release v1.0.4-dev)
+Also includes an experimental neuro-evolution augmented topology (NEAT) for control inputs generation as an alternative generation feature. ([Pre-release v1.0.4-dev](https://github.com/tommai78101/Bizhawk-GeneticAlgorithmBot/releases/tag/neat-1.0.4))
 
 # Requirements
 
