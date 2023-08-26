@@ -20,15 +20,16 @@ Also includes an experimental neuro-evolution augmented topology (NEAT) for cont
 
 ```
 GeneticAlgorithmBot
- ├ BizHawk/         <-----    This is where you put the stable release, full, BizHawk folder at.
+ ├ BizHawk/         <-----    This is where you put the full BizHawk release folder at.
  ├ src/
- ├ run_build.cmd
+ ├ run_build.cmd    <-----    For development. This is the file you execute after putting the BizHawk folder.
+ ├ build_only.cmd   <-----    For release. This is the file you execute after putting the BizHawk folder.
  ├ LICENSE
  ├ README.md
  └ .gitignore
 ```
 
-2a. Run the `run_build.cmd` batch file.    
+2a. Run the `run_build.cmd` batch file.
 2b. Or for distribution only, run the `build_only.cmd` batch file.
 
 Click the video below to see the installation process using Windows Sandbox:
