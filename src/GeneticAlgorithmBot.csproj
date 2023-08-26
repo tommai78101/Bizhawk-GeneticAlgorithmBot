@@ -1,16 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<LangVersion>9.0</LangVersion>
+		<LangVersion>10.0</LangVersion>
 		<Nullable>enable</Nullable>
 		<TargetFramework>net48</TargetFramework>
 		<UseWindowsForms>true</UseWindowsForms>
 		<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+		<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="System.Drawing.Common" Version="7.0.0" />
 		<PackageReference Include="System.Resources.Extensions" Version="7.0.0" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
 		<Reference Include="System.Windows.Forms" />
 		<Reference Include="BizHawk.BizInvoke" HintPath="$(ProjectDir)../BizHawk/dll/BizHawk.BizInvoke.dll" />
 		<Reference Include="BizHawk.Bizware.BizwareGL" HintPath="$(ProjectDir)../BizHawk/dll/BizHawk.Bizware.BizwareGL.dll" />
@@ -36,14 +39,25 @@
 		</EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Update="BotControlsRow.cs">
+		<Compile Update="UI\BotControlsRow.cs">
 			<SubType>UserControl</SubType>
 		</Compile>
-		<Compile Update="BotControlsRow.Designer.cs">
+		<Compile Update="UI\BotControlsRow.Designer.cs">
 			<DependentUpon>BotControlsRow.cs</DependentUpon>
 		</Compile>
-		<EmbeddedResource Update="BotControlsRow.resx">
+		<EmbeddedResource Update="UI\BotControlsRow.resx">
 			<DependentUpon>BotControlsRow.cs</DependentUpon>
+		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="UI\NeatMappingRow.cs">
+			<SubType>UserControl</SubType>
+		</Compile>
+		<Compile Update="UI\NeatMappingRow.Designer.cs">
+			<DependentUpon>NeatMappingRow.cs</DependentUpon>
+		</Compile>
+		<EmbeddedResource Update="UI\NeatMappingRow.resx">
+			<DependentUpon>NeatMappingRow.cs</DependentUpon>
 		</EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>

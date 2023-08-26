@@ -178,6 +178,7 @@ namespace GeneticAlgorithmBot {
 			this.TieBreak3BestRadio = new System.Windows.Forms.RadioButton();
 			this.Tiebreak3Operator = new System.Windows.Forms.ComboBox();
 			this.ControlGroupBox = new System.Windows.Forms.GroupBox();
+			this.UseNeatCheckBox = new System.Windows.Forms.CheckBox();
 			this.InvisibleEmulationCheckBox = new System.Windows.Forms.CheckBox();
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.StatsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -207,6 +208,22 @@ namespace GeneticAlgorithmBot {
 			this.label15 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.label14 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.label13 = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.NeatInputRegionControlsBox = new System.Windows.Forms.GroupBox();
+			this.DisplayInputGrid = new System.Windows.Forms.CheckBox();
+			this.DisplayGraphFlag = new System.Windows.Forms.CheckBox();
+			this.outputMappingPanel = new System.Windows.Forms.Panel();
+			this.removeNeatOutputMapping = new System.Windows.Forms.Button();
+			this.addNeatOutputMapping = new System.Windows.Forms.Button();
+			this.locLabelEx7 = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.InputSampleSize = new System.Windows.Forms.NumericUpDown();
+			this.locLabelEx6 = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.locLabelEx5 = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.locLabelEx4 = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.locLabelEx2 = new BizHawk.WinForms.Controls.LocLabelEx();
+			this.InputRegionHeight = new System.Windows.Forms.NumericUpDown();
+			this.InputRegionWidth = new System.Windows.Forms.NumericUpDown();
+			this.InputRegionY = new System.Windows.Forms.NumericUpDown();
+			this.InputRegionX = new System.Windows.Forms.NumericUpDown();
 			this.BotStatusStrip = new System.Windows.Forms.StatusStrip();
 			this.BotStatusButton = new System.Windows.Forms.ToolStripStatusLabel();
 			this.MessageLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -248,6 +265,12 @@ namespace GeneticAlgorithmBot {
 			this.StatsContextMenu.SuspendLayout();
 			this.BestGroupBox.SuspendLayout();
 			this.panel1.SuspendLayout();
+			this.NeatInputRegionControlsBox.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.InputSampleSize)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.InputRegionHeight)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.InputRegionWidth)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.InputRegionY)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.InputRegionX)).BeginInit();
 			this.BotStatusStrip.SuspendLayout();
 			this.BotMenu.SuspendLayout();
 			this.SuspendLayout();
@@ -644,8 +667,8 @@ namespace GeneticAlgorithmBot {
 			this.GoalGroupBox.TabIndex = 2009;
 			this.GoalGroupBox.TabStop = false;
 			this.GoalGroupBox.Text = "Memory Value Information [?]";
-			this.BotToolTip.SetToolTip(this.GoalGroupBox, "This panel indicates what RAM values in the memory you want to use for the bot to" +
-        " determine its fitness level as it undergoes training.");
+			this.BotToolTip.SetToolTip(this.GoalGroupBox, "This panel indicates what RAM values in the \r\nmemory you want to use for the bot " +
+        "to \r\ndetermine its fitness level as it undergoes \r\ntraining.");
 			// 
 			// MutationRateNumeric
 			// 
@@ -689,7 +712,7 @@ namespace GeneticAlgorithmBot {
             0,
             0});
 			this.PopulationSizeNumeric.Minimum = new decimal(new int[] {
-            1,
+            2,
             0,
             0,
             0});
@@ -813,6 +836,7 @@ namespace GeneticAlgorithmBot {
 			// 
 			this.ControlGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.ControlGroupBox.Controls.Add(this.UseNeatCheckBox);
 			this.ControlGroupBox.Controls.Add(this.InvisibleEmulationCheckBox);
 			this.ControlGroupBox.Controls.Add(this.panel2);
 			this.ControlGroupBox.Controls.Add(this.StopBtn);
@@ -825,13 +849,23 @@ namespace GeneticAlgorithmBot {
 			this.ControlGroupBox.TabIndex = 2010;
 			this.ControlGroupBox.TabStop = false;
 			this.ControlGroupBox.Text = "TAStudio Controls [?]";
-			this.BotToolTip.SetToolTip(this.ControlGroupBox, "This panel indicates which save state in the TAStudio to choose from, so the bot " +
-        "can repeatedly load that save state for training.");
+			this.BotToolTip.SetToolTip(this.ControlGroupBox, resources.GetString("ControlGroupBox.ToolTip"));
+			// 
+			// UseNeatCheckBox
+			// 
+			this.UseNeatCheckBox.AutoSize = true;
+			this.UseNeatCheckBox.Location = new System.Drawing.Point(88, 63);
+			this.UseNeatCheckBox.Name = "UseNeatCheckBox";
+			this.UseNeatCheckBox.Size = new System.Drawing.Size(145, 17);
+			this.UseNeatCheckBox.TabIndex = 2006;
+			this.UseNeatCheckBox.Text = "Use NEAT (experimental)";
+			this.UseNeatCheckBox.UseVisualStyleBackColor = true;
+			this.UseNeatCheckBox.CheckedChanged += new System.EventHandler(this.UseNeatCheckBox_CheckedChanged);
 			// 
 			// InvisibleEmulationCheckBox
 			// 
 			this.InvisibleEmulationCheckBox.AutoSize = true;
-			this.InvisibleEmulationCheckBox.Location = new System.Drawing.Point(88, 60);
+			this.InvisibleEmulationCheckBox.Location = new System.Drawing.Point(88, 42);
 			this.InvisibleEmulationCheckBox.Name = "InvisibleEmulationCheckBox";
 			this.InvisibleEmulationCheckBox.Size = new System.Drawing.Size(127, 17);
 			this.InvisibleEmulationCheckBox.TabIndex = 2004;
@@ -891,7 +925,7 @@ namespace GeneticAlgorithmBot {
 			// StopBtn
 			// 
 			this.StopBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.StopBtn.Location = new System.Drawing.Point(6, 56);
+			this.StopBtn.Location = new System.Drawing.Point(6, 50);
 			this.StopBtn.Name = "StopBtn";
 			this.StopBtn.Size = new System.Drawing.Size(75, 23);
 			this.StopBtn.TabIndex = 2002;
@@ -903,7 +937,7 @@ namespace GeneticAlgorithmBot {
 			// RunBtn
 			// 
 			this.RunBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.RunBtn.Location = new System.Drawing.Point(6, 56);
+			this.RunBtn.Location = new System.Drawing.Point(6, 50);
 			this.RunBtn.Name = "RunBtn";
 			this.RunBtn.Size = new System.Drawing.Size(75, 23);
 			this.RunBtn.TabIndex = 2001;
@@ -926,14 +960,14 @@ namespace GeneticAlgorithmBot {
             "Slot 8",
             "Slot 9",
             "Slot 0"});
-			this.StartFromSlotBox.Location = new System.Drawing.Point(71, 25);
+			this.StartFromSlotBox.Location = new System.Drawing.Point(71, 17);
 			this.StartFromSlotBox.Name = "StartFromSlotBox";
 			this.StartFromSlotBox.Size = new System.Drawing.Size(75, 21);
 			this.StartFromSlotBox.TabIndex = 2000;
 			// 
 			// label8
 			// 
-			this.label8.Location = new System.Drawing.Point(7, 29);
+			this.label8.Location = new System.Drawing.Point(7, 21);
 			this.label8.Name = "label8";
 			this.label8.Text = "Start From:";
 			// 
@@ -964,9 +998,9 @@ namespace GeneticAlgorithmBot {
 			this.BestGroupBox.TabIndex = 2008;
 			this.BestGroupBox.TabStop = false;
 			this.BestGroupBox.Text = "Best Fitness Information [?]";
-			this.BotToolTip.SetToolTip(this.BestGroupBox, "This panel records the best fitness the bot has achieved during its training mode" +
-        "l. It will persist the input controls to achieve the best fitness, until a bette" +
-        "r attempt is given.");
+			this.BotToolTip.SetToolTip(this.BestGroupBox, "This panel records the best fitness the bot \r\nhas achieved during its training mo" +
+        "del. It \r\nwill persist the input controls to achieve \r\nthe best fitness, until a" +
+        " better attempt is given.");
 			// 
 			// BestGenerationNumberLabel
 			// 
@@ -1103,6 +1137,211 @@ namespace GeneticAlgorithmBot {
 			this.label13.Location = new System.Drawing.Point(104, 51);
 			this.label13.Name = "label13";
 			this.label13.Text = "Main Value:";
+			// 
+			// NeatInputRegionControlsBox
+			// 
+			this.NeatInputRegionControlsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+			this.NeatInputRegionControlsBox.Controls.Add(this.DisplayInputGrid);
+			this.NeatInputRegionControlsBox.Controls.Add(this.DisplayGraphFlag);
+			this.NeatInputRegionControlsBox.Controls.Add(this.outputMappingPanel);
+			this.NeatInputRegionControlsBox.Controls.Add(this.removeNeatOutputMapping);
+			this.NeatInputRegionControlsBox.Controls.Add(this.addNeatOutputMapping);
+			this.NeatInputRegionControlsBox.Controls.Add(this.locLabelEx7);
+			this.NeatInputRegionControlsBox.Controls.Add(this.InputSampleSize);
+			this.NeatInputRegionControlsBox.Controls.Add(this.locLabelEx6);
+			this.NeatInputRegionControlsBox.Controls.Add(this.locLabelEx5);
+			this.NeatInputRegionControlsBox.Controls.Add(this.locLabelEx4);
+			this.NeatInputRegionControlsBox.Controls.Add(this.locLabelEx2);
+			this.NeatInputRegionControlsBox.Controls.Add(this.InputRegionHeight);
+			this.NeatInputRegionControlsBox.Controls.Add(this.InputRegionWidth);
+			this.NeatInputRegionControlsBox.Controls.Add(this.InputRegionY);
+			this.NeatInputRegionControlsBox.Controls.Add(this.InputRegionX);
+			this.NeatInputRegionControlsBox.Location = new System.Drawing.Point(12, 183);
+			this.NeatInputRegionControlsBox.Name = "NeatInputRegionControlsBox";
+			this.NeatInputRegionControlsBox.Size = new System.Drawing.Size(442, 369);
+			this.NeatInputRegionControlsBox.TabIndex = 2001;
+			this.NeatInputRegionControlsBox.TabStop = false;
+			this.NeatInputRegionControlsBox.Text = "Input Region Controls [?]";
+			this.BotToolTip.SetToolTip(this.NeatInputRegionControlsBox, resources.GetString("NeatInputRegionControlsBox.ToolTip"));
+			// 
+			// DisplayInputGrid
+			// 
+			this.DisplayInputGrid.AutoSize = true;
+			this.DisplayInputGrid.Checked = true;
+			this.DisplayInputGrid.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.DisplayInputGrid.Location = new System.Drawing.Point(13, 239);
+			this.DisplayInputGrid.Name = "DisplayInputGrid";
+			this.DisplayInputGrid.Size = new System.Drawing.Size(109, 17);
+			this.DisplayInputGrid.TabIndex = 2013;
+			this.DisplayInputGrid.Text = "Display Input Grid";
+			this.DisplayInputGrid.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.DisplayInputGrid.UseVisualStyleBackColor = true;
+			// 
+			// DisplayGraphFlag
+			// 
+			this.DisplayGraphFlag.AutoSize = true;
+			this.DisplayGraphFlag.Checked = true;
+			this.DisplayGraphFlag.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.DisplayGraphFlag.Location = new System.Drawing.Point(13, 216);
+			this.DisplayGraphFlag.Name = "DisplayGraphFlag";
+			this.DisplayGraphFlag.Size = new System.Drawing.Size(92, 17);
+			this.DisplayGraphFlag.TabIndex = 2007;
+			this.DisplayGraphFlag.Text = "Display Graph";
+			this.DisplayGraphFlag.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.DisplayGraphFlag.UseVisualStyleBackColor = true;
+			// 
+			// outputMappingPanel
+			// 
+			this.outputMappingPanel.Location = new System.Drawing.Point(217, 13);
+			this.outputMappingPanel.Name = "outputMappingPanel";
+			this.outputMappingPanel.Size = new System.Drawing.Size(219, 347);
+			this.outputMappingPanel.TabIndex = 1034;
+			// 
+			// removeNeatOutputMapping
+			// 
+			this.removeNeatOutputMapping.Location = new System.Drawing.Point(12, 187);
+			this.removeNeatOutputMapping.Name = "removeNeatOutputMapping";
+			this.removeNeatOutputMapping.Size = new System.Drawing.Size(101, 23);
+			this.removeNeatOutputMapping.TabIndex = 1033;
+			this.removeNeatOutputMapping.Text = "Remove Mapping";
+			this.removeNeatOutputMapping.UseVisualStyleBackColor = true;
+			this.removeNeatOutputMapping.Click += new System.EventHandler(this.removeNeatOutputMapping_Click);
+			// 
+			// addNeatOutputMapping
+			// 
+			this.addNeatOutputMapping.Location = new System.Drawing.Point(12, 158);
+			this.addNeatOutputMapping.Name = "addNeatOutputMapping";
+			this.addNeatOutputMapping.Size = new System.Drawing.Size(101, 23);
+			this.addNeatOutputMapping.TabIndex = 1032;
+			this.addNeatOutputMapping.Text = "Add Mapping";
+			this.addNeatOutputMapping.UseVisualStyleBackColor = true;
+			this.addNeatOutputMapping.Click += new System.EventHandler(this.addNeatOutputMapping_Click);
+			// 
+			// locLabelEx7
+			// 
+			this.locLabelEx7.Location = new System.Drawing.Point(9, 129);
+			this.locLabelEx7.Name = "locLabelEx7";
+			this.locLabelEx7.Text = "Input Sample Size [?]";
+			this.BotToolTip.SetToolTip(this.locLabelEx7, resources.GetString("locLabelEx7.ToolTip"));
+			// 
+			// InputSampleSize
+			// 
+			this.InputSampleSize.Location = new System.Drawing.Point(147, 127);
+			this.InputSampleSize.Maximum = new decimal(new int[] {
+            64,
+            0,
+            0,
+            0});
+			this.InputSampleSize.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+			this.InputSampleSize.Name = "InputSampleSize";
+			this.InputSampleSize.Size = new System.Drawing.Size(61, 20);
+			this.InputSampleSize.TabIndex = 1027;
+			this.InputSampleSize.Value = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+			this.InputSampleSize.ValueChanged += new System.EventHandler(this.inputSampleSize_ValueChanged);
+			// 
+			// locLabelEx6
+			// 
+			this.locLabelEx6.Location = new System.Drawing.Point(9, 103);
+			this.locLabelEx6.Name = "locLabelEx6";
+			this.locLabelEx6.Text = "Height";
+			// 
+			// locLabelEx5
+			// 
+			this.locLabelEx5.Location = new System.Drawing.Point(9, 77);
+			this.locLabelEx5.Name = "locLabelEx5";
+			this.locLabelEx5.Text = "Width";
+			// 
+			// locLabelEx4
+			// 
+			this.locLabelEx4.Location = new System.Drawing.Point(9, 51);
+			this.locLabelEx4.Name = "locLabelEx4";
+			this.locLabelEx4.Text = "Y Position";
+			// 
+			// locLabelEx2
+			// 
+			this.locLabelEx2.Location = new System.Drawing.Point(9, 25);
+			this.locLabelEx2.Name = "locLabelEx2";
+			this.locLabelEx2.Text = "X Position";
+			// 
+			// InputRegionHeight
+			// 
+			this.InputRegionHeight.Location = new System.Drawing.Point(147, 101);
+			this.InputRegionHeight.Maximum = new decimal(new int[] {
+            65536,
+            0,
+            0,
+            0});
+			this.InputRegionHeight.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.InputRegionHeight.Name = "InputRegionHeight";
+			this.InputRegionHeight.Size = new System.Drawing.Size(61, 20);
+			this.InputRegionHeight.TabIndex = 1019;
+			this.InputRegionHeight.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+			this.InputRegionHeight.ValueChanged += new System.EventHandler(this.inputRegionHeight_ValueChanged);
+			// 
+			// InputRegionWidth
+			// 
+			this.InputRegionWidth.Location = new System.Drawing.Point(147, 75);
+			this.InputRegionWidth.Maximum = new decimal(new int[] {
+            65536,
+            0,
+            0,
+            0});
+			this.InputRegionWidth.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.InputRegionWidth.Name = "InputRegionWidth";
+			this.InputRegionWidth.Size = new System.Drawing.Size(61, 20);
+			this.InputRegionWidth.TabIndex = 1018;
+			this.InputRegionWidth.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+			this.InputRegionWidth.ValueChanged += new System.EventHandler(this.inputRegionWidth_ValueChanged);
+			// 
+			// InputRegionY
+			// 
+			this.InputRegionY.Location = new System.Drawing.Point(147, 49);
+			this.InputRegionY.Maximum = new decimal(new int[] {
+            65536,
+            0,
+            0,
+            0});
+			this.InputRegionY.Name = "InputRegionY";
+			this.InputRegionY.Size = new System.Drawing.Size(61, 20);
+			this.InputRegionY.TabIndex = 1017;
+			this.InputRegionY.ValueChanged += new System.EventHandler(this.inputRegionY_ValueChanged);
+			// 
+			// InputRegionX
+			// 
+			this.InputRegionX.Location = new System.Drawing.Point(147, 23);
+			this.InputRegionX.Maximum = new decimal(new int[] {
+            65536,
+            0,
+            0,
+            0});
+			this.InputRegionX.Name = "InputRegionX";
+			this.InputRegionX.Size = new System.Drawing.Size(61, 20);
+			this.InputRegionX.TabIndex = 1016;
+			this.InputRegionX.ValueChanged += new System.EventHandler(this.inputRegionX_ValueChanged);
 			// 
 			// BotStatusStrip
 			// 
@@ -1246,12 +1485,13 @@ namespace GeneticAlgorithmBot {
 			// GeneticAlgorithmBot
 			// 
 			this.ClientSize = new System.Drawing.Size(707, 587);
+			this.Controls.Add(this.NeatInputRegionControlsBox);
+			this.Controls.Add(this.ControlsBox);
 			this.Controls.Add(this.ControlGroupBox);
 			this.Controls.Add(this.BotStatusStrip);
 			this.Controls.Add(this.BotMenu);
 			this.Controls.Add(this.BestGroupBox);
 			this.Controls.Add(this.GoalGroupBox);
-			this.Controls.Add(this.ControlsBox);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "GeneticAlgorithmBot";
 			this.Load += new System.EventHandler(this.OnBotLoad);
@@ -1282,6 +1522,13 @@ namespace GeneticAlgorithmBot {
 			this.BestGroupBox.PerformLayout();
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
+			this.NeatInputRegionControlsBox.ResumeLayout(false);
+			this.NeatInputRegionControlsBox.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.InputSampleSize)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.InputRegionHeight)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.InputRegionWidth)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.InputRegionY)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.InputRegionX)).EndInit();
 			this.BotStatusStrip.ResumeLayout(false);
 			this.BotStatusStrip.PerformLayout();
 			this.BotMenu.ResumeLayout(false);
@@ -1296,6 +1543,23 @@ namespace GeneticAlgorithmBot {
 		public BizHawk.WinForms.Controls.LocLabelEx locLabelEx3;
 		private NumericUpDown MutationRateNumeric;
 		private Label MutationRateLabel;
+		public CheckBox UseNeatCheckBox;
+		private GroupBox NeatInputRegionControlsBox;
+		public BizHawk.WinForms.Controls.LocLabelEx locLabelEx6;
+		public BizHawk.WinForms.Controls.LocLabelEx locLabelEx5;
+		public BizHawk.WinForms.Controls.LocLabelEx locLabelEx4;
+		public BizHawk.WinForms.Controls.LocLabelEx locLabelEx2;
+		public NumericUpDown InputRegionHeight;
+		public NumericUpDown InputRegionWidth;
+		public NumericUpDown InputRegionY;
+		public NumericUpDown InputRegionX;
+		public BizHawk.WinForms.Controls.LocLabelEx locLabelEx7;
+		public NumericUpDown InputSampleSize;
+		private Button addNeatOutputMapping;
+		private Panel outputMappingPanel;
+		private Button removeNeatOutputMapping;
+		public CheckBox DisplayGraphFlag;
+		public CheckBox DisplayInputGrid;
 
 		/// <summary>
 		///   Returns the cached ResourceManager instance used by this class.
