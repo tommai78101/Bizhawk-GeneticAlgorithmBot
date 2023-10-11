@@ -184,6 +184,11 @@ namespace GeneticAlgorithmBot {
 		[RequiredService]
 		public IVideoProvider _currentVideoProvider { get; set; } = default!;
 
+		public ApiContainer _apiContainer { get; set; } = default!;
+
+		[RequiredApi]
+		public IMovieApi _movieApi { get; set; } = default!;
+
 		[RequiredApi]
 		public IGuiApi _guiApi { get; set; } = default!;
 
@@ -375,7 +380,7 @@ namespace GeneticAlgorithmBot {
 			}
 
 			_isBotting = true;
-			ControlsBox.Enabled = false;
+			GeneticAlgorithmControlsBox.Enabled = false;
 			StartFromSlotBox.Enabled = false;
 			RunBtn.Visible = false;
 			StopBtn.Visible = true;
@@ -417,7 +422,7 @@ namespace GeneticAlgorithmBot {
 			StopBtn.Visible = false;
 			_isBotting = false;
 			_targetFrame = 0;
-			ControlsBox.Enabled = true;
+			GeneticAlgorithmControlsBox.Enabled = true;
 			StartFromSlotBox.Enabled = true;
 			GoalGroupBox.Enabled = true;
 
@@ -880,14 +885,14 @@ namespace GeneticAlgorithmBot {
 			if (UseNeatCheckBox.Checked) {
 				NeatInputRegionControlsBox.Visible = true;
 				NeatInputRegionControlsBox.Enabled = true;
-				ControlsBox.Visible = false;
-				ControlsBox.Enabled = false;
+				GeneticAlgorithmControlsBox.Visible = false;
+				GeneticAlgorithmControlsBox.Enabled = false;
 			}
 			else {
 				NeatInputRegionControlsBox.Visible = false;
 				NeatInputRegionControlsBox.Enabled = false;
-				ControlsBox.Visible = true;
-				ControlsBox.Enabled = true;
+				GeneticAlgorithmControlsBox.Visible = true;
+				GeneticAlgorithmControlsBox.Enabled = true;
 			}
 		}
 

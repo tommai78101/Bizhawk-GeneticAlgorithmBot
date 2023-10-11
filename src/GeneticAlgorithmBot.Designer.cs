@@ -121,7 +121,7 @@ namespace GeneticAlgorithmBot {
 		public GroupBox BestGroupBox;
 		public Panel ControlProbabilityPanel;
 		public GroupBox GoalGroupBox;
-		public GroupBox ControlsBox;
+		public GroupBox GeneticAlgorithmControlsBox;
 		public BizHawk.WinForms.Controls.LocLabelEx locLabelEx1;
 		public BizHawk.WinForms.Controls.LocLabelEx GenerationsLabel;
 		public BotAttempt _bestAttempt;
@@ -161,7 +161,8 @@ namespace GeneticAlgorithmBot {
 			this.label4 = new BizHawk.WinForms.Controls.LocLabelEx();
 			this.panel4 = new System.Windows.Forms.Panel();
 			this.BotToolTip = new System.Windows.Forms.ToolTip(this.components);
-			this.ControlsBox = new System.Windows.Forms.GroupBox();
+			this.GeneticAlgorithmControlsBox = new System.Windows.Forms.GroupBox();
+			this.useExistingInputsCheckBox = new System.Windows.Forms.CheckBox();
 			this.ControlProbabilityPanel = new System.Windows.Forms.Panel();
 			this.btnCopyBestInput = new System.Windows.Forms.Button();
 			this.GoalGroupBox = new System.Windows.Forms.GroupBox();
@@ -254,7 +255,7 @@ namespace GeneticAlgorithmBot {
 			this.panel5.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.TieBreak2Numeric)).BeginInit();
 			this.panel4.SuspendLayout();
-			this.ControlsBox.SuspendLayout();
+			this.GeneticAlgorithmControlsBox.SuspendLayout();
 			this.GoalGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.MutationRateNumeric)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.PopulationSizeNumeric)).BeginInit();
@@ -608,19 +609,31 @@ namespace GeneticAlgorithmBot {
 			this.panel4.Size = new System.Drawing.Size(427, 26);
 			this.panel4.TabIndex = 1;
 			// 
-			// ControlsBox
+			// GeneticAlgorithmControlsBox
 			// 
-			this.ControlsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.GeneticAlgorithmControlsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.ControlsBox.Controls.Add(this.ControlProbabilityPanel);
-			this.ControlsBox.Location = new System.Drawing.Point(12, 183);
-			this.ControlsBox.Name = "ControlsBox";
-			this.ControlsBox.Size = new System.Drawing.Size(442, 369);
-			this.ControlsBox.TabIndex = 2007;
-			this.ControlsBox.TabStop = false;
-			this.ControlsBox.Text = "Input Mutation Probability Controls [?]";
-			this.BotToolTip.SetToolTip(this.ControlsBox, resources.GetString("ControlsBox.ToolTip"));
+			this.GeneticAlgorithmControlsBox.Controls.Add(this.useExistingInputsCheckBox);
+			this.GeneticAlgorithmControlsBox.Controls.Add(this.ControlProbabilityPanel);
+			this.GeneticAlgorithmControlsBox.Location = new System.Drawing.Point(12, 183);
+			this.GeneticAlgorithmControlsBox.Name = "GeneticAlgorithmControlsBox";
+			this.GeneticAlgorithmControlsBox.Size = new System.Drawing.Size(442, 369);
+			this.GeneticAlgorithmControlsBox.TabIndex = 2007;
+			this.GeneticAlgorithmControlsBox.TabStop = false;
+			this.GeneticAlgorithmControlsBox.Text = "Input Mutation Probability Controls [?]";
+			this.BotToolTip.SetToolTip(this.GeneticAlgorithmControlsBox, resources.GetString("GeneticAlgorithmControlsBox.ToolTip"));
+			// 
+			// useExistingInputsCheckBox
+			// 
+			this.useExistingInputsCheckBox.AutoSize = true;
+			this.useExistingInputsCheckBox.Location = new System.Drawing.Point(6, 337);
+			this.useExistingInputsCheckBox.Name = "useExistingInputsCheckBox";
+			this.useExistingInputsCheckBox.Size = new System.Drawing.Size(131, 17);
+			this.useExistingInputsCheckBox.TabIndex = 1;
+			this.useExistingInputsCheckBox.Text = "Use Existing Inputs [?]";
+			this.BotToolTip.SetToolTip(this.useExistingInputsCheckBox, resources.GetString("useExistingInputsCheckBox.ToolTip"));
+			this.useExistingInputsCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// ControlProbabilityPanel
 			// 
@@ -630,7 +643,7 @@ namespace GeneticAlgorithmBot {
 			this.ControlProbabilityPanel.AutoScroll = true;
 			this.ControlProbabilityPanel.Location = new System.Drawing.Point(6, 19);
 			this.ControlProbabilityPanel.Name = "ControlProbabilityPanel";
-			this.ControlProbabilityPanel.Size = new System.Drawing.Size(430, 344);
+			this.ControlProbabilityPanel.Size = new System.Drawing.Size(430, 311);
 			this.ControlProbabilityPanel.TabIndex = 0;
 			// 
 			// btnCopyBestInput
@@ -667,8 +680,7 @@ namespace GeneticAlgorithmBot {
 			this.GoalGroupBox.TabIndex = 2009;
 			this.GoalGroupBox.TabStop = false;
 			this.GoalGroupBox.Text = "Memory Value Information [?]";
-			this.BotToolTip.SetToolTip(this.GoalGroupBox, "This panel indicates what RAM values in the \r\nmemory you want to use for the bot " +
-        "to \r\ndetermine its fitness level as it undergoes \r\ntraining.");
+			this.BotToolTip.SetToolTip(this.GoalGroupBox, resources.GetString("GoalGroupBox.ToolTip"));
 			// 
 			// MutationRateNumeric
 			// 
@@ -1485,13 +1497,13 @@ namespace GeneticAlgorithmBot {
 			// GeneticAlgorithmBot
 			// 
 			this.ClientSize = new System.Drawing.Size(707, 587);
-			this.Controls.Add(this.NeatInputRegionControlsBox);
-			this.Controls.Add(this.ControlsBox);
 			this.Controls.Add(this.ControlGroupBox);
 			this.Controls.Add(this.BotStatusStrip);
 			this.Controls.Add(this.BotMenu);
 			this.Controls.Add(this.BestGroupBox);
 			this.Controls.Add(this.GoalGroupBox);
+			this.Controls.Add(this.GeneticAlgorithmControlsBox);
+			this.Controls.Add(this.NeatInputRegionControlsBox);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "GeneticAlgorithmBot";
 			this.Load += new System.EventHandler(this.OnBotLoad);
@@ -1505,7 +1517,8 @@ namespace GeneticAlgorithmBot {
 			((System.ComponentModel.ISupportInitialize)(this.TieBreak2Numeric)).EndInit();
 			this.panel4.ResumeLayout(false);
 			this.panel4.PerformLayout();
-			this.ControlsBox.ResumeLayout(false);
+			this.GeneticAlgorithmControlsBox.ResumeLayout(false);
+			this.GeneticAlgorithmControlsBox.PerformLayout();
 			this.GoalGroupBox.ResumeLayout(false);
 			this.GoalGroupBox.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.MutationRateNumeric)).EndInit();
@@ -1560,6 +1573,7 @@ namespace GeneticAlgorithmBot {
 		private Button removeNeatOutputMapping;
 		public CheckBox DisplayGraphFlag;
 		public CheckBox DisplayInputGrid;
+		public CheckBox useExistingInputsCheckBox;
 
 		/// <summary>
 		///   Returns the cached ResourceManager instance used by this class.

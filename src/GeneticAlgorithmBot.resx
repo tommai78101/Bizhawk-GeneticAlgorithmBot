@@ -120,8 +120,31 @@
   <metadata name="BotToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>497, 17</value>
   </metadata>
-  <data name="ControlsBox.ToolTip" xml:space="preserve">
+  <data name="useExistingInputsCheckBox.ToolTip" xml:space="preserve">
+    <value>By default, this genetic algorithm bot will overwrite
+your current TAStudio branch with random inputs
+before starting the genetic algorithm. When this flag
+is enabled, it prevents the bot from generating
+random inputs, and instead use your current existing
+inputs on the current TAStudio branch as your input
+attempt, before starting the genetic algorithm. In
+other words, the bot will use your inputs first before
+attempting to evaluate the nest best attempt.</value>
+  </data>
+  <data name="GeneticAlgorithmControlsBox.ToolTip" xml:space="preserve">
     <value>This panel here indicates the likelihood the specified controls are chosen when the bot mutates its training model. The weighted values determine the how likely it is for the mutation to enter this button.</value>
+  </data>
+  <data name="GoalGroupBox.ToolTip" xml:space="preserve">
+    <value>This panel indicates what RAM values in the 
+memory you want to use for the bot to 
+determine its fitness level as it undergoes 
+training. Note, it only *checks* for 1 RAM
+value. If that RAM value is the same as the
+previous best attempt, then it will move to
+check on the Tiebreak 1 RAM value. If
+Tiebreak 1 RAM value is the same as the
+previous best attempt, then it continues to
+check on the other Tiebreak values.</value>
   </data>
   <metadata name="StatsContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>594, 17</value>

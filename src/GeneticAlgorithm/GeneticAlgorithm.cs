@@ -20,7 +20,11 @@ namespace GeneticAlgorithmBot {
 			for (int i = 0; i < this.population.Length; i++) {
 				this.population[i] = new InputRecording(this);
 				this.population[i].Reset(0);
-				this.population[i].RandomizeInputRecording();
+				if (this.bot.useExistingInputsCheckBox.Checked) {
+					this.population[i].MemorizeInputRecording();
+				} else {
+					this.population[i].RandomizeInputRecording();
+				}
 			}
 
 			this.SetOrigin();

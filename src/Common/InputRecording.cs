@@ -1,4 +1,6 @@
-﻿using BizHawk.Client.EmuHawk;
+﻿using BizHawk.Client.Common.Filters;
+using BizHawk.Client.EmuHawk;
+using BizHawk.Emulation.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +47,21 @@ namespace GeneticAlgorithmBot {
 			if (0 <= index && index < this.recording.Length) {
 				this.recording[index].Buttons.Clear();
 				this.recording[index].Buttons.UnionWith(copy);
+			}
+			this.IsSet = true;
+		}
+
+		public void MemorizeInputRecording() {
+			int inputSize = this.Bot.Emulator.ControllerDefinition.BoolButtons.Count;
+			for (int i = 0; i < this.Bot.FrameLength; i++) {
+				FrameInput input = this.GetFrameInput(this.manager.StartFrameNumber + i);
+				IReadOnlyDictionary<string, object> inputDictionary = this.Bot._movieApi.GetInput(this.manager.StartFrameNumber + i);
+				for (int j = 0; j < inputSize; j++) {
+					string button = this.Bot.Emulator.ControllerDefinition.BoolButtons[j];
+					if (inputDictionary[button] is bool buttonPressed && buttonPressed) {
+						input.Pressed(button);
+					}
+				}
 			}
 			this.IsSet = true;
 		}
