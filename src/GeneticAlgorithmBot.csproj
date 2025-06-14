@@ -3,17 +3,19 @@
 	<PropertyGroup>
 		<LangVersion>10.0</LangVersion>
 		<Nullable>enable</Nullable>
-		<TargetFramework>net48</TargetFramework>
+		<TargetFramework>net4.8</TargetFramework>
 		<UseWindowsForms>true</UseWindowsForms>
 		<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
 		<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="System.Drawing.Common" Version="7.0.0" />
-		<PackageReference Include="System.Resources.Extensions" Version="7.0.0" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.Bcl.HashCode" Version="6.0.0" />
+		<PackageReference Include="System.Drawing.Common" Version="9.0.6" />
+		<PackageReference Include="System.Resources.Extensions" Version="9.0.6" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+		<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
+		<PackageReference Include="System.Memory" Version="4.6.3" />
 		<Reference Include="System.Windows.Forms" />
 		<Reference Include="BizHawk.BizInvoke" HintPath="$(ProjectDir)../BizHawk/dll/BizHawk.BizInvoke.dll" />
 		<Reference Include="BizHawk.Bizware.BizwareGL" HintPath="$(ProjectDir)../BizHawk/dll/BizHawk.Bizware.BizwareGL.dll" />
@@ -28,9 +30,7 @@
 		<Reference Include="BizHawk.Client.EmuHawk" HintPath="$(ProjectDir)../BizHawk/EmuHawk.exe" />
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Update="GeneticAlgorithmBot.cs">
-			<SubType>Form</SubType>
-		</Compile>
+		<Compile Update="GeneticAlgorithmBot.cs" />
 		<Compile Update="GeneticAlgorithmBot.Designer.cs">
 			<DependentUpon>GeneticAlgorithmBot.cs</DependentUpon>
 		</Compile>
@@ -39,9 +39,7 @@
 		</EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Update="UI\BotControlsRow.cs">
-			<SubType>UserControl</SubType>
-		</Compile>
+		<Compile Update="UI\BotControlsRow.cs" />
 		<Compile Update="UI\BotControlsRow.Designer.cs">
 			<DependentUpon>BotControlsRow.cs</DependentUpon>
 		</Compile>
@@ -50,9 +48,7 @@
 		</EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Update="UI\NeatMappingRow.cs">
-			<SubType>UserControl</SubType>
-		</Compile>
+		<Compile Update="UI\NeatMappingRow.cs" />
 		<Compile Update="UI\NeatMappingRow.Designer.cs">
 			<DependentUpon>NeatMappingRow.cs</DependentUpon>
 		</Compile>
