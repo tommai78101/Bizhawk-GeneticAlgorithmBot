@@ -71,8 +71,6 @@ namespace GeneticAlgorithmBot {
 
 		private bool _doNotUpdateValues;
 
-		private Bk2LogEntryGenerator _logGenerator = default!;
-
 		public ExtendedColorWrapper[] _neatInputRegionData = new ExtendedColorWrapper[0];
 
 		/// <summary>
@@ -391,8 +389,6 @@ namespace GeneticAlgorithmBot {
 				MovieSession.Movie.IsCountingRerecords = false;
 			}
 
-			_logGenerator = new Bk2LogEntryGenerator(MovieSession.Movie.SystemID, InputManager.ClickyVirtualPadController);
-
 			_doNotUpdateValues = true;
 			if (!_useNeat)
 				PressButtons(true);
@@ -475,7 +471,7 @@ namespace GeneticAlgorithmBot {
 
 				if (clear_log)
 					this.neat.ClearCurrentRecordingLog();
-				this.neat.SetCurrentRecordingLog(_logGenerator.GenerateLogEntry());
+				this.neat.SetCurrentRecordingLog(Bk2LogEntryGenerator.GenerateLogEntry(InputManager.ClickyVirtualPadController));
 			}
 			else {
 				if (this.genetics.GetCurrent() != null) {
@@ -487,7 +483,7 @@ namespace GeneticAlgorithmBot {
 
 					if (clear_log)
 						this.genetics.ClearCurrentRecordingLog();
-					this.genetics.SetCurrentRecordingLog(_logGenerator.GenerateLogEntry());
+					this.genetics.SetCurrentRecordingLog(Bk2LogEntryGenerator.GenerateLogEntry(InputManager.ClickyVirtualPadController));
 				}
 			}
 		}
@@ -779,7 +775,7 @@ namespace GeneticAlgorithmBot {
 			 * yesterday. It implicitly clears what was drawn before.
 			 */
 			if (this._useNeat) {
-				this._guiApi.WithSurface(DisplaySurfaceID.EmuCore, () => {
+				this._guiApi.WithSurface(DisplaySurfaceID.EmuCore, (gui) => {
 					if (DisplayGraphFlag.Checked) {
 						this.batchRenderer.RenderGraph();
 					}
